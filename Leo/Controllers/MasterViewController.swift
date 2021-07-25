@@ -6,10 +6,23 @@
 //
 
 import UIKit
+import Firebase
 
 class MasterViewController: UIViewController {
     
     @IBOutlet weak var pastRoomsTableView: UITableView!
+    
+    let db = Firestore.firestore()
+    
+    @IBAction func logoutPressed(_ sender: UIBarButtonItem) {
+        
+        do {
+            try Auth.auth().signOut()
+        } catch let signOutError as NSError {
+          print("Error signing out: %@", signOutError)
+        }
+        
+    }
     
     @IBAction func createRoom(_ sender: UIButton) {
     }

@@ -34,7 +34,6 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="loginPressed:" destination="yLQ-fV-l1S" eventType="touchUpInside" id="Ys9-Pq-JPv"/>
                                     <segue destination="p5E-Dy-GuC" kind="show" id="X9b-yf-5xQ"/>
                                 </connections>
                             </button>
@@ -46,7 +45,6 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="registerPressed:" destination="yLQ-fV-l1S" eventType="touchUpInside" id="fGp-dN-zp3"/>
                                     <segue destination="i6U-GK-Uyf" kind="show" id="N4o-QC-guy"/>
                                 </connections>
                             </button>
@@ -120,7 +118,7 @@
                                         </state>
                                         <connections>
                                             <action selector="registerPressed:" destination="i6U-GK-Uyf" eventType="touchUpInside" id="icY-l9-UXy"/>
-                                            <segue destination="acU-2Y-940" kind="show" id="muS-b2-neh"/>
+                                            <segue destination="acU-2Y-940" kind="show" identifier="RegisterToMaster" id="muS-b2-neh"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -275,7 +273,7 @@
                                         </state>
                                         <connections>
                                             <action selector="loginPressed:" destination="p5E-Dy-GuC" eventType="touchUpInside" id="AsL-e3-3N4"/>
-                                            <segue destination="acU-2Y-940" kind="show" id="6f8-a6-bXD"/>
+                                            <segue destination="acU-2Y-940" kind="show" identifier="LoginToMaster" id="6f8-a6-bXD"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -352,7 +350,11 @@
                         <color key="backgroundColor" red="0.21952903269999999" green="0.69727152589999997" blue="0.91970127820000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </view>
                     <navigationItem key="navigationItem" id="AZI-pk-tkv">
-                        <barButtonItem key="rightBarButtonItem" title="Logout" id="hXU-lH-UXC"/>
+                        <barButtonItem key="rightBarButtonItem" title="Logout" id="hXU-lH-UXC">
+                            <connections>
+                                <action selector="logoutPressed:" destination="acU-2Y-940" id="psR-WI-Mvi"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="pastRoomsTableView" destination="Mvw-ka-6oy" id="FZi-qc-sUl"/>
@@ -382,7 +384,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="muS-b2-neh"/>
+        <segue reference="6f8-a6-bXD"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrowtriangle.forward" catalog="system" width="128" height="113"/>
