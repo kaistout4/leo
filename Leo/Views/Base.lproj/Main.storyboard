@@ -631,7 +631,7 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <segue destination="acU-2Y-940" kind="show" identifier="LoginToMaster" id="6f8-a6-bXD"/>
+                                            <action selector="loginPressed:" destination="p5E-Dy-GuC" eventType="touchUpInside" id="bvR-Tr-QQF"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -655,6 +655,7 @@
                     <connections>
                         <outlet property="emailTextField" destination="kmN-jH-Yv1" id="Zxa-LP-ZBq"/>
                         <outlet property="passwordTextField" destination="Joo-7c-AU8" id="Qfy-Bg-qp5"/>
+                        <segue destination="acU-2Y-940" kind="show" identifier="LoginToMaster" id="9NB-8A-Acp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xAs-7o-1Sg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -779,7 +780,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="aLe-Xl-31f"/>
-        <segue reference="muS-b2-neh"/>
+        <segue reference="9NB-8A-Acp"/>
         <segue reference="fm4-2g-1JZ"/>
     </inferredMetricsTieBreakers>
     <resources>
