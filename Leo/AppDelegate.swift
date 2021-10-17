@@ -18,6 +18,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         
+        let db = Firestore.firestore()
+        
+        // Override point for customization after application launch.
+               // White non-transucent navigatio bar, supports dark appearance
+//       if #available(iOS 15, *) {
+//           let navAppearance = UINavigationBarAppearance()
+//           navAppearance.configureWithOpaqueBackground()
+//           UINavigationBar.appearance().standardAppearance = navAppearance
+//           UINavigationBar.appearance().scrollEdgeAppearance = navAppearance
+//           let tabAppearance = UITabBarAppearance()
+//           tabAppearance.configureWithOpaqueBackground()
+//           UITabBar.appearance().standardAppearance = tabAppearance
+//           UITabBar.appearance().scrollEdgeAppearance = tabAppearance
+//       }
+
         return true
     }
 

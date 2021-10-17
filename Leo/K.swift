@@ -10,7 +10,11 @@ import Foundation
 
 struct K {
     
-    
+    struct FStore {
+        
+        static let collectionName = "rooms"
+        
+    }
     
     
     

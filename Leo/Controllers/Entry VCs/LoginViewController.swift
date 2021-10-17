@@ -1,5 +1,5 @@
 //
-//  RegisterViewController.swift
+//  LoginViewController.swift
 //  Leo
 //
 //  Created by Kai Stout on 7/10/21.
@@ -8,34 +8,32 @@
 import UIKit
 import Firebase
 
-class RegisterViewController: UIViewController {
+class LoginViewController: UIViewController {
     
     
     @IBOutlet weak var emailTextField: UITextField!
     
     @IBOutlet weak var passwordTextField: UITextField!
     
-    @IBAction func registerPressed(_ sender: UIButton) {
+    @IBAction func loginPressed(_ sender: UIButton) {
         
         if let email = emailTextField.text, let password = passwordTextField.text {
             
-            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-             
+            Auth.auth().signIn(withEmail: email, password: password) {  authResult, error in
+                
                 if let e = error {
                     print(e)
                 } else {
-                    self.performSegue(withIdentifier: "RegisterToMaster", sender: self)
+                    
+                    User.user = "teacher"
+                    self.performSegue(withIdentifier: "LoginToMaster", sender: self)
                 }
-                
+              
             }
             
         }
-      
-        
-        
     }
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
