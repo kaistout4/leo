@@ -10,6 +10,8 @@ import Firebase
 
 class QuestionViewController: UIViewController {
     
+    @IBOutlet weak var tableView: UITableView!
+    
     let dm = DataManager()
     
     let db = Firestore.firestore()
@@ -58,25 +60,26 @@ class QuestionViewController: UIViewController {
         
         //Updates question and answer labels
         updateQuestion()
-        
-        if (user == "student") {
-            
-            print("Student")
-            
-            hideResultsUIItems()
-            
-            teacherCommandView.isHidden = true
-            
-            
-            
-        } else {
-            
-            print("Teacher")
-            showResultsUIItems()
-            teacherCommandView.isHidden = false
-            monitorForResults()
-            
-        }
+
+        //        
+//        if (user == "student") {
+//            
+//            print("Student")
+//            
+//            hideResultsUIItems()
+//            
+//            teacherCommandView.isHidden = true
+//            
+//            
+//            
+//        } else {
+//            
+//            print("Teacher")
+//            showResultsUIItems()
+//            teacherCommandView.isHidden = false
+//            monitorForResults()
+//            
+//        }
         
         
         
@@ -379,21 +382,21 @@ class QuestionViewController: UIViewController {
         
         questionLabel.text = question?.question
         
-        if let answer1 = question?.answerChoices[0] {
-            answerChoice1.setTitle(answer1, for: .normal)
-        }
-
-        if let answer2 = question?.answerChoices[1] {
-            answerChoice2.setTitle(answer2, for: .normal)
-        }
-        
-        if let answer3 = question?.answerChoices[2] {
-            answerChoice3.setTitle(answer3, for: .normal)
-        }
-        
-        if let answer4 = question?.answerChoices[3] {
-            answerChoice4.setTitle(answer4, for: .normal)
-        }
+//        if let answer1 = question?.answerChoices[0] {
+//            answerChoice1.setTitle(answer1, for: .normal)
+//        }
+//
+//        if let answer2 = question?.answerChoices[1] {
+//            answerChoice2.setTitle(answer2, for: .normal)
+//        }
+//
+//        if let answer3 = question?.answerChoices[2] {
+//            answerChoice3.setTitle(answer3, for: .normal)
+//        }
+//
+//        if let answer4 = question?.answerChoices[3] {
+//            answerChoice4.setTitle(answer4, for: .normal)
+//        }
        
     }
 
@@ -407,4 +410,51 @@ class QuestionViewController: UIViewController {
     }
     */
 
+}
+
+extension QuestionViewController: UITableViewDelegate {
+    
+}
+
+extension QuestionViewController: UITableViewDataSource {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 4
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AnswerCell", for: indexPath) as! AnswerCell
+        cell.answerButton.tag = indexPath.row
+        cell.answerButton.addTarget(self, action: #selector(answerButtonAction(sender:)), for: .touchUpInside)
+
+        if indexPath.row == 1 {
+            cell.answerBackground.backgroundColor = UIColor(named: "CorrectColor")
+        }
+        if indexPath.row == 2 {
+            cell.answerBackground.backgroundColor = UIColor(named: "AccentColor")
+        }
+        return cell
+    }
+    
+    @objc func answerButtonAction(sender: UIButton) {
+        print("hit button \(sender.tag)")
+        //call a method that updates all the cells-
+    }
+    
+}
+
+class AnswerCell: UITableViewCell {
+    @IBOutlet weak var answerPrefix: UILabel!
+    @IBOutlet weak var answerBackground: UIView!
+    @IBOutlet weak var answerButton: UIButton!
+    @IBOutlet weak var answerPercentage: UILabel!
+    @IBOutlet weak var answerIconImage: UIImageView!
+    
+    override func awakeFromNib() {
+        answerBackground.layer.cornerRadius = 10.0
+    }
 }
