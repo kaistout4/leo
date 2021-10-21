@@ -14,12 +14,13 @@ class Room {
     var questions: [MCQ]?
     var questionCount: Int
     
-    init(id: String, title: String, questionCount: Int) {
+    init(id: String, title: String, questions: [MCQ]? = nil, questionCount: Int) {
         
-        self.questionCount = questionCount
         self.ID = id
         self.title = title
-        
+        self.questions = questions
+        self.questionCount = questionCount
+
     }
     
     

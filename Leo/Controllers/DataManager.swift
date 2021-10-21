@@ -32,36 +32,76 @@ class DataManager {
     }
     
     func loadRooms(user: String, completion: @escaping (_ rooms: [Room]?) -> Void) {
-        
-        var rooms: [Room] = []
-        
+                
         db.collection(K.FStore.collectionName).whereField("user", isEqualTo: user).getDocuments { querySnapshot, error in
             
             if let error = error {
                 
                 print(error)
+                completion(nil)
                 
             } else {
                 
                 if let snapshotDocuments = querySnapshot?.documents {
                     
-                    print(snapshotDocuments.count)
-                    
-                    for doc in snapshotDocuments {
-                         
-                        let data = doc.data()
+                    DispatchQueue.global().async {
                         
-                        print(data["questionCount"] as! Int)
+                        print(snapshotDocuments.count)
                         
-                        rooms.append(Room(id: doc.documentID, title: data["title"] as! String, questionCount : data["questionCount"] as! Int))
+                        let group = DispatchGroup()
+                        var rooms: [Room] = []
+                        
+                        
+                        for doc in snapshotDocuments {
                             
+                            group.enter()
+                            
+                            let data = doc.data()
+                            
+                            print(data["questionCount"] as! Int)
+                            
+                            // Fetch the questions for each document
+                            
+                            self.db.collection("rooms").document(doc.documentID).collection("questions").getDocuments { querySnapshot, error in
+                                
+                                if let e = error {
+                                    print(e)
+                                    
+                                } else {
+                                    
+                                    var questions: [MCQ] = []
+                                    
+                                    if let query = querySnapshot {
+                                        
+                                        for doc in query.documents {
+                                            let data = doc.data()
+                                            if let question = data["question"] as? String, let answerChoices = data["answerChoices"] as? [String], let correctAnswers = data["correctAnswers"] as? [Int], let resultsA = data["resultsA"] as? Int, let resultsB = data["resultsB"] as? Int, let resultsC = data["resultsC"] as? Int, let resultsD = data["resultsD"] as? Int {
+                                                
+                                                questions.append(MCQ(question: question, answerChoices: answerChoices, correctAnswers: correctAnswers, results: [resultsA, resultsB, resultsC, resultsD]))
+                                            }
+                                        }
+                                    }
+                                    rooms.append(Room(id: doc.documentID, title: data["title"] as! String, questions: questions.isEmpty ? nil : questions, questionCount : data["questionCount"] as! Int))
+                                    
+                                }
+                                group.leave()
+                            }
+                        }
                         
+                        // Wait for all async requests for question data to finish
+                        group.wait()
+                        
+                        DispatchQueue.main.async {
+
+                            // End fetch questions
+                            completion(rooms)
+
+                        }
                     }
                     
-                    completion(rooms)
+                } else {
+                    completion(nil)
                 }
-                
-                completion(nil)
                 
             }
             
