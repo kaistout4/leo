@@ -26,6 +26,7 @@ class LoginViewController: UIViewController {
                 } else {
                     
                     User.user = "teacher"
+                    
                     self.performSegue(withIdentifier: "LoginToMaster", sender: self)
                 }
               

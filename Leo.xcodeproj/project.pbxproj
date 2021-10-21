@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		932497EB270512AC002A79C2 /* RoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932497E9270512AC002A79C2 /* RoomCell.swift */; };
-		932497EC270512AC002A79C2 /* RoomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 932497EA270512AC002A79C2 /* RoomCell.xib */; };
 		93254BB726A89C63004D7E66 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93254BB626A89C63004D7E66 /* GoogleService-Info.plist */; };
 		9325E11626FD30B300261417 /* ActiveQuestionsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9325E11526FD30B300261417 /* ActiveQuestionsPageViewController.swift */; };
 		9326832726A8AE29004542DD /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9326832626A8AE29004542DD /* K.swift */; };
@@ -38,8 +36,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		932497E9270512AC002A79C2 /* RoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCell.swift; sourceTree = "<group>"; };
-		932497EA270512AC002A79C2 /* RoomCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomCell.xib; sourceTree = "<group>"; };
 		93254BB626A89C63004D7E66 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9325E11526FD30B300261417 /* ActiveQuestionsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveQuestionsPageViewController.swift; sourceTree = "<group>"; };
 		9326832626A8AE29004542DD /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
@@ -137,8 +133,6 @@
 				933131B626E561D400DFD645 /* EditQuestionsPageViewController.swift */,
 				933131B826E5663F00DFD645 /* DataManager.swift */,
 				9325E11526FD30B300261417 /* ActiveQuestionsPageViewController.swift */,
-				932497E9270512AC002A79C2 /* RoomCell.swift */,
-				932497EA270512AC002A79C2 /* RoomCell.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -221,7 +215,6 @@
 			files = (
 				9374BB9126995B7200A7E8ED /* LaunchScreen.storyboard in Resources */,
 				93254BB726A89C63004D7E66 /* GoogleService-Info.plist in Resources */,
-				932497EC270512AC002A79C2 /* RoomCell.xib in Resources */,
 				9374BB8E26995B7200A7E8ED /* Assets.xcassets in Resources */,
 				9374BB8C26995B7100A7E8ED /* Main.storyboard in Resources */,
 			);
@@ -249,7 +242,6 @@
 				9325E11626FD30B300261417 /* ActiveQuestionsPageViewController.swift in Sources */,
 				933131B726E561D400DFD645 /* EditQuestionsPageViewController.swift in Sources */,
 				9374BBA0269A3CDD00A7E8ED /* AddQuestionViewController.swift in Sources */,
-				932497EB270512AC002A79C2 /* RoomCell.swift in Sources */,
 				9374BB9C269A3CB900A7E8ED /* LoginViewController.swift in Sources */,
 				9374BB9A269A3BF200A7E8ED /* RegisterViewController.swift in Sources */,
 			);
