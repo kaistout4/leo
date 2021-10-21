@@ -79,9 +79,9 @@ class DataManager {
     
     func nextQuestion(roomID: String, completion: @escaping () -> Void) {
         
-        db.collection(K.FStore.collectionName).document(roomID).updateData(["currentQuestion" : FieldValue.increment(Int64(1))])
-        
         db.collection(K.FStore.collectionName).document(roomID).updateData(["state" : "active"])
+        
+        db.collection(K.FStore.collectionName).document(roomID).updateData(["currentQuestion" : FieldValue.increment(Int64(1))])
         
         completion()
         

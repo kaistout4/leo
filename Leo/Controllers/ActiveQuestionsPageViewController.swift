@@ -100,16 +100,12 @@ class ActiveQuestionsPageViewController: UIPageViewController {
                             
                             if (state == "results") {
                                 
-                                
-                                
-                                print("results")
+                                print("Student: state results")
                                 let vc = self.leoViewControllers[currentQuestion] as! QuestionViewController
-                                
                                 self.dm.reloadQuestionFrom(roomID: self.roomID, withIndex: currentQuestion) { question in
                                     
-                                    print(question?.question)
+                                    vc.hideResults = false
                                     vc.question = question
-                                    vc.refreshResults()
                                 }
                                 
                                 
@@ -117,20 +113,14 @@ class ActiveQuestionsPageViewController: UIPageViewController {
                             
                             if self.currentQuestion != currentQuestion {
                                 
+                                print("Student: next question")
                                 self.currentQuestion = currentQuestion
                                 self.addNextQuestionViewController()
                                 
                             }
-                            
-//                            if (currentQuestion != self.currentQuestion) {
-//
-//                                print("Next question")
-//                            }
-                            
                         }
                             
-    
-                        
+
                     }
                     
                     
@@ -219,7 +209,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
                 vc.questionIndex = 0
                 self.leoViewControllers.append(vc)
                 
-//                self.listenForUpdatesAsStudent()
+                self.listenForUpdatesAsStudent()
                 
             }
                 
