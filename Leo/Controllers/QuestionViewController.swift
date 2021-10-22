@@ -59,7 +59,7 @@ class QuestionViewController: UIViewController {
         
         //Updates question and answer labels
         updateQuestion()
-
+        
                 
         if (user == "student") {
             print("Student")

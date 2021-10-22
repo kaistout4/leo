@@ -103,6 +103,15 @@ class MasterViewController: UIViewController {
         
     }
     
+    @IBAction func logoutUser(_ sender: Any) {
+        
+         
+        
+        
+    }
+    
+    
+    
     func loadRooms() {
         
         print("Loading rooms")
@@ -209,10 +218,19 @@ extension MasterViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("Adding cell to table view")
         let cell = tableView.dequeueReusableCell(withIdentifier: "RoomCell", for: indexPath) as! RoomCell
+        cell.editButton.tag = indexPath.row
+        cell.editButton.addTarget(self, action: #selector(editButtonAction(sender:)), for: .touchUpInside)
         configureCell(cell: cell, at: indexPath)
         return cell
     }
     
+    @objc func editButtonAction(sender: UIButton) {
+        
+        User.roomID = rooms[sender.tag].ID
+        
+        self.performSegue(withIdentifier: "masterToRoomPage", sender: self)
+    
+    }
     
 }
 

@@ -101,12 +101,18 @@ class ActiveQuestionsPageViewController: UIPageViewController {
                             if (state == "results") {
                                 
                                 print("Student: state results")
+                                
                                 let vc = self.leoViewControllers[currentQuestion] as! QuestionViewController
+                                self.dm.updateVote(roomID: self.roomID, questionIndex: self.currentQuestion, answerIndex: vc.selected) {
+                                    
+                                }
+                                
                                 self.dm.reloadQuestionFrom(roomID: self.roomID, withIndex: currentQuestion) { question in
                                     
                                     vc.hideResults = false
                                     vc.question = question
                                 }
+                                
                                 
                                 
                             }
