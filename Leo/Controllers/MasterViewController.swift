@@ -110,6 +110,14 @@ class MasterViewController: UIViewController {
         
     }
     
+    @IBAction func startRoom(_ sender: Any) {
+        
+        dm.updateState(roomID: User.roomID, state: "active") {
+         
+            self.performSegue(withIdentifier: "roomManagerToActiveQuestipns", sender: self)
+        }
+    }
+    
     
     
     func loadRooms() {
@@ -219,9 +227,24 @@ extension MasterViewController: UITableViewDataSource {
         print("Adding cell to table view")
         let cell = tableView.dequeueReusableCell(withIdentifier: "RoomCell", for: indexPath) as! RoomCell
         cell.editButton.tag = indexPath.row
+        cell.startButton.tag = indexPath.row
         cell.editButton.addTarget(self, action: #selector(editButtonAction(sender:)), for: .touchUpInside)
+        cell.startButton.addTarget(self, action: #selector(startButtonAction(sender:)), for: .touchUpInside)
+        
         configureCell(cell: cell, at: indexPath)
         return cell
+    }
+    
+    @objc func startButtonAction(sender: UIButton) {
+        
+        let ID = rooms[sender.tag].ID
+        User.roomID = ID
+        dm.updateState(roomID: ID, state: "active") {
+            
+            self.performSegue(withIdentifier: "masterToActiveQuestions", sender: self)
+        }
+        
+        
     }
     
     @objc func editButtonAction(sender: UIButton) {
@@ -262,6 +285,8 @@ class RoomCell: UITableViewCell {
     @IBOutlet weak var question2Prefix: UILabel!
     @IBOutlet weak var question2Label: UILabel!
     @IBOutlet weak var moreQuestionsLabel: UILabel!
+    @IBOutlet weak var startButton: UIButton!
+    
     
     var roomID = ""
     

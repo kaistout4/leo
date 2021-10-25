@@ -50,14 +50,9 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         
         
         if (user == "student") {
-            
             exitButton.title = "Leave"
-            
-            
-            
         } else if (user == "teacher") {
-            
-            exitButton.title = "End room"
+            exitButton.title = "End Room"
            
         }
         

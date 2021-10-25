@@ -16,23 +16,46 @@ class EditQuestionsPageViewController: UIPageViewController {
      
     
     @IBAction func saveQuestions(_ sender: UIBarButtonItem) {
-        
+        print("Saving questions")
+        print(leoViewControllers.count)
+        var count = 0
         for vc in leoViewControllers {
             
             let vc = vc as! AddQuestionViewController
             
             vc.addQuestion { error, index in
                 
-                if let error = error {
-                    if error == true {
-                        print("Error adding a question")
+                switch error {
+                
+                case "noQuestion":
+                    print("Case: no question")
+                    let alert = UIAlertController(title: "Question " + String(index!+1) + ": Missing Question", message: "", preferredStyle: .alert)
+                    let action = UIAlertAction(title: "Ok", style: .default) { (action) in
                     }
-                   
+                    alert.addAction(action)
+                    self.present(alert, animated: true, completion: nil)
+                case "noAnswerSelected":
+                    print("Case: no answer selected")
+                    let alert = UIAlertController(title: "Question " + String(index!+1) + ": Missing Answer Selection", message: "", preferredStyle: .alert)
+                    let action = UIAlertAction(title: "Ok", style: .default) { (action) in
+                    }
+                    alert.addAction(action)
+                    self.present(alert, animated: true, completion: nil)
+                case "noAnswerChoice":
+                    print("Case: no answers")
+                    let alert = UIAlertController(title: "Question " + String(index!+1) + ": No Answer Choice", message: "", preferredStyle: .alert)
+                    let action = UIAlertAction(title: "Ok", style: .default) { (action) in
+                    }
+                    alert.addAction(action)
+                    self.present(alert, animated: true, completion: nil)
+                default:
+                    count+=1
+                    break
                 }
             }
         }
         
-        dm.updateQuestionCountOfRoom(roomID: roomID, to: leoViewControllers.count) {
+        dm.updateQuestionCountOfRoom(roomID: roomID, to: count) {
             
             
         }
@@ -45,6 +68,9 @@ class EditQuestionsPageViewController: UIPageViewController {
         vc.questionIndex = 0
         self.leoViewControllers.append(vc)
         
+        if let firstQuestionViewController = leoViewControllers.first {
+            setViewControllers([firstQuestionViewController], direction: .forward, animated: true, completion: nil)
+        }
     }
     
     
@@ -52,6 +78,7 @@ class EditQuestionsPageViewController: UIPageViewController {
         
         let newVC = generateAddQuestionViewController()
         newVC.questionIndex = leoViewControllers.count
+        
         leoViewControllers.append(newVC)
         
         if let lastQuestionViewController = leoViewControllers.last {
@@ -68,13 +95,18 @@ class EditQuestionsPageViewController: UIPageViewController {
         
 //        didSet {
 //
-//            if let firstQuestionViewController = leoViewControllers.last {
-//
-//                setViewControllers([firstQuestionViewController], direction: .forward, animated: true, completion: nil)
-//
+//            if questions.count == 0 {
+//                if let firstQuestionViewController = leoViewControllers.first {
+//                    setViewControllers([firstQuestionViewController], direction: .forward, animated: true, completion: nil)
+//                }
+//            } else {
+//                if let lastQuestionViewController = leoViewControllers.last {
+//                    setViewControllers([lastQuestionViewController], direction: .forward, animated: true, completion: nil)
+//                }
 //            }
+//
+//
 //        }
-        
     
 
     let user = User.user
@@ -124,11 +156,12 @@ class EditQuestionsPageViewController: UIPageViewController {
     }
     
     
+    
     @IBAction func startRoom(_ sender: Any) {
         
         dm.updateState(roomID: roomID, state: "active") {
             
-            self.performSegue(withIdentifier: "roomManagerToActiveRoom", sender: self)
+            self.performSegue(withIdentifier: "roomManagerToActiveQuestions", sender: self)
             
         }
         
@@ -148,21 +181,6 @@ class EditQuestionsPageViewController: UIPageViewController {
         }
         
     }
-    
-//    func loadResultsCurrentViewController() {
-//
-//        print("loadResultsCurrentViewController")
-//
-//        dm.reloadQuestionsFrom(roomID: roomID) { questions in
-//
-//            self.currentViewController.question = self.questions[self.currentQuestion]
-//
-//            print("Calls show results")
-//            self.currentViewController.showResults()
-//
-//        }
-//
-//    }
   
     
     func loadNewViewController() {
@@ -192,29 +210,18 @@ class EditQuestionsPageViewController: UIPageViewController {
         return vc
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     func loadAddQuestionViewControllers() {
         
        
         print(self.questions.count)
             
-        for q in questions {
+        for i in 0...questions.count-1 {
                 
-            if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddQuestionViewController") as? AddQuestionViewController {
-                    
-                vc.question = q
-                
-                leoViewControllers.append(vc)
-            }
+            let vc = generateAddQuestionViewController()
+            vc.question = questions[i]
+            vc.questionIndex = i
+            leoViewControllers.append(vc)
+            
         }
         if let firstQuestionViewController = leoViewControllers.first {
             

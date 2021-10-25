@@ -19,8 +19,6 @@ class QuestionViewController: UIViewController {
     let roomID = User.roomID
     
     @IBOutlet weak var questionLabel: UILabel!
-    
-    
     @IBOutlet weak var teacherCommandView: UIStackView!
     @IBOutlet weak var numResponsesLabel: UILabel!
     
@@ -69,7 +67,6 @@ class QuestionViewController: UIViewController {
         } else {
             print("Teacher")
             hideResults = false
-            teacherCommandView.isHidden = false
             monitorForResults()
             
         }
@@ -99,7 +96,8 @@ class QuestionViewController: UIViewController {
                         if let question = data["question"] as? String, let answerChoices = data["answerChoices"] as? [String], let correctAnswers = data["correctAnswers"] as? [Int], let resultsA = data["resultsA"] as? Int, let resultsB = data["resultsB"] as? Int, let resultsC = data["resultsC"] as? Int, let resultsD = data["resultsD"] as? Int {
                             
                             self.question = MCQ(question: question, answerChoices: answerChoices, correctAnswers: correctAnswers, results: [resultsA, resultsB, resultsC, resultsD])
-                            //self.refreshResults()
+                            let numResults = resultsA + resultsB + resultsC + resultsD
+                            self.refreshResults(numResults)
                         }
                     }
                 }
@@ -108,18 +106,18 @@ class QuestionViewController: UIViewController {
     }
     
   
-    func refreshResults() {
-        guard isViewLoaded else { return }
-        
-        for cell in tableView.visibleCells {
-            if let cell = cell as? AnswerCell, let indexPath = tableView.indexPath(for: cell) {
-                configureCell(cell: cell, at: indexPath)
-            }
-        }
-        
-//        dm.userCount(roomID: roomID) { count in
-//            self.numResponsesLabel.text = String(numResults) + "/" + String(count) + " responses"
+    func refreshResults(_ numResults: Int) {
+//        guard isViewLoaded else { return }
+//        
+//        for cell in tableView.visibleCells {
+//            if let cell = cell as? AnswerCell, let indexPath = tableView.indexPath(for: cell) {
+//                configureCell(cell: cell, at: indexPath)
+//            }
 //        }
+        
+        dm.userCount(roomID: roomID) { count in
+            self.numResponsesLabel.text = String(numResults) + "/" + String(count) + " responses"
+        }
     }
     
     
