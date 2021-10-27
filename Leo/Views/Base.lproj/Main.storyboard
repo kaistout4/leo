@@ -292,7 +292,7 @@
         <!--Active Questions Page View Controller-->
         <scene sceneID="fY9-Hk-IBM">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="7C0-td-AaZ" customClass="ActiveQuestionsPageViewController" customModule="Leo" customModuleProvider="target" sceneMemberID="viewController">
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="7C0-td-AaZ" customClass="ActiveQuestionsPageViewController" customModule="Leo" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems>
                         <barButtonItem title="Show Results" id="ZTM-iP-uv3">
                             <connections>
@@ -657,6 +657,9 @@
                                                                                         <fontDescription key="titleFontDescription" style="UICTFontTextStyleBody"/>
                                                                                         <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                     </buttonConfiguration>
+                                                                                    <connections>
+                                                                                        <segue destination="Vwh-O0-xfU" kind="presentation" modalPresentationStyle="fullScreen" id="Qbh-P6-ejI"/>
+                                                                                    </connections>
                                                                                 </button>
                                                                             </subviews>
                                                                             <color key="backgroundColor" name="AccentColor"/>
@@ -739,7 +742,6 @@
                     <connections>
                         <outlet property="tableView" destination="Mvw-ka-6oy" id="FZi-qc-sUl"/>
                         <segue destination="QD6-vK-Doq" kind="presentation" identifier="masterToRoomPage" modalPresentationStyle="fullScreen" id="aLe-Xl-31f"/>
-                        <segue destination="7C0-td-AaZ" kind="show" identifier="masterToActiveQuestions" id="OZS-St-BJH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qsP-Zq-l51" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -815,9 +817,10 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="jND-d4-gmS"/>
+        <segue reference="Qbh-P6-ejI"/>
+        <segue reference="aLe-Xl-31f"/>
         <segue reference="muS-b2-neh"/>
-        <segue reference="OZS-St-BJH"/>
+        <segue reference="fm4-2g-1JZ"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrowtriangle.forward" catalog="system" width="128" height="113"/>

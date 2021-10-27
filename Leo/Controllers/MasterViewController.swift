@@ -146,7 +146,11 @@ class MasterViewController: UIViewController {
         
     }
     
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let nav = segue.destination as? UINavigationController, let controller = nav.topViewController as? ActiveQuestionsPageViewController {
+            controller.roomID = User.roomID
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -239,9 +243,10 @@ extension MasterViewController: UITableViewDataSource {
         
         let ID = rooms[sender.tag].ID
         User.roomID = ID
+        // TODO: move this to the active questions controller
         dm.updateState(roomID: ID, state: "active") {
             
-            self.performSegue(withIdentifier: "masterToActiveQuestions", sender: self)
+            //self.performSegue(withIdentifier: "masterToActiveQuestions", sender: self)
         }
         
         

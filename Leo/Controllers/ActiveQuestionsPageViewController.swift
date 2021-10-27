@@ -31,7 +31,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
 
     let user = User.user
     
-    let roomID = User.roomID
+    var roomID = User.roomID
     
     var questions: [MCQ] = []
     
@@ -51,7 +51,9 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         
         if (user == "student") {
             exitButton.title = "Leave"
+            navigationController?.isToolbarHidden = true
         } else if (user == "teacher") {
+            navigationController?.isToolbarHidden = false
             exitButton.title = "End Room"
            
         }
@@ -59,7 +61,6 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         
         loadFirstViewController()
     
-
     }
     
     
