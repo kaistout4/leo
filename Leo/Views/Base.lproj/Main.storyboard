@@ -187,15 +187,19 @@
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <textField opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Type answer here..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YEU-dw-XAb" userLabel="Answer Text Field">
-                                                            <rect key="frame" x="20.5" y="0.0" width="302.5" height="71"/>
+                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Type answer here..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YEU-dw-XAb" userLabel="Answer Text Field">
+                                                            <rect key="frame" x="20.5" y="0.0" width="295.5" height="71"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                         </textField>
-                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RHa-GC-Bln">
-                                                            <rect key="frame" x="332" y="0.0" width="42" height="71"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RHa-GC-Bln">
+                                                            <rect key="frame" x="325" y="0.0" width="49" height="71"/>
                                                             <state key="normal" title="Button"/>
-                                                            <buttonConfiguration key="configuration" style="plain" image="checkmark" catalog="system" title=""/>
+                                                            <buttonConfiguration key="configuration" style="plain" image="checkmark.circle" catalog="system" title="">
+                                                                <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="font" weight="medium">
+                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                                                </preferredSymbolConfiguration>
+                                                            </buttonConfiguration>
                                                         </button>
                                                     </subviews>
                                                     <constraints>
@@ -818,6 +822,7 @@
     <resources>
         <image name="arrowtriangle.forward" catalog="system" width="128" height="113"/>
         <image name="checkmark" catalog="system" width="128" height="114"/>
+        <image name="checkmark.circle" catalog="system" width="128" height="121"/>
         <image name="ellipsis" catalog="system" width="128" height="37"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <namedColor name="AccentColor">
