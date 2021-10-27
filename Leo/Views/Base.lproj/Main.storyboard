@@ -66,7 +66,7 @@
                     <connections>
                         <outlet property="codeTextField" destination="Lcd-6a-Kmf" id="wOl-UR-KMI"/>
                         <segue destination="QD6-vK-Doq" kind="show" identifier="welcomeToRoomPage" id="jND-d4-gmS"/>
-                        <segue destination="Vwh-O0-xfU" kind="show" identifier="welcomeToActiveRoom" id="vr6-vV-G4K"/>
+                        <segue destination="Vwh-O0-xfU" kind="presentation" identifier="welcomeToActiveRoom" modalPresentationStyle="fullScreen" id="vr6-vV-G4K"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N5S-ZX-7kg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -815,7 +815,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="aLe-Xl-31f"/>
+        <segue reference="jND-d4-gmS"/>
         <segue reference="muS-b2-neh"/>
         <segue reference="OZS-St-BJH"/>
     </inferredMetricsTieBreakers>
