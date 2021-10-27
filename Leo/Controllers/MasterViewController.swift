@@ -286,12 +286,14 @@ class RoomCell: UITableViewCell {
     @IBOutlet weak var question2Label: UILabel!
     @IBOutlet weak var moreQuestionsLabel: UILabel!
     @IBOutlet weak var startButton: UIButton!
+    @IBOutlet weak var startButtonBackground: UIView!
     
     
     var roomID = ""
     
     override func awakeFromNib() {
         roomBackground.layer.cornerRadius = 10.0
+        startButtonBackground.layer.cornerRadius = startButtonBackground.bounds.height / 2.0
     }
     
 }
