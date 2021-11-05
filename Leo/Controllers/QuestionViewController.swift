@@ -235,13 +235,9 @@ extension QuestionViewController: UITableViewDelegate {
 }
 
 extension QuestionViewController: UITableViewDataSource {
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return (question?.answerChoices.count)!
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

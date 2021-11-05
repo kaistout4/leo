@@ -41,28 +41,23 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         super.viewDidLoad()
         dataSource = self
         delegate = self
-        
-        print("ActiveQuestionsVC loaded")
-        
+
         self.title = "ID: " + roomID
-        
         
         if (user == "student") {
             exitButton.title = "Leave"
             navigationController?.isToolbarHidden = true
+            //Loading screen needed
+            loadFirstViewController()
         } else if (user == "teacher") {
             navigationController?.isToolbarHidden = false
             exitButton.title = "End Room"
+            dm.updateState(roomID: roomID, state: "active") {
+                self.loadFirstViewController()
+            }
            
         }
-        
-        print(roomID)
-        
-        //Loading screen needed
-        dm.updateState(roomID: roomID, state: "active") {
-            self.loadFirstViewController()
-        }
-        
+      
     }
     
     
@@ -186,10 +181,11 @@ class ActiveQuestionsPageViewController: UIPageViewController {
        
             if questions != nil {
                 self.questions = questions!
+                
                 for q in questions! {
                     print(q.question)
-                    
                 }
+                
                 let vc = self.generateQuestionViewController()
                 vc.question = questions![0]
                 vc.questionIndex = 0
