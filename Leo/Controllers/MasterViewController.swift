@@ -13,9 +13,7 @@ class MasterViewController: UIViewController {
     
     var rooms: [Room] = []
     @IBAction func unwindToMasterViewController(segue: UIStoryboardSegue) {
-            
         loadRooms()
-        
     }
     
     
@@ -110,29 +108,15 @@ class MasterViewController: UIViewController {
         
     }
     
-    @IBAction func startRoom(_ sender: Any) {
-        
-        dm.updateState(roomID: User.roomID, state: "active") {
-         
-            self.performSegue(withIdentifier: "roomManagerToActiveQuestipns", sender: self)
-        }
-    }
-    
     
     
     func loadRooms() {
-        
-        print("Loading rooms")
+    
         if let email = Auth.auth().currentUser?.email {
             
             dm.loadRooms(user: email) { rooms in
-                
                 if let userRooms = rooms {
-                    
-                    print("Rooms successfully loaded")
-                    
                     self.rooms = userRooms
-                    
                     self.tableView.reloadData()
                 }
             }
@@ -142,13 +126,14 @@ class MasterViewController: UIViewController {
     
     func createRoomID() -> String {
         
-        return "AQ7Y82"
+        return "AQ7Y89"
         
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let nav = segue.destination as? UINavigationController, let controller = nav.topViewController as? ActiveQuestionsPageViewController {
             controller.roomID = User.roomID
+            
         }
     }
 
@@ -159,9 +144,7 @@ class MasterViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        
-        
-      
+        //Loading screen needed
         loadRooms()
         
         // Do any additional setup after loading the view.
@@ -243,13 +226,9 @@ extension MasterViewController: UITableViewDataSource {
         
         let ID = rooms[sender.tag].ID
         User.roomID = ID
-        // TODO: move this to the active questions controller
-        dm.updateState(roomID: ID, state: "active") {
-            
-            //self.performSegue(withIdentifier: "masterToActiveQuestions", sender: self)
-        }
-        
-        
+    
+        self.performSegue(withIdentifier: "masterToActiveQuestions", sender: self)
+
     }
     
     @objc func editButtonAction(sender: UIButton) {
@@ -263,20 +242,7 @@ extension MasterViewController: UITableViewDataSource {
 }
 
 extension MasterViewController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        print("Row selected")
-        User.roomID = rooms[indexPath.row].ID
-        
-        self.performSegue(withIdentifier: "masterToRoomPage", sender: self)
-        
-    }
-    
-    
-    
-    
-    
+  
 }
 
 class RoomCell: UITableViewCell {

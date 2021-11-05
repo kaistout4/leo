@@ -27,13 +27,10 @@ class AddQuestionViewController: UIViewController {
         didSet {
             answerChoices = question!.answerChoices
             correctAnswers = question!.correctAnswers
-            q = question!.question
+            text = question!.question
         }
         
     }
-    
-    
-    var numAnswers: Int = 2
     
     let letters = ["A", "B", "C", "D", "E", "F"]
     
@@ -41,7 +38,7 @@ class AddQuestionViewController: UIViewController {
     
     var correctAnswers: [Int] = []
     
-    var q = ""
+    var text = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +47,7 @@ class AddQuestionViewController: UIViewController {
         
         tableView.register(UINib(nibName: "AddAnswerCell", bundle: nil), forCellReuseIdentifier: "AddAnswerCell")
         
-        questionTextField.text = q
+        questionTextField.text = text
         tableView.reloadData()
         // Do any additional setup after loading the view.
     }
@@ -58,10 +55,10 @@ class AddQuestionViewController: UIViewController {
     func addQuestion(completion: @escaping (_ error: String?, _ question: Int?) -> Void) {
         
         print("Adding question")
-        if noQuestion() {
-            completion("noQuestion", questionIndex)
-            return
-        }
+//        if noQuestion() {
+//            completion("noQuestion", questionIndex)
+//            return
+//        }
         
         if noAnswerSelected() {
             completion("noAnswerSelected", questionIndex)
@@ -73,82 +70,43 @@ class AddQuestionViewController: UIViewController {
             return
         }
         
-        let q = questionTextField.text!
-        
         let index = questionIndex!
-        
-        let key = getAnswerKey()
-        
-        let answers = getAnswers()
-                
-        dm.addQuestionToRoom(roomID: roomID, question: q, answerChoices: answers, correctAnswers: key, index: index, time: Date().timeIntervalSince1970) {
-            print("Questions successfully added")
+    
+        dm.addQuestionToRoom(roomID: roomID, question: text, answerChoices: answerChoices, correctAnswers: correctAnswers, index: index, time: Date().timeIntervalSince1970) {
+            print("Question successfully added")
+           self.question = MCQ(question: self.text, answerChoices: self.answerChoices, correctAnswers: self.correctAnswers, results: [])
             completion("", self.questionIndex)
 
         }
                
     }
             
-//            let alert = UIAlertController(title: "Question Added", message: "", preferredStyle: .alert)
-//
-//            let action = UIAlertAction(title: "Ok", style: .default) { (action) in
-//
-//
-//            alert.addAction(action)
-//
-//            self.present(alert, animated: true, completion: nil)
-            
-    
-        
     func noAnswerChoice() -> Bool {
-
-        var cells = tableView.visibleCells
-        var noChoice = true
-        cells.remove(at: cells.count-1)
-        
-        for i in 0...cells.count-1 {
-            var c = cells[i] as! EditAnswerCell
-            noChoice = c.answerTextField.text == ""
-            
-        }
-        return noChoice
+       
+       var noChoice = false
+       for i in answerChoices {
+          noChoice = i == ""
+          
+       }
+       return noChoice
 
     }
 
     func noQuestion () -> Bool {
 
-        return questionTextField.text?.trimmingCharacters(in: [" "]) == ""
+        return text == ""
 
     }
 
     func noAnswerSelected () -> Bool {
-        
-        var cells = tableView.visibleCells
-        print(cells.count)
-        var notSelected = true
-        cells.remove(at: cells.count-1)
-        
-        for i in 0...cells.count-1 {
-            var c = cells[i] as! EditAnswerCell
-            notSelected = c.answerTypeButton.imageView?.tintColor == UIColor(named: "AccentColor")
-        }
-        return notSelected
+       return correctAnswers.count == 0
     }
     
     func getAnswerKey() -> [Int] {
-        var cells = tableView.visibleCells
-        var correct: [Int] = []
-        cells.remove(at: cells.count-1)
-        
-        for i in 0...cells.count-1 {
-            var c = cells[i] as! EditAnswerCell
-            if c.answerTypeButton.imageView?.tintColor == UIColor(named: "CorrectColor")  {
-                correct.append(i)
-            }
-        }
-        return correct
+        return correctAnswers
     }
     
+   
     func getAnswers() -> [String] {
         var cells = tableView.visibleCells
         var correct: [String] = []
@@ -162,22 +120,49 @@ class AddQuestionViewController: UIViewController {
         }
         return correct
     }
+   
+   func saveData() {
+      text = questionTextField.text ?? ""
+      answerChoices = getAnswers()
+   }
+   
+   
+   func getQuestion() -> MCQ {
+      
+      let question = questionTextField.text
+      let key = getAnswerKey()
+      let answers = getAnswers()
+      return MCQ(question: question ?? "", answerChoices: answers, correctAnswers: key, results: [])
+   }
     
     @objc func switchAnswerTypeAction(sender: UIButton) {
         
-        if sender.imageView?.tintColor == UIColor(named: "CorrectColor") {
-            sender.imageView?.tintColor = UIColor(named: "AccentColor")
+       answerChoices = getAnswers()
+       
+        let answer = sender.tag
+        if correctAnswers.contains(answer) {
+            for i in 0...correctAnswers.count-1 {
+                if correctAnswers[i] == answer {
+                    correctAnswers.remove(at: i)
+                    break
+                }
+            }
         } else {
-            sender.imageView?.tintColor = UIColor(named: "CorrectColor")
+            correctAnswers.append(answer)
         }
-    }
-    
-    @objc func addAnswerButtonAction(sender: UIButton) {
-        
-        print("Add answer button clicked")
-        answerChoices = getAnswers()
-        answerChoices.append("")
+        print(correctAnswers)
+        print(answerChoices)
         tableView.reloadData()
+        
+    }
+    @objc func addAnswerButtonAction(sender: UIButton) {
+      print(answerChoices)
+      answerChoices = getAnswers()
+       if answerChoices.count == 6 {
+          return
+       }
+      answerChoices.append("")
+      tableView.reloadData()
         
     }
         
@@ -209,14 +194,14 @@ extension AddQuestionViewController: UITableViewDataSource {
             
             cell.answerTextField.text = answerChoices[index]
             cell.answerPrefix.text = letters[index]
+            cell.answerTypeButton.tag = index
             cell.answerTypeButton.addTarget(self, action: #selector(switchAnswerTypeAction(sender:)), for: .touchUpInside)
-            for i in correctAnswers {
-                if index == i {
-                    
-                    cell.answerTypeButton.imageView?.tintColor = UIColor(named: "CorrectColor")
-                    cell.answerTypeButton.imageView?.image = UIImage(systemName: "checkmark")
-                }
+            cell.answerTypeButton.setImage(UIImage(systemName: "circle"), for: .normal)
+            
+            if correctAnswers.contains(index) {
+                cell.answerTypeButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
             }
+            cell.answerTypeButton.setNeedsDisplay()
             
             return cell
         }

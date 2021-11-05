@@ -153,36 +153,34 @@ class QuestionViewController: UIViewController {
                 
                 let numResults = results[0] + results[1] + results[2] + results[3]
                 
-                if numResults != 0 {
-                    
-                    let progress = Float(results[index]) / Float(numResults)
-                    let rounded = Int(round(progress*100))
-                    cell.answerPercentage.text = String(rounded) + "%"
-                    
-                    if isSelected {
-                        for i in question.correctAnswers {
-                            if index == i {
-                                print("Correct")
-                                cell.answerIconImage.tintColor = UIColor(named: "CorrectColor")
-                                cell.answerIconImage.image = UIImage(systemName: "checkmark")
-                                cell.answerBackground.backgroundColor = UIColor(named: "CorrectColor")
-                            } else {
-                                print("Incorrect")
-                                cell.answerIconImage.tintColor = UIColor(named: "IncorrectColor")
-                                cell.answerIconImage.image = UIImage(systemName: "xmark")
-                                cell.answerBackground.backgroundColor = UIColor(named: "IncorrectColor")
-                            }
-                        }
-                    } else {
-                        cell.answerIconImage.image = nil
-                        for i in question.correctAnswers {
-                            if index == i {
-                                cell.answerBackground.backgroundColor = UIColor(named: "CorrectColor")
-                            }
+                let progress = numResults != 0 ? Float(results[index]) / Float(numResults) : 0.0
+                let rounded = Int(round(progress*100))
+                cell.answerPercentage.text = String(rounded) + "%"
+                
+                if isSelected {
+                    for i in question.correctAnswers {
+                        if index == i {
+                            print("Correct")
+                            cell.answerIconImage.tintColor = UIColor(named: "CorrectColor")
+                            cell.answerIconImage.image = UIImage(systemName: "checkmark")
+                            cell.answerBackground.backgroundColor = UIColor(named: "CorrectColor")
+                        } else {
+                            print("Incorrect")
+                            cell.answerIconImage.tintColor = UIColor(named: "IncorrectColor")
+                            cell.answerIconImage.image = UIImage(systemName: "xmark")
+                            cell.answerBackground.backgroundColor = UIColor(named: "IncorrectColor")
                         }
                     }
-                    
+                } else {
+                    cell.answerIconImage.image = nil
+                    for i in question.correctAnswers {
+                        if index == i {
+                            cell.answerBackground.backgroundColor = UIColor(named: "CorrectColor")
+                        }
+                    }
                 }
+                    
+                
             }
             
         }

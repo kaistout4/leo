@@ -20,8 +20,12 @@ class EditQuestionsPageViewController: UIPageViewController {
         print(leoViewControllers.count)
         var count = 0
         for vc in leoViewControllers {
-            
+        
             let vc = vc as! AddQuestionViewController
+            
+            if vc.isViewLoaded {
+                vc.saveData()
+            }
             
             vc.addQuestion { error, index in
                 
@@ -29,33 +33,36 @@ class EditQuestionsPageViewController: UIPageViewController {
                 
                 case "noQuestion":
                     print("Case: no question")
-                    let alert = UIAlertController(title: "Question " + String(index!+1) + ": Missing Question", message: "", preferredStyle: .alert)
+                    let alert = UIAlertController(title: "Missing Question", message: "", preferredStyle: .alert)
                     let action = UIAlertAction(title: "Ok", style: .default) { (action) in
                     }
                     alert.addAction(action)
                     self.present(alert, animated: true, completion: nil)
                 case "noAnswerSelected":
                     print("Case: no answer selected")
-                    let alert = UIAlertController(title: "Question " + String(index!+1) + ": Missing Answer Selection", message: "", preferredStyle: .alert)
+                    let alert = UIAlertController(title: "Missing Answer Selection", message: "", preferredStyle: .alert)
                     let action = UIAlertAction(title: "Ok", style: .default) { (action) in
                     }
                     alert.addAction(action)
                     self.present(alert, animated: true, completion: nil)
                 case "noAnswerChoice":
                     print("Case: no answers")
-                    let alert = UIAlertController(title: "Question " + String(index!+1) + ": No Answer Choice", message: "", preferredStyle: .alert)
+                    let alert = UIAlertController(title: "Missing Answer Choice", message: "", preferredStyle: .alert)
                     let action = UIAlertAction(title: "Ok", style: .default) { (action) in
                     }
                     alert.addAction(action)
                     self.present(alert, animated: true, completion: nil)
                 default:
+                    print("here")
                     count+=1
+                    self.questions.append(vc.question!)
                     break
                 }
             }
         }
-        
-        dm.updateQuestionCountOfRoom(roomID: roomID, to: count) {
+        print(roomID)
+        print(count)
+        dm.updateQuestionCount(roomID: roomID, to: count) {
             
             
         }
@@ -66,7 +73,9 @@ class EditQuestionsPageViewController: UIPageViewController {
         
         let vc = self.generateAddQuestionViewController()
         vc.questionIndex = 0
-        self.leoViewControllers.append(vc)
+        
+        leoViewControllers.append(vc)
+        currentViewController = vc
         
         if let firstQuestionViewController = leoViewControllers.first {
             setViewControllers([firstQuestionViewController], direction: .forward, animated: true, completion: nil)
@@ -80,9 +89,9 @@ class EditQuestionsPageViewController: UIPageViewController {
         newVC.questionIndex = leoViewControllers.count
         
         leoViewControllers.append(newVC)
+        currentViewController = newVC
         
         if let lastQuestionViewController = leoViewControllers.last {
-            
             setViewControllers([lastQuestionViewController], direction: .forward, animated: true, completion: nil)
             
         }
@@ -92,23 +101,7 @@ class EditQuestionsPageViewController: UIPageViewController {
     let dm = DataManager()
     
     var leoViewControllers: [UIViewController] = []
-        
-//        didSet {
-//
-//            if questions.count == 0 {
-//                if let firstQuestionViewController = leoViewControllers.first {
-//                    setViewControllers([firstQuestionViewController], direction: .forward, animated: true, completion: nil)
-//                }
-//            } else {
-//                if let lastQuestionViewController = leoViewControllers.last {
-//                    setViewControllers([lastQuestionViewController], direction: .forward, animated: true, completion: nil)
-//                }
-//            }
-//
-//
-//        }
     
-
     let user = User.user
     
     let roomID = User.roomID
@@ -117,24 +110,23 @@ class EditQuestionsPageViewController: UIPageViewController {
     
     var currentQuestion = 0
     
-    var currentViewController: QuestionViewController = QuestionViewController()
+    var currentViewController: AddQuestionViewController = AddQuestionViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource = self
         delegate = self
-        
-        print("test")
+
         print(roomID)
         
         self.title = "ID: " + roomID
         
-        dm.reloadQuestionsFrom(roomID: roomID) { questions in
+        dm.reloadQuestions(from: roomID) { questions in
             
             if let questions = questions {
                 
                 if questions.count == 0 {
-                    
+                    print("Count is 0")
                     self.loadFirstViewController()
                     
                 } else {
@@ -156,22 +148,38 @@ class EditQuestionsPageViewController: UIPageViewController {
     }
     
     
-    
-    @IBAction func startRoom(_ sender: Any) {
+    //NEED TO ADD: If index is first, then delete the first and show next
+    @IBAction func deleteQuestion(_ sender: Any) {
         
-        dm.updateState(roomID: roomID, state: "active") {
-            
-            self.performSegue(withIdentifier: "roomManagerToActiveQuestions", sender: self)
-            
+        if leoViewControllers.count == 0 {
+            return
         }
         
+        if let index = leoViewControllers.firstIndex(of: currentViewController) {
+            print("Deleting vc at index " + String(index))
+            if index == 0 {
+                setViewControllers([leoViewControllers[index+1]], direction: .forward, animated: true, completion: nil)
+            } else {
+                setViewControllers([leoViewControllers[index-1]], direction: .forward, animated: true, completion: nil)
+            }
         
+            leoViewControllers.remove(at: index)
+            updateQuestionIndexes()
+            dm.deleteQuestion(from: roomID, with: index)
+        }
         
+    }
+    
+    func updateQuestionIndexes() {
+        for i in 0...leoViewControllers.count-1 {
+            let vc = leoViewControllers[i] as! AddQuestionViewController
+            vc.questionIndex = i
+        }
     }
     
     func reloadQuestions() {
         
-        dm.reloadQuestionsFrom(roomID: roomID) { questions in
+        dm.reloadQuestions(from: roomID) { questions in
             //NEED TO ADD: error handling if there are no questions
        
             if questions != nil {
@@ -182,26 +190,6 @@ class EditQuestionsPageViewController: UIPageViewController {
         
     }
   
-    
-    func loadNewViewController() {
-        
-        dm.reloadQuestionsFrom(roomID: roomID) { questions in
-            //NEED TO ADD: error handling if there are no questions
-       
-            if questions != nil {
-                //print("Load new view controller question count: " + String(questions!.count))
-                self.questions = questions!
-                
-                
-                    
-                }
-                
-            
-                
-        }
-        
-        
-    }
     
     func generateAddQuestionViewController() -> AddQuestionViewController {
         
@@ -223,12 +211,31 @@ class EditQuestionsPageViewController: UIPageViewController {
             leoViewControllers.append(vc)
             
         }
-        if let firstQuestionViewController = leoViewControllers.first {
-            
-            setViewControllers([firstQuestionViewController], direction: .forward, animated: true, completion: nil)
+        if let firstAddQuestionViewController = leoViewControllers.first as? AddQuestionViewController {
+            currentViewController = firstAddQuestionViewController as! AddQuestionViewController
+            setViewControllers([firstAddQuestionViewController], direction: .forward, animated: true, completion: nil)
             
         }
                
+    }
+    
+    @IBAction func exitEditor(_ sender: UIBarButtonItem) {
+        
+        var currQuestions: [MCQ] = []
+        
+        if questions.count != leoViewControllers.count {
+            print("Save warning")
+        }
+        
+        for vc in leoViewControllers {
+            
+            let vc = vc as! AddQuestionViewController
+            currQuestions.append(vc.getQuestion())
+            
+        }
+        
+        performSegue(withIdentifier: "unwindToMaster", sender: self)
+        
     }
     
 
@@ -248,8 +255,7 @@ class EditQuestionsPageViewController: UIPageViewController {
 extension EditQuestionsPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        
-        
+    
         if let viewControllerIndex = leoViewControllers.firstIndex(of: viewController as! AddQuestionViewController) {
                 
                 if (viewControllerIndex == 0) {
@@ -299,15 +305,19 @@ extension EditQuestionsPageViewController: UIPageViewControllerDataSource {
 extension EditQuestionsPageViewController: UIPageViewControllerDelegate {
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        
-        
-        if let currVc = self.viewControllers?.first as? QuestionViewController {
-            
-            currentViewController = currVc
+        if completed {
+            if let currVc = self.viewControllers?.first as? AddQuestionViewController {
+                currentViewController = currVc
+                print(currentViewController.questionIndex)
+            }
         }
-        
-        
     }
     
+    //Before transition to new question, save UI text to local AddQuestionViewController variables
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+        
+        currentViewController.saveData()
+        
+    }
     
 }

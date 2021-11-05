@@ -169,34 +169,41 @@ class DataManager {
         
     }
     
-    func updateQuestionCountOfRoom(roomID: String, to: Int, completion: @escaping () -> Void) {
+    func updateQuestionCount(roomID: String, to: Int, completion: @escaping () -> Void) {
         
         db.collection(K.FStore.collectionName).document(roomID).updateData(["questionCount" : to])
     }
     
+    func deleteRoom(roomID: String) {
+        db.collection(K.FStore.collectionName).document(roomID).delete()
+    }
+    
+    func deleteQuestion(from roomID: String, with index: Int) {
+        db.collection(K.FStore.collectionName).document(roomID).collection("questions").document(String(index)).delete()
+    }
     
     func addQuestionToRoom(roomID: String, question: String, answerChoices: [String], correctAnswers: [Int], index: Int, time: Double, completion: @escaping () -> Void) {
         
         print("Added question to room")
         if let email = Auth.auth().currentUser?.email {
         
-            db.collection(K.FStore.collectionName).document(roomID).collection("questions").document(String(index)).setData(["question": question, "answerChoices": answerChoices, "correctAnswers": correctAnswers, "resultsA" : 0, "resultsB" : 0, "resultsC" : 0, "resultsD" : 0, "time": Date().timeIntervalSince1970])
+            db.collection(K.FStore.collectionName).document(roomID).collection("questions").document(String(index)).setData(["question": question, "answerChoices": answerChoices, "correctAnswers": correctAnswers, "resultsA" : 0, "resultsB" : 0, "resultsC" : 0, "resultsD" : 0, "resultsE" : 0, "resultsF" : 0, "time": Date().timeIntervalSince1970])
         
-        
+            completion()
         }
     }
     
-    func reloadQuestionFrom(roomID: String, withIndex: Int, completion: @escaping (_ question: MCQ?) -> Void) {
+    func reloadQuestion(from roomID: String, with index: Int, completion: @escaping (_ question: MCQ?) -> Void) {
         
-        db.collection("rooms").document(roomID).collection("questions").document(String(withIndex)).getDocument { doc, error in
+        db.collection("rooms").document(roomID).collection("questions").document(String(index)).getDocument { doc, error in
             
             if let doc = doc {
                 
                 if let data = doc.data() {
                    
-                    if let question = data["question"] as? String, let answerChoices = data["answerChoices"] as? [String], let correctAnswers = data["correctAnswers"] as? [Int], let resultsA = data["resultsA"] as? Int, let resultsB = data["resultsB"] as? Int, let resultsC = data["resultsC"] as? Int, let resultsD = data["resultsD"] as? Int {
+                    if let question = data["question"] as? String, let answerChoices = data["answerChoices"] as? [String], let correctAnswers = data["correctAnswers"] as? [Int], let resultsA = data["resultsA"] as? Int, let resultsB = data["resultsB"] as? Int, let resultsC = data["resultsC"] as? Int, let resultsD = data["resultsD"] as? Int, let resultsE = data["resultsE"] as? Int, let resultsF = data["resultsF"] as? Int {
                         
-                        completion(MCQ(question: question, answerChoices: answerChoices, correctAnswers: correctAnswers, results: [resultsA, resultsB, resultsC, resultsD]))
+                        completion(MCQ(question: question, answerChoices: answerChoices, correctAnswers: correctAnswers, results: [resultsA, resultsB, resultsC, resultsD, resultsE, resultsF]))
                     }
                     
                 }
@@ -208,8 +215,8 @@ class DataManager {
         
     }
     
-    func reloadQuestionsFrom(roomID: String, completion: @escaping (_ questions: [MCQ]?) -> Void) {
-        
+    func reloadQuestions(from roomID: String, completion: @escaping (_ questions: [MCQ]?) -> Void) {
+        print(roomID)
         db.collection("rooms").document(roomID).collection("questions").getDocuments { (querySnapshot, error) in
             
             if let e = error {
@@ -225,9 +232,9 @@ class DataManager {
                     for doc in snapshotDocuments {
                         let data = doc.data()
                         
-                        if let question = data["question"] as? String, let answerChoices = data["answerChoices"] as? [String], let correctAnswers = data["correctAnswers"] as? [Int], let resultsA = data["resultsA"] as? Int, let resultsB = data["resultsB"] as? Int, let resultsC = data["resultsC"] as? Int, let resultsD = data["resultsD"] as? Int {
+                        if let question = data["question"] as? String, let answerChoices = data["answerChoices"] as? [String], let correctAnswers = data["correctAnswers"] as? [Int], let resultsA = data["resultsA"] as? Int, let resultsB = data["resultsB"] as? Int, let resultsC = data["resultsC"] as? Int, let resultsD = data["resultsD"] as? Int, let resultsE = data["resultsE"] as? Int, let resultsF = data["resultsF"] as? Int {
                             
-                            questions.append(MCQ(question: question, answerChoices: answerChoices, correctAnswers: correctAnswers, results: [resultsA, resultsB, resultsC, resultsD]))
+                            questions.append(MCQ(question: question, answerChoices: answerChoices, correctAnswers: correctAnswers, results: [resultsA, resultsB, resultsC, resultsD, resultsE, resultsF]))
                             
                             print("MCQ appended")
                         }

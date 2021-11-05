@@ -12,8 +12,6 @@ class ActiveQuestionsPageViewController: UIPageViewController {
       
     @IBOutlet weak var exitButton: UIBarButtonItem!
     
-    
-    
     let dm = DataManager()
     
     var leoViewControllers: [UIViewController] = [] {
@@ -58,9 +56,13 @@ class ActiveQuestionsPageViewController: UIPageViewController {
            
         }
         
+        print(roomID)
         
-        loadFirstViewController()
-    
+        //Loading screen needed
+        dm.updateState(roomID: roomID, state: "active") {
+            self.loadFirstViewController()
+        }
+        
     }
     
     
@@ -90,7 +92,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
                             
                             if (state == "closed") {
                                 
-                                self.exitRoom()
+                                self.sessionEnded()
                                 
                             }
                             
@@ -103,7 +105,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
                                     
                                 }
                                 
-                                self.dm.reloadQuestionFrom(roomID: self.roomID, withIndex: currentQuestion) { question in
+                                self.dm.reloadQuestion(from: self.roomID, with: currentQuestion) { question in
                                     
                                     vc.hideResults = false
                                     vc.question = question
@@ -150,40 +152,22 @@ class ActiveQuestionsPageViewController: UIPageViewController {
     
     @IBAction func nextQuestion(_ sender: UIBarButtonItem) {
         
-        dm.nextQuestion(roomID: roomID) {
-            
-            self.currentQuestion += 1
-            self.addNextQuestionViewController()
-            
+        if currentQuestion != questions.count - 1 {
+            dm.nextQuestion(roomID: roomID) {
+                
+                self.currentQuestion += 1
+                self.addNextQuestionViewController()
+                
+            }
         }
-        
+       
         
     }
     
-    
-    
-    
-    func exitRoom() {
-        
-        let alert = UIAlertController(title: "Session ended", message: "", preferredStyle: .alert)
-            
-        let action = UIAlertAction(title: "Ok", style: .default) { (action) in
-            
-            self.performSegue(withIdentifier: "unwindToWelcomeView", sender: self)
-        }
-        
-        alert.addAction(action)
-        
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    
-    
-    
-    
+
     func reloadQuestions() {
         
-        dm.reloadQuestionsFrom(roomID: roomID) { questions in
+        dm.reloadQuestions(from: roomID) { questions in
             //NEED TO ADD: error handling if there are no questions
        
             if questions != nil {
@@ -197,7 +181,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
     
     func loadFirstViewController() {
         
-        dm.reloadQuestionsFrom(roomID: roomID) { questions in
+        dm.reloadQuestions(from: roomID) { questions in
             //NEED TO ADD: error handling if there are no questions
        
             if questions != nil {
@@ -265,8 +249,31 @@ class ActiveQuestionsPageViewController: UIPageViewController {
     @IBAction func leaveRoom(_ sender: UIBarButtonItem) {
         
         //if teacher, close room
+        if user == "teacher" {
         
+            dm.updateState(roomID: roomID, state: "closed") {
+                self.performSegue(withIdentifier: "unwindToMaster", sender: self)
+                
+            
+            }
+        } else {
+            performSegue(withIdentifier: "unwindToWelcome", sender: self)
+        }
         
+    }
+    
+    func sessionEnded() {
+        
+        let alert = UIAlertController(title: "Session ended", message: "", preferredStyle: .alert)
+            
+        let action = UIAlertAction(title: "Ok", style: .default) { (action) in
+            
+            self.performSegue(withIdentifier: "unwindToWelcome", sender: self)
+        }
+        
+        alert.addAction(action)
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
 

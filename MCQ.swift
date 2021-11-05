@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MCQ: Codable {
+struct MCQ: Equatable {
     
     let question: String
     
@@ -16,6 +16,9 @@ struct MCQ: Codable {
     let correctAnswers: [Int]
     
     let results: [Int]
-
+    
+    static func == (mcq1: MCQ, mcq2: MCQ) -> Bool {
+        return mcq1.question == mcq2.question && mcq1.answerChoices.elementsEqual(mcq2.answerChoices) && mcq1.correctAnswers.elementsEqual(mcq2.correctAnswers)
+    }
     
 }
