@@ -105,7 +105,7 @@ class AddQuestionViewController: UIViewController {
         for i in 0...cells.count-1 {
             var c = cells[i] as! EditAnswerCell
             //if c.answerTextField.text! != "" {
-            correct.append(c.answerTextField.text!)
+            correct.append(c.answerTextView.text!)
             //}
         }
         return correct
@@ -187,7 +187,7 @@ extension AddQuestionViewController: UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "EditAnswerCell", for: indexPath) as! EditAnswerCell
             
-            cell.answerTextField.text = answerChoices[index]
+            cell.answerTextView.text = answerChoices[index]
             cell.answerPrefix.text = letters[index]
             cell.answerTypeButton.tag = index
             cell.answerTypeButton.addTarget(self, action: #selector(switchAnswerTypeAction(sender:)), for: .touchUpInside)
@@ -197,27 +197,53 @@ extension AddQuestionViewController: UITableViewDataSource {
                 cell.answerTypeButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
             }
             cell.answerTypeButton.setNeedsDisplay()
+           
+           cell.textViewDidChange(cell.answerTextView)
+           cell.delegate = self
             
             return cell
         }
         
-        
-        
     }
-    
-    
-    
     
 }
 
+extension AddQuestionViewController: EditAnswerCellDelegate {
+   func editAnswerCellHeightChanged(_ cell: EditAnswerCell) {
+      tableView.beginUpdates()
+      tableView.endUpdates()
+   }
+}
+
+protocol EditAnswerCellDelegate: AnyObject {
+   func editAnswerCellHeightChanged(_ cell: EditAnswerCell)
+}
 
 class EditAnswerCell: UITableViewCell {
-    
-    @IBOutlet weak var answerPrefix: UILabel!
-    @IBOutlet weak var answerTextField: UITextField!
-    @IBOutlet weak var answerTypeButton: UIButton!
-    
-    
+   
+   @IBOutlet weak var answerPrefix: UILabel!
+   @IBOutlet weak var answerTextView: UITextView!
+   @IBOutlet weak var answerTypeButton: UIButton!
+   @IBOutlet weak var answerTextViewHeightConstraint: NSLayoutConstraint!
+   
+   weak var delegate: EditAnswerCellDelegate?
+   
+   override func awakeFromNib() {
+      answerTextView.delegate = self
+   }
+   
+}
+
+extension EditAnswerCell: UITextViewDelegate {
+   
+   // Calculate the new height based on the answer text
+   func textViewDidChange(_ textView: UITextView) {
+      let size = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: 999.0))
+      if answerTextViewHeightConstraint.constant != size.height {
+         answerTextViewHeightConstraint.constant = size.height
+         delegate?.editAnswerCellHeightChanged(self)
+      }
+   }
 }
 
 class AddAnswerCell: UITableViewCell {

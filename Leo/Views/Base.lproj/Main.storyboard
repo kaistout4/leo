@@ -187,11 +187,16 @@
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Type answer here..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YEU-dw-XAb" userLabel="Answer Text Field">
+                                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Enter answer" translatesAutoresizingMaskIntoConstraints="NO" id="GOq-Pi-J3F">
                                                             <rect key="frame" x="20.5" y="0.0" width="322.5" height="71"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <textInputTraits key="textInputTraits"/>
-                                                        </textField>
+                                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="20" id="6Of-Hw-IVh"/>
+                                                            </constraints>
+                                                            <color key="textColor" systemColor="labelColor"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                        </textView>
                                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RHa-GC-Bln">
                                                             <rect key="frame" x="352" y="0.0" width="22" height="71"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
@@ -200,9 +205,6 @@
                                                             </state>
                                                         </button>
                                                     </subviews>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="60" id="Z4w-Oa-JGr"/>
-                                                    </constraints>
                                                 </stackView>
                                             </subviews>
                                             <constraints>
@@ -214,7 +216,8 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="answerPrefix" destination="2jR-mI-1eH" id="1Rh-6Q-QzF"/>
-                                            <outlet property="answerTextField" destination="YEU-dw-XAb" id="TO2-qt-uBh"/>
+                                            <outlet property="answerTextView" destination="GOq-Pi-J3F" id="f2r-03-dVQ"/>
+                                            <outlet property="answerTextViewHeightConstraint" destination="6Of-Hw-IVh" id="mHl-Lb-KiT"/>
                                             <outlet property="answerTypeButton" destination="RHa-GC-Bln" id="0fa-bl-29W"/>
                                         </connections>
                                     </tableViewCell>
