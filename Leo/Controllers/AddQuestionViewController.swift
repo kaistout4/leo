@@ -54,22 +54,12 @@ class AddQuestionViewController: UIViewController {
     
     func addQuestion(completion: @escaping (_ error: String?, _ question: Int?) -> Void) {
         
-        print("Adding question")
-//        if noQuestion() {
-//            completion("noQuestion", questionIndex)
-//            return
-//        }
-        
-        if noAnswerSelected() {
-            completion("noAnswerSelected", questionIndex)
-            return
-        }
-        
-        if noAnswerChoice() {
-            completion("noAnswerChoice", questionIndex)
-            return
-        }
-        
+ 
+       if noQuestion() || noAnswerSelected() || noAnswerChoice() {
+           completion("missingFields", questionIndex)
+           return
+       }
+
         let index = questionIndex!
     
         dm.addQuestionToRoom(roomID: roomID, question: text, answerChoices: answerChoices, correctAnswers: correctAnswers, index: index, time: Date().timeIntervalSince1970) {
@@ -80,7 +70,7 @@ class AddQuestionViewController: UIViewController {
         }
                
     }
-            
+   
     func noAnswerChoice() -> Bool {
        
        var noChoice = false
@@ -126,12 +116,17 @@ class AddQuestionViewController: UIViewController {
       answerChoices = getAnswers()
    }
    
+   func printQuestion() {
+      print(text)
+      print(correctAnswers)
+      print(answerChoices)
+   }
    
    func getQuestion() -> MCQ {
       
-      let question = questionTextField.text
-      let key = getAnswerKey()
-      let answers = getAnswers()
+      let question = text
+      let key = correctAnswers
+      let answers = answerChoices
       return MCQ(question: question ?? "", answerChoices: answers, correctAnswers: key, results: [])
    }
     

@@ -233,7 +233,8 @@ extension MasterViewController: UITableViewDataSource {
     
     @objc func editButtonAction(sender: UIButton) {
         
-        User.roomID = rooms[sender.tag].ID
+        let ID = rooms[sender.tag].ID
+        User.roomID = ID
         
         self.performSegue(withIdentifier: "masterToRoomPage", sender: self)
     

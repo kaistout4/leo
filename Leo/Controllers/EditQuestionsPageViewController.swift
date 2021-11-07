@@ -15,10 +15,9 @@ class EditQuestionsPageViewController: UIPageViewController {
     @IBOutlet weak var saveButton: UIBarButtonItem!
      
     
-    @IBAction func saveQuestions(_ sender: UIBarButtonItem) {
+    @IBAction func saveQuestions() {
         print("Saving questions")
-        print(leoViewControllers.count)
-        var count = 0
+        var newQuestions: [MCQ] = []
         for vc in leoViewControllers {
         
             let vc = vc as! AddQuestionViewController
@@ -31,38 +30,21 @@ class EditQuestionsPageViewController: UIPageViewController {
                 
                 switch error {
                 
-                case "noQuestion":
-                    print("Case: no question")
-                    let alert = UIAlertController(title: "Missing Question", message: "", preferredStyle: .alert)
+                case "missingFields":
+                    let alert = UIAlertController(title: "Error: Missing Fields", message: "", preferredStyle: .alert)
                     let action = UIAlertAction(title: "Ok", style: .default) { (action) in
                     }
                     alert.addAction(action)
                     self.present(alert, animated: true, completion: nil)
-                case "noAnswerSelected":
-                    print("Case: no answer selected")
-                    let alert = UIAlertController(title: "Missing Answer Selection", message: "", preferredStyle: .alert)
-                    let action = UIAlertAction(title: "Ok", style: .default) { (action) in
-                    }
-                    alert.addAction(action)
-                    self.present(alert, animated: true, completion: nil)
-                case "noAnswerChoice":
-                    print("Case: no answers")
-                    let alert = UIAlertController(title: "Missing Answer Choice", message: "", preferredStyle: .alert)
-                    let action = UIAlertAction(title: "Ok", style: .default) { (action) in
-                    }
-                    alert.addAction(action)
-                    self.present(alert, animated: true, completion: nil)
+                    newQuestions.append(vc.question!)
                 default:
-                    print("here")
-                    count+=1
-                    self.questions.append(vc.question!)
+                    newQuestions.append(vc.question!)
                     break
                 }
             }
         }
-        print(roomID)
-        print(count)
-        dm.updateQuestionCount(roomID: roomID, to: count) {
+        questions = newQuestions
+        dm.updateQuestionCount(roomID: roomID, to: questions.count) {
             
             
         }
@@ -221,21 +203,45 @@ class EditQuestionsPageViewController: UIPageViewController {
     
     @IBAction func exitEditor(_ sender: UIBarButtonItem) {
         
-        var currQuestions: [MCQ] = []
+        var updatedQuestions: [MCQ] = []
+        
+        var changeDetected = false
         
         if questions.count != leoViewControllers.count {
-            print("Save warning")
+            changeDetected = true
         }
         
-        for vc in leoViewControllers {
+        if !changeDetected {
+            for vc in leoViewControllers {
+                
+                let vc = vc as! AddQuestionViewController
+                if vc.isViewLoaded {
+                    vc.saveData()
+                }
+                updatedQuestions.append(vc.getQuestion())
+                vc.printQuestion()
+                
+            }
             
-            let vc = vc as! AddQuestionViewController
-            currQuestions.append(vc.getQuestion())
-            
+            for i in 0...questions.count-1 {
+                if updatedQuestions[i] != questions[i] {
+                    changeDetected = true
+                }
+            }
         }
-        
-        performSegue(withIdentifier: "unwindToMaster", sender: self)
-        
+        if changeDetected {
+            let alert = UIAlertController(title: "Unsaved Changes", message: "You have unsaved changes. Are you sure you want to discard them?", preferredStyle: .alert)
+            let ignore = UIAlertAction(title: "Ok", style: .default) { (action) in
+                self.performSegue(withIdentifier: "unwindToMaster", sender: self)
+            }
+            let save = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            }
+            alert.addAction(ignore)
+            alert.addAction(save)
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            performSegue(withIdentifier: "unwindToMaster", sender: self)
+        }
     }
     
 

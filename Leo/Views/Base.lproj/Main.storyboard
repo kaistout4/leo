@@ -272,7 +272,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Save" id="mF7-AV-ciV">
                             <connections>
-                                <action selector="saveQuestions:" destination="bLh-Dz-M8F" id="9eJ-hf-dqh"/>
+                                <action selector="saveQuestions" destination="bLh-Dz-M8F" id="eb7-89-NfC"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
