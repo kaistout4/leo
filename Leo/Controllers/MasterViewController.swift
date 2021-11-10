@@ -16,14 +16,13 @@ class MasterViewController: UIViewController {
         loadRooms()
     }
     
-    
-    
     @IBOutlet weak var tableView: UITableView!
     
     let db = Firestore.firestore()
     
     let dm = DataManager()
     
+    var selectedRoomIndex: Int = 0
     
    // var  questions = [MCQ(question: "How old are you?", answerChoices: ["9", "10", "11", "12"], correctAnswer: 1, votes: [0, 0, 0, 0])]
     
@@ -133,6 +132,7 @@ class MasterViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let nav = segue.destination as? UINavigationController, let controller = nav.topViewController as? ActiveQuestionsPageViewController {
             controller.roomID = User.roomID
+            controller.questions = rooms[selectedRoomIndex].questions!
             
         }
     }
@@ -224,6 +224,7 @@ extension MasterViewController: UITableViewDataSource {
     
     @objc func startButtonAction(sender: UIButton) {
         
+        selectedRoomIndex = sender.tag
         let ID = rooms[sender.tag].ID
         User.roomID = ID
     
@@ -233,9 +234,19 @@ extension MasterViewController: UITableViewDataSource {
     
     @objc func editButtonAction(sender: UIButton) {
         
+//        let edit = UIAction(title: "Edit room", image: UIImage(systemName: "pencil")) { (action) in
+//            print("Edit mode")
+//        }
+//        let delete = UIAction(title: "Delete room", image: UIImage(systemName: "trash")) { (action) in
+//            print("Delete room")
+//        }
+//        let menu = UIMenu(title: "Menu", options: .displayInline, children: [edit, delete])
+//        sender.menu = menu
+//        sender.showsMenuAsPrimaryAction = true
+        
         let ID = rooms[sender.tag].ID
         User.roomID = ID
-        
+
         self.performSegue(withIdentifier: "masterToRoomPage", sender: self)
     
     }
@@ -266,6 +277,17 @@ class RoomCell: UITableViewCell {
     override func awakeFromNib() {
         roomBackground.layer.cornerRadius = 10.0
         startButtonBackground.layer.cornerRadius = startButtonBackground.bounds.height / 2.0
+        let edit = UIAction(title: "Edit room", image: UIImage(systemName: "pencil")) { [weak self] (action) in
+            print("Edit mode")
+            
+            
+        }
+        let delete = UIAction(title: "Delete room", image: UIImage(systemName: "trash")) { [weak self] (action) in
+            print("Delete room")
+        }
+        let menu = UIMenu(title: "Menu", options: .displayInline, children: [edit, delete])
+        editButton.menu = menu
+        //editButton.showsMenuAsPrimaryAction = true
     }
     
 }

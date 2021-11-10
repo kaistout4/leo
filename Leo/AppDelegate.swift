@@ -45,21 +45,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("source application = \(sendingAppID ?? "Unknown")")
 
         // Process the URL.
-        guard let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true),
-            let roomPath = components.path,
-            let params = components.queryItems else {
-                print("Invalid URL or album path missing")
-                return false
-        }
+        if let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true) {
+            let roomPath = components.path
+            print(roomPath)
+            
+                //let params = components.queryItems else {
+                
 
-        if let room = params.first(where: { $0.name == "roomcode" })?.value {
-            print("roomPath = \(roomPath)")
-            print("room = \(room)")
-            return true
-        } else {
-            print("Room code missing")
-            return false
+                
+           
         }
+        return false
+//        if let room = params.first(where: { $0.name == "roomcode" })?.value {
+//            print("roomPath = \(roomPath)")
+//            print("room = \(room)")
+//            return true
+//        } else {
+//            print("Room code missing")
+//            return false
+//        }
     }
 
     

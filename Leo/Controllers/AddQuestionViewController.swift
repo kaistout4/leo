@@ -14,8 +14,8 @@ class AddQuestionViewController: UIViewController {
     
     let dm = DataManager()
     
-    @IBOutlet weak var questionTextField: UITextField!
-    
+   @IBOutlet weak var questionTextView: UITextView!
+   
     @IBOutlet weak var tableView: UITableView!
     
     let roomID = User.roomID
@@ -44,10 +44,10 @@ class AddQuestionViewController: UIViewController {
         super.viewDidLoad()
         
         tableView.dataSource = self
-        
+       questionTextView.delegate = self
         tableView.register(UINib(nibName: "AddAnswerCell", bundle: nil), forCellReuseIdentifier: "AddAnswerCell")
         
-        questionTextField.text = text
+       questionTextView.text = text
         tableView.reloadData()
         // Do any additional setup after loading the view.
     }
@@ -112,7 +112,7 @@ class AddQuestionViewController: UIViewController {
     }
    
    func saveData() {
-      text = questionTextField.text ?? ""
+      text = questionTextView.text ?? ""
       answerChoices = getAnswers()
    }
    
@@ -151,7 +151,6 @@ class AddQuestionViewController: UIViewController {
         
     }
     @objc func addAnswerButtonAction(sender: UIButton) {
-      print(answerChoices)
       answerChoices = getAnswers()
        if answerChoices.count == 6 {
           return
@@ -195,9 +194,12 @@ extension AddQuestionViewController: UITableViewDataSource {
             
             if correctAnswers.contains(index) {
                 cell.answerTypeButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+               cell.answerBackground.backgroundColor = UIColor(named: "CorrectColor")
+            } else {
+               cell.answerBackground.backgroundColor = UIColor(named: "SystemGray6Color")
+
             }
-            cell.answerTypeButton.setNeedsDisplay()
-           
+           cell.answerTypeButton.setNeedsDisplay()
            cell.textViewDidChange(cell.answerTextView)
            cell.delegate = self
             
@@ -206,6 +208,28 @@ extension AddQuestionViewController: UITableViewDataSource {
         
     }
     
+}
+
+extension AddQuestionViewController: UITextViewDelegate {
+   func textViewDidChange(_ textView: UITextView) {
+      textView.translatesAutoresizingMaskIntoConstraints = true
+      textView.sizeToFit()
+      textView.isScrollEnabled = false
+   }
+   
+   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+      if editingStyle == .delete {
+         print("Swipe to delete")
+         answerChoices.remove(at: indexPath.row)
+         for i in 0...correctAnswers.count-1 {
+            if correctAnswers[i] == indexPath.row {
+               print("Removing answer choice " + String(correctAnswers[i]))
+               correctAnswers.remove(at: i)
+            }
+         }
+         tableView.deleteRows(at: [indexPath], with: .fade)
+      }
+   }
 }
 
 extension AddQuestionViewController: EditAnswerCellDelegate {
@@ -224,12 +248,14 @@ class EditAnswerCell: UITableViewCell {
    @IBOutlet weak var answerPrefix: UILabel!
    @IBOutlet weak var answerTextView: UITextView!
    @IBOutlet weak var answerTypeButton: UIButton!
+   @IBOutlet weak var answerBackground: UIView!
    @IBOutlet weak var answerTextViewHeightConstraint: NSLayoutConstraint!
    
    weak var delegate: EditAnswerCellDelegate?
    
    override func awakeFromNib() {
       answerTextView.delegate = self
+      answerBackground.layer.cornerRadius = 10.0
    }
    
 }
@@ -249,8 +275,6 @@ extension EditAnswerCell: UITextViewDelegate {
 class AddAnswerCell: UITableViewCell {
 
     @IBOutlet weak var addAnswerButton: UIButton!
-    
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()

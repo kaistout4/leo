@@ -75,9 +75,9 @@ class DataManager {
                                         
                                         for doc in query.documents {
                                             let data = doc.data()
-                                            if let question = data["question"] as? String, let answerChoices = data["answerChoices"] as? [String], let correctAnswers = data["correctAnswers"] as? [Int], let resultsA = data["resultsA"] as? Int, let resultsB = data["resultsB"] as? Int, let resultsC = data["resultsC"] as? Int, let resultsD = data["resultsD"] as? Int {
+                                            if let question = data["question"] as? String, let answerChoices = data["answerChoices"] as? [String], let correctAnswers = data["correctAnswers"] as? [Int], let resultsA = data["resultsA"] as? Int, let resultsB = data["resultsB"] as? Int, let resultsC = data["resultsC"] as? Int, let resultsD = data["resultsD"] as? Int, let resultsE = data["resultsE"] as? Int, let resultsF = data["resultsF"] as? Int {
                                                 
-                                                questions.append(MCQ(question: question, answerChoices: answerChoices, correctAnswers: correctAnswers, results: [resultsA, resultsB, resultsC, resultsD]))
+                                                questions.append(MCQ(question: question, answerChoices: answerChoices, correctAnswers: correctAnswers, results: [resultsA, resultsB, resultsC, resultsD, resultsE, resultsF]))
                                             }
                                         }
                                     }
@@ -117,11 +117,11 @@ class DataManager {
         
     }
     
-    func nextQuestion(roomID: String, completion: @escaping () -> Void) {
+    func updateCurrentQuestion(roomID: String, index: Int, completion: @escaping () -> Void) {
         
         db.collection(K.FStore.collectionName).document(roomID).updateData(["state" : "active"])
         
-        db.collection(K.FStore.collectionName).document(roomID).updateData(["currentQuestion" : FieldValue.increment(Int64(1))])
+        db.collection(K.FStore.collectionName).document(roomID).updateData(["currentQuestion" : index])
         
         completion()
         

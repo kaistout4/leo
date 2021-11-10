@@ -18,7 +18,8 @@ class QuestionViewController: UIViewController {
     
     let roomID = User.roomID
     
-    @IBOutlet weak var questionLabel: UILabel!
+
+    @IBOutlet weak var questionTextView: UITextView!
     @IBOutlet weak var teacherCommandView: UIStackView!
     @IBOutlet weak var numResponsesLabel: UILabel!
     
@@ -28,7 +29,7 @@ class QuestionViewController: UIViewController {
     var question: MCQ? {
         didSet  {
             if isViewLoaded {
-                updateSelectedAnswer()
+                reconfigureCells()
             }
         }
     }
@@ -44,7 +45,7 @@ class QuestionViewController: UIViewController {
         didSet {
             
             if isViewLoaded {
-                updateSelectedAnswer()
+                reconfigureCells()
             }
             
         }
@@ -93,10 +94,10 @@ class QuestionViewController: UIViewController {
                     
                     if let data = doc.data() {
                         
-                        if let question = data["question"] as? String, let answerChoices = data["answerChoices"] as? [String], let correctAnswers = data["correctAnswers"] as? [Int], let resultsA = data["resultsA"] as? Int, let resultsB = data["resultsB"] as? Int, let resultsC = data["resultsC"] as? Int, let resultsD = data["resultsD"] as? Int {
+                        if let question = data["question"] as? String, let answerChoices = data["answerChoices"] as? [String], let correctAnswers = data["correctAnswers"] as? [Int], let resultsA = data["resultsA"] as? Int, let resultsB = data["resultsB"] as? Int, let resultsC = data["resultsC"] as? Int, let resultsD = data["resultsD"] as? Int, let resultsE = data["resultsE"] as? Int, let resultsF = data["resultsF"] as? Int {
                             
-                            self.question = MCQ(question: question, answerChoices: answerChoices, correctAnswers: correctAnswers, results: [resultsA, resultsB, resultsC, resultsD])
-                            let numResults = resultsA + resultsB + resultsC + resultsD
+                            self.question = MCQ(question: question, answerChoices: answerChoices, correctAnswers: correctAnswers, results: [resultsA, resultsB, resultsC, resultsD, resultsE, resultsF])
+                            let numResults = resultsA + resultsB + resultsC + resultsD + resultsE + resultsF
                             self.refreshResults(numResults)
                         }
                     }
@@ -186,7 +187,7 @@ class QuestionViewController: UIViewController {
         }
     }
     
-    func updateSelectedAnswer() {
+    func reconfigureCells() {
         
         for cell in tableView.visibleCells {
             
@@ -213,7 +214,7 @@ class QuestionViewController: UIViewController {
     
     func updateQuestion() {
         
-        questionLabel.text = question?.question
+        self.questionTextView.text = question?.question
        
     }
     

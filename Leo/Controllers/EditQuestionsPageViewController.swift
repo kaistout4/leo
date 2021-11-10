@@ -181,10 +181,7 @@ class EditQuestionsPageViewController: UIPageViewController {
     }
     
     func loadAddQuestionViewControllers() {
-        
-       
-        print(self.questions.count)
-            
+      
         for i in 0...questions.count-1 {
                 
             let vc = generateAddQuestionViewController()
@@ -207,7 +204,7 @@ class EditQuestionsPageViewController: UIPageViewController {
         
         var changeDetected = false
         
-        if questions.count != leoViewControllers.count {
+        if questions.count > leoViewControllers.count {
             changeDetected = true
         }
         
@@ -243,6 +240,7 @@ class EditQuestionsPageViewController: UIPageViewController {
             performSegue(withIdentifier: "unwindToMaster", sender: self)
         }
     }
+    
     
 
     /*

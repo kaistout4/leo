@@ -11,22 +11,12 @@ import Firebase
 class ActiveQuestionsPageViewController: UIPageViewController {
       
     @IBOutlet weak var exitButton: UIBarButtonItem!
+    @IBOutlet weak var questionButton: UIBarButtonItem!
     
     let dm = DataManager()
     
-    var leoViewControllers: [UIViewController] = [] {
-        
-        didSet {
-            
-            if let firstQuestionViewController = leoViewControllers.last {
-                
-                setViewControllers([firstQuestionViewController], direction: .forward, animated: true, completion: nil)
-                
-            }
-        }
-        
-    }
-
+    var leoViewControllers: [UIViewController] = []
+    
     let user = User.user
     
     var roomID = User.roomID
@@ -34,6 +24,12 @@ class ActiveQuestionsPageViewController: UIPageViewController {
     var questions: [MCQ] = []
     
     var currentQuestion = 0
+    
+    var questionState = "closed"
+    
+    var closedQuestions: [Int] = []
+    
+    var pagingDisabled = false
     
     var currentViewController: QuestionViewController = QuestionViewController()
     
@@ -47,13 +43,14 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         if (user == "student") {
             exitButton.title = "Leave"
             navigationController?.isToolbarHidden = true
+            
             //Loading screen needed
             loadFirstViewController()
         } else if (user == "teacher") {
             navigationController?.isToolbarHidden = false
             exitButton.title = "End Room"
             dm.updateState(roomID: roomID, state: "active") {
-                self.loadFirstViewController()
+                self.loadViewControllers()
             }
            
         }
@@ -134,30 +131,44 @@ class ActiveQuestionsPageViewController: UIPageViewController {
     }
     
     
-    @IBAction func showResults(_ sender: UIBarButtonItem) {
+    @IBAction func updateQuestion(_ sender: UIBarButtonItem) {
         
-        dm.updateState(roomID: roomID, state: "results") {
-        
+        if questionState == "closed" {
+            pagingDisabled = true
+            print(pagingDisabled)
+            questionState = "active"
+            questionButton.tintColor = UIColor(named: "IncorrectColor")
+            questionButton.title = "End Question"
+            dm.updateCurrentQuestion(roomID: roomID, index: currentQuestion) {
+                
+            }
+            
+        } else if questionState == "active" {
+            pagingDisabled = false
+            questionState = "closed"
+            questionButton.tintColor = UIColor(named: "SecondaryLabelColor")
+            questionButton.title = "Closed"
+            questionButton.isEnabled = false
+            closedQuestions.append(currentQuestion)
+            dm.updateState(roomID: roomID, state: "results") {
+              
+            }
             
         }
         
-    }
-    
-    
-    
-    @IBAction func nextQuestion(_ sender: UIBarButtonItem) {
         
-        if currentQuestion != questions.count - 1 {
-            dm.nextQuestion(roomID: roomID) {
-                
-                self.currentQuestion += 1
-                self.addNextQuestionViewController()
-                
-            }
-        }
-       
+        
         
     }
+    
+    
+    @IBAction func prevQuestiom(_ sender: Any) {
+    }
+    
+    @IBAction func nextQuestion(_ sender: Any) {
+    }
+    
+
     
 
     func reloadQuestions() {
@@ -173,6 +184,22 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         
     }
     
+    func loadViewControllers() {
+        print(questions.count)
+        print(questions)
+        for i in 0...questions.count-1 {
+                
+            let vc = generateQuestionViewController()
+            vc.question = questions[i]
+            vc.questionIndex = i
+            leoViewControllers.append(vc)
+        }
+        if let firstQuestionViewController = leoViewControllers.first as? QuestionViewController {
+            currentViewController = firstQuestionViewController as! QuestionViewController
+            setViewControllers([firstQuestionViewController], direction: .forward, animated: true, completion: nil)
+            
+        }
+    }
     
     func loadFirstViewController() {
         
@@ -219,27 +246,6 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         return vc
         
         
-    }
-    
-    func generateQuestionViewControllers() -> [QuestionViewController] {
-        
-        var vcs: [QuestionViewController] = []
-        
-
-                print(self.questions.count)
-            
-            for q in questions {
-                
-                if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "QuestionViewController") as? QuestionViewController {
-                    
-                    vc.question = q
-                    vcs.append(vc)
-                
-                }
-               
-        }
-        
-        return vcs
     }
     
     @IBAction func leaveRoom(_ sender: UIBarButtonItem) {
@@ -290,6 +296,25 @@ extension ActiveQuestionsPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
+        if pagingDisabled {
+            print("Not swipable")
+            return nil
+        }
+        
+        if let viewControllerIndex = leoViewControllers.firstIndex(of: viewController as! QuestionViewController) {
+                print(viewControllerIndex)
+                if (viewControllerIndex == 0) {
+                    
+                    return nil
+                    
+                } else {
+                    
+                    return leoViewControllers[viewControllerIndex - 1]
+                
+                }
+            
+            }
+        
         return nil
         
         
@@ -297,14 +322,27 @@ extension ActiveQuestionsPageViewController: UIPageViewControllerDataSource {
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        
+        if pagingDisabled {
+            print("Not swipable")
+            return nil
+        }
+        
+        if let viewControllerIndex = leoViewControllers.firstIndex(of: viewController as! QuestionViewController) {
+            print(viewControllerIndex)
+                if (viewControllerIndex == leoViewControllers.count - 1) {
+                    
+                    return nil
+                    
+                } else {
+                    
+                    return leoViewControllers[viewControllerIndex + 1]
+                
+                }
+        }
             
         return nil
-
     
-    }
-    
-    func presentationCount(for pageViewController: UIPageViewController) -> Int {
-        return leoViewControllers.count
     }
     
 }
@@ -312,14 +350,22 @@ extension ActiveQuestionsPageViewController: UIPageViewControllerDataSource {
 extension ActiveQuestionsPageViewController: UIPageViewControllerDelegate {
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        
-        
-        if let currVc = self.viewControllers?.first as? QuestionViewController {
-            
-            currentViewController = currVc
+        if completed {
+            if let currVc = self.viewControllers?.first as? QuestionViewController {
+                currentViewController = currVc
+                currentQuestion = currentViewController.questionIndex!
+                if closedQuestions.contains(currentQuestion) {
+                    questionButton.tintColor = UIColor(named: "SecondaryLabelColor")
+                    questionButton.title = "Closed"
+                    questionButton.isEnabled = false
+                } else {
+                    questionButton.tintColor = UIColor(named: "CorrectColor")
+                    questionButton.title = "Start Question"
+                    questionButton.isEnabled = true
+                }
+                //print(currentViewController.questionIndex)
+            }
         }
-        
-        
     }
     
     
