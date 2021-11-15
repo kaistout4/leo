@@ -16,7 +16,9 @@ class AddQuestionViewController: UIViewController {
     
    @IBOutlet weak var questionTextView: UITextView!
    
-    @IBOutlet weak var tableView: UITableView!
+   @IBOutlet weak var questionTextViewHeightConstraint: NSLayoutConstraint!
+   
+   @IBOutlet weak var tableView: UITableView!
     
     let roomID = User.roomID
     
@@ -48,9 +50,15 @@ class AddQuestionViewController: UIViewController {
         tableView.register(UINib(nibName: "AddAnswerCell", bundle: nil), forCellReuseIdentifier: "AddAnswerCell")
         
        questionTextView.text = text
+       questionTextView.isScrollEnabled = false
         tableView.reloadData()
         // Do any additional setup after loading the view.
     }
+   
+   override func viewDidLayoutSubviews() {
+      // Force layout of question text view to set initial height
+      textViewDidChange(questionTextView)
+   }
     
     func addQuestion(completion: @escaping (_ error: String?, _ question: Int?) -> Void) {
         
@@ -211,10 +219,11 @@ extension AddQuestionViewController: UITableViewDataSource {
 }
 
 extension AddQuestionViewController: UITextViewDelegate {
+   
+   // Calculate the new height based on the question text
    func textViewDidChange(_ textView: UITextView) {
-      textView.translatesAutoresizingMaskIntoConstraints = true
-      textView.sizeToFit()
-      textView.isScrollEnabled = false
+      let size = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: 999.0))
+      questionTextViewHeightConstraint.constant = size.height
    }
    
    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -255,6 +264,7 @@ class EditAnswerCell: UITableViewCell {
    
    override func awakeFromNib() {
       answerTextView.delegate = self
+      answerTextView.isScrollEnabled = false
       answerBackground.layer.cornerRadius = 10.0
    }
    

@@ -255,6 +255,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="questionTextView" destination="SPY-hd-f4t" id="d0s-xD-un7"/>
+                        <outlet property="questionTextViewHeightConstraint" destination="KZv-kQ-5lU" id="EGM-td-MIm"/>
                         <outlet property="tableView" destination="Rn2-Kp-f7h" id="eVe-g4-Mcr"/>
                     </connections>
                 </viewController>
