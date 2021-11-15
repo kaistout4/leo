@@ -257,6 +257,27 @@ extension MasterViewController: UITableViewDelegate {
   
 }
 
+extension MasterViewController: RoomCellDelegate {
+    func editButtonPressed(_ cell: RoomCell) {
+        let index = cell.editButton.tag
+        let edit = UIAction(title: "Edit room", image: UIImage(systemName: "pencil")) { [weak self] (action) in
+            print("Edit mode")
+            
+            
+        }
+        let delete = UIAction(title: "Delete room", image: UIImage(systemName: "trash")) { [weak self] (action) in
+            print("Delete room")
+        }
+        let menu = UIMenu(title: "Menu", options: .displayInline, children: [edit, delete])
+        cell.editButton.menu = menu
+        cell.editButton.showsMenuAsPrimaryAction = true
+    }
+}
+
+protocol RoomCellDelegate: AnyObject {
+    func editButtonPressed(_ cell: RoomCell)
+}
+
 class RoomCell: UITableViewCell {
     
     @IBOutlet weak var roomBackground: UIView!
@@ -271,24 +292,22 @@ class RoomCell: UITableViewCell {
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var startButtonBackground: UIView!
     
+    weak var delegate: RoomCellDelegate?
     
     var roomID = ""
     
     override func awakeFromNib() {
         roomBackground.layer.cornerRadius = 10.0
-        startButtonBackground.layer.cornerRadius = startButtonBackground.bounds.height / 2.0
-        let edit = UIAction(title: "Edit room", image: UIImage(systemName: "pencil")) { [weak self] (action) in
-            print("Edit mode")
-            
-            
-        }
-        let delete = UIAction(title: "Delete room", image: UIImage(systemName: "trash")) { [weak self] (action) in
-            print("Delete room")
-        }
-        let menu = UIMenu(title: "Menu", options: .displayInline, children: [edit, delete])
-        editButton.menu = menu
-        //editButton.showsMenuAsPrimaryAction = true
+        startButtonBackground.layer.cornerRadius
+        startButtonBackground.bounds.height / 2.0
+
     }
+    
+    @IBAction func edit(_ sender: Any) {
+        delegate?.editButtonPressed(self)
+    }
+    
+    
     
 }
 

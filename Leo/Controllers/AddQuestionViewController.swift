@@ -225,20 +225,7 @@ extension AddQuestionViewController: UITextViewDelegate {
       let size = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: 999.0))
       questionTextViewHeightConstraint.constant = size.height
    }
-   
-   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-      if editingStyle == .delete {
-         print("Swipe to delete")
-         answerChoices.remove(at: indexPath.row)
-         for i in 0...correctAnswers.count-1 {
-            if correctAnswers[i] == indexPath.row {
-               print("Removing answer choice " + String(correctAnswers[i]))
-               correctAnswers.remove(at: i)
-            }
-         }
-         tableView.deleteRows(at: [indexPath], with: .fade)
-      }
-   }
+
 }
 
 extension AddQuestionViewController: EditAnswerCellDelegate {
