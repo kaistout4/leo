@@ -30,6 +30,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let _ = (scene as? UIWindowScene) else { return }
     }
     
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        
+        // Allow deep linking of the form uptake://join/room_id
+        if let context = URLContexts.first {
+            let components = context.url.pathComponents
+            if context.url.host == "join", components.count == 2, components.first == "/" {
+                print("Join room with id=\(components[1])")
+            }
+        }
+    }
+    
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.

@@ -35,37 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return true
     }
-
-    func application(_ application: UIApplication,
-                     open url: URL,
-                     options: [UIApplication.OpenURLOptionsKey : Any] = [:] ) -> Bool {
-
-        // Determine who sent the URL.
-        let sendingAppID = options[.sourceApplication]
-        print("source application = \(sendingAppID ?? "Unknown")")
-
-        // Process the URL.
-        if let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true) {
-            let roomPath = components.path
-            print(roomPath)
-            
-                //let params = components.queryItems else {
-                
-
-                
-           
-        }
-        return false
-//        if let room = params.first(where: { $0.name == "roomcode" })?.value {
-//            print("roomPath = \(roomPath)")
-//            print("room = \(room)")
-//            return true
-//        } else {
-//            print("Room code missing")
-//            return false
-//        }
-    }
-
     
     // MARK: UISceneSession Lifecycle
 
