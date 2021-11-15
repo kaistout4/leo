@@ -40,7 +40,7 @@
 		93254BB626A89C63004D7E66 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9325E11526FD30B300261417 /* ActiveQuestionsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveQuestionsPageViewController.swift; sourceTree = "<group>"; };
 		9326832626A8AE29004542DD /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
-		9326832826A8B5EF004542DD /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = SOURCE_ROOT; };
+		9326832826A8B5EF004542DD /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Room.swift; path = Leo/Models/Room.swift; sourceTree = SOURCE_ROOT; };
 		933131B626E561D400DFD645 /* EditQuestionsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditQuestionsPageViewController.swift; sourceTree = "<group>"; };
 		933131B826E5663F00DFD645 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		9374BB8126995B7100A7E8ED /* Leo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,13 +89,20 @@
 			path = "Entry VCs";
 			sourceTree = "<group>";
 		};
-		9374BB7826995B7100A7E8ED = {
+		9323852F27421AE5003F94C1 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				9395EB8026C5977300A291FC /* User.swift */,
 				93972C6126B0AE9000F38B45 /* FRQ.swift */,
 				93972C5F26B0AE7900F38B45 /* MCQ.swift */,
 				9326832826A8B5EF004542DD /* Room.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		9374BB7826995B7100A7E8ED = {
+			isa = PBXGroup;
+			children = (
 				9374BB8326995B7100A7E8ED /* Leo */,
 				9374BB8226995B7100A7E8ED /* Products */,
 			);
@@ -116,6 +123,7 @@
 				9374BB8626995B7100A7E8ED /* SceneDelegate.swift */,
 				9374BB98269A3BBA00A7E8ED /* Controllers */,
 				9374BBA3269A592800A7E8ED /* Views */,
+				9323852F27421AE5003F94C1 /* Models */,
 				9374BB8D26995B7200A7E8ED /* Assets.xcassets */,
 				9374BB9226995B7200A7E8ED /* Info.plist */,
 				93254BB626A89C63004D7E66 /* GoogleService-Info.plist */,
