@@ -24,7 +24,7 @@ class RegisterViewController: UIViewController {
                 if let e = error {
                     print(e)
                 } else {
-                    User.user = "teacher"
+                    DataManager.user = "teacher"
                     self.performSegue(withIdentifier: "RegisterToMaster", sender: self)
                 }
                 

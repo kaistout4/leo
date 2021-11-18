@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let db = Firestore.firestore()
         
+        print("didFinishLaunching")
         // Override point for customization after application launch.
                // White non-transucent navigatio bar, supports dark appearance
 //       if #available(iOS 15, *) {

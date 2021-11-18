@@ -20,7 +20,7 @@ class AddQuestionViewController: UIViewController {
    
    @IBOutlet weak var tableView: UITableView!
     
-    let roomID = User.roomID
+    let ID = DataManager.ID!
     
     var questionIndex: Int? = nil
     
@@ -36,7 +36,7 @@ class AddQuestionViewController: UIViewController {
     
     let letters = ["A", "B", "C", "D", "E", "F"]
     
-    var answerChoices = [""]
+   var answerChoices: [String] = [""]
     
     var correctAnswers: [Int] = []
     
@@ -44,14 +44,14 @@ class AddQuestionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.dataSource = self
+       
+       tableView.dataSource = self
        questionTextView.delegate = self
-        tableView.register(UINib(nibName: "AddAnswerCell", bundle: nil), forCellReuseIdentifier: "AddAnswerCell")
+       tableView.register(UINib(nibName: "AddAnswerCell", bundle: nil), forCellReuseIdentifier: "AddAnswerCell")
         
        questionTextView.text = text
        questionTextView.isScrollEnabled = false
-        tableView.reloadData()
+       tableView.reloadData()
         // Do any additional setup after loading the view.
     }
    
@@ -70,7 +70,7 @@ class AddQuestionViewController: UIViewController {
 
         let index = questionIndex!
     
-        dm.addQuestionToRoom(roomID: roomID, question: text, answerChoices: answerChoices, correctAnswers: correctAnswers, index: index, time: Date().timeIntervalSince1970) {
+        dm.addQuestionToRoom(roomID: ID, question: text, answerChoices: answerChoices, correctAnswers: correctAnswers, index: index, time: Date().timeIntervalSince1970) {
             print("Question successfully added")
            self.question = MCQ(question: self.text, answerChoices: self.answerChoices, correctAnswers: self.correctAnswers, results: [])
             completion("", self.questionIndex)
@@ -131,11 +131,14 @@ class AddQuestionViewController: UIViewController {
    }
    
    func getQuestion() -> MCQ {
-      
       let question = text
       let key = correctAnswers
       let answers = answerChoices
       return MCQ(question: question ?? "", answerChoices: answers, correctAnswers: key, results: [])
+   }
+   
+   func isEmpty() -> Bool {
+      return text == "" && correctAnswers.isEmpty && answerChoices.count == 1 && answerChoices[0] == ""
    }
     
     @objc func switchAnswerTypeAction(sender: UIButton) {
@@ -176,7 +179,6 @@ class AddQuestionViewController: UIViewController {
 extension AddQuestionViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return answerChoices.count + 1
     }
     

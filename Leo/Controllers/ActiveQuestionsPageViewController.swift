@@ -17,9 +17,9 @@ class ActiveQuestionsPageViewController: UIPageViewController {
     
     var leoViewControllers: [UIViewController] = []
     
-    let user = User.user
+    var user = DataManager.user
     
-    var roomID = User.roomID
+    let ID = DataManager.ID!
     
     var questions: [MCQ] = []
     
@@ -37,9 +37,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         super.viewDidLoad()
         dataSource = self
         delegate = self
-
-        self.title = "ID: " + roomID
-        
+      
         if (user == "student") {
             exitButton.title = "Leave"
             navigationController?.isToolbarHidden = true
@@ -49,7 +47,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         } else if (user == "teacher") {
             navigationController?.isToolbarHidden = false
             exitButton.title = "End Room"
-            dm.updateState(roomID: roomID, state: "active") {
+            dm.updateState(roomID: ID, state: "active") {
                 self.loadViewControllers()
             }
            
@@ -63,7 +61,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         
         let db = Firestore.firestore()
         
-        let room = db.collection(K.FStore.collectionName).document(roomID)
+        let room = db.collection(K.FStore.collectionName).document(ID)
         
         
         
@@ -93,11 +91,11 @@ class ActiveQuestionsPageViewController: UIPageViewController {
                                 print("Student: state results")
                                 
                                 let vc = self.leoViewControllers[currentQuestion] as! QuestionViewController
-                                self.dm.updateVote(roomID: self.roomID, questionIndex: self.currentQuestion, answerIndex: vc.selected) {
+                                self.dm.updateVote(roomID: self.ID, questionIndex: self.currentQuestion, answerIndex: vc.selected) {
                                     
                                 }
                                 
-                                self.dm.reloadQuestion(from: self.roomID, with: currentQuestion) { question in
+                                self.dm.reloadQuestion(from: self.ID, with: currentQuestion) { question in
                                     
                                     vc.hideResults = false
                                     vc.question = question
@@ -139,7 +137,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
             questionState = "active"
             questionButton.tintColor = UIColor(named: "IncorrectColor")
             questionButton.title = "End Question"
-            dm.updateCurrentQuestion(roomID: roomID, index: currentQuestion) {
+            dm.updateCurrentQuestion(roomID: ID, index: currentQuestion) {
                 
             }
             
@@ -150,7 +148,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
             questionButton.title = "Closed"
             questionButton.isEnabled = false
             closedQuestions.append(currentQuestion)
-            dm.updateState(roomID: roomID, state: "results") {
+            dm.updateState(roomID: ID, state: "results") {
               
             }
             
@@ -173,7 +171,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
 
     func reloadQuestions() {
         
-        dm.reloadQuestions(from: roomID) { questions in
+        dm.reloadQuestions(from: ID) { questions in
             //NEED TO ADD: error handling if there are no questions
        
             if questions != nil {
@@ -203,7 +201,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
     
     func loadFirstViewController() {
         
-        dm.reloadQuestions(from: roomID) { questions in
+        dm.reloadQuestions(from: ID) { questions in
             //NEED TO ADD: error handling if there are no questions
        
             if questions != nil {
@@ -253,7 +251,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         //if teacher, close room
         if user == "teacher" {
         
-            dm.updateState(roomID: roomID, state: "closed") {
+            dm.updateState(roomID: ID, state: "closed") {
                 self.performSegue(withIdentifier: "unwindToMaster", sender: self)
                 
             

@@ -36,7 +36,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let context = URLContexts.first {
             let components = context.url.pathComponents
             if context.url.host == "join", components.count == 2, components.first == "/" {
+                DataManager.ID = components[1]
                 print("Join room with id=\(components[1])")
+                
             }
         }
     }

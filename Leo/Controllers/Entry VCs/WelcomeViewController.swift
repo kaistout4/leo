@@ -12,6 +12,7 @@ class WelcomeViewController: UIViewController {
     
     let db = Firestore.firestore()
     
+    let dm = DataManager()
     @IBOutlet weak var codeTextField: UITextField!
     
     
@@ -21,7 +22,15 @@ class WelcomeViewController: UIViewController {
         
     }
     
-    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        print("App opened")
+        // Do any additional setup loading the view.
+        if let id = DataManager.ID {
+            print("Segue to room")
+        }
+    }
+
     
     @IBAction func joinPressed(_ sender: Any) {
         
@@ -38,7 +47,7 @@ class WelcomeViewController: UIViewController {
                 
                 if let room = doc, room.exists {
                     
-                    User.roomID = code
+                    DataManager.ID = code
                     
                     //selects proper vc based on state of room when joined
                     if let data = doc?.data(), let state = data["state"] as? String{
@@ -74,11 +83,7 @@ class WelcomeViewController: UIViewController {
         
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup loading the view.
-    }
-
+   
 
 }
 

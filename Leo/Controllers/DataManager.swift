@@ -12,23 +12,14 @@ class DataManager {
     
     var questions: [MCQ]? = []
     
+    static var ID: String? = ""
+    static var user: String = "student"
     
     let db = Firestore.firestore()
     static var shared = { return DataManager() }()
     
     init() {
-        // load questions sample
-//        loadQuestionsFrom(roomID: "1") { questions in
-//
-//            if (questions == nil) {
-//
-//                //error fetching questions from database
-//            }
-//
-//
-//            self.questions = questions
-//        }
-        
+
     }
     
     func loadRooms(user: String, completion: @escaping (_ rooms: [Room]?) -> Void) {

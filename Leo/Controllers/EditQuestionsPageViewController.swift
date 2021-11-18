@@ -44,7 +44,7 @@ class EditQuestionsPageViewController: UIPageViewController {
             }
         }
         questions = newQuestions
-        dm.updateQuestionCount(roomID: roomID, to: questions.count) {
+        dm.updateQuestionCount(roomID: ID, to: questions.count) {
             
             
         }
@@ -84,9 +84,9 @@ class EditQuestionsPageViewController: UIPageViewController {
     
     var leoViewControllers: [UIViewController] = []
     
-    let user = User.user
+    var user = DataManager.user
     
-    let roomID = User.roomID
+    var ID = DataManager.ID!
     
     var questions: [MCQ] = []
     
@@ -98,12 +98,10 @@ class EditQuestionsPageViewController: UIPageViewController {
         super.viewDidLoad()
         dataSource = self
         delegate = self
-
-        print(roomID)
         
-        self.title = "ID: " + roomID
+        self.title = "ID: " + ID
         
-        dm.reloadQuestions(from: roomID) { questions in
+        dm.reloadQuestions(from: ID) { questions in
             
             if let questions = questions {
                 
@@ -147,7 +145,7 @@ class EditQuestionsPageViewController: UIPageViewController {
         
             leoViewControllers.remove(at: index)
             updateQuestionIndexes()
-            dm.deleteQuestion(from: roomID, with: index)
+            dm.deleteQuestion(from: ID, with: index)
         }
         
     }
@@ -161,7 +159,7 @@ class EditQuestionsPageViewController: UIPageViewController {
     
     func reloadQuestions() {
         
-        dm.reloadQuestions(from: roomID) { questions in
+        dm.reloadQuestions(from: ID) { questions in
             //NEED TO ADD: error handling if there are no questions
        
             if questions != nil {
@@ -210,25 +208,35 @@ class EditQuestionsPageViewController: UIPageViewController {
         
         if !changeDetected {
             for vc in leoViewControllers {
-                
                 let vc = vc as! AddQuestionViewController
                 if vc.isViewLoaded {
                     vc.saveData()
                 }
-                updatedQuestions.append(vc.getQuestion())
-                vc.printQuestion()
+                if !vc.isEmpty() {
+                    updatedQuestions.append(vc.getQuestion())
+                    vc.printQuestion()
+                }
+               
+            }
+            if updatedQuestions.count != 0 {
+                
+                if questions.count == 0 {
+                    changeDetected = true
+                } else {
+                    for i in 0...questions.count-1 {
+                        if updatedQuestions[i] != questions[i] {
+                            changeDetected = true
+                        }
+                    }
+                }
                 
             }
             
-            for i in 0...questions.count-1 {
-                if updatedQuestions[i] != questions[i] {
-                    changeDetected = true
-                }
-            }
         }
         if changeDetected {
             let alert = UIAlertController(title: "Unsaved Changes", message: "You have unsaved changes. Are you sure you want to discard them?", preferredStyle: .alert)
             let ignore = UIAlertAction(title: "Ok", style: .default) { (action) in
+                
                 self.performSegue(withIdentifier: "unwindToMaster", sender: self)
             }
             let save = UIAlertAction(title: "Cancel", style: .cancel) { (action) in

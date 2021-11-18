@@ -12,6 +12,7 @@ class MasterViewController: UIViewController {
 
     
     var rooms: [Room] = []
+    
     @IBAction func unwindToMasterViewController(segue: UIStoryboardSegue) {
         loadRooms()
     }
@@ -45,9 +46,7 @@ class MasterViewController: UIViewController {
         var title = ""
         
         var newRoom: Room?
-        User.roomID = roomID
-        
-        User.user = "teacher"
+        DataManager.ID = roomID
         
         let alert = UIAlertController(title: "Create room title", message: "", preferredStyle: .alert)
         
@@ -124,14 +123,19 @@ class MasterViewController: UIViewController {
     }
     
     func createRoomID() -> String {
-        
-        return "AQ7Y89"
+        let chars = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+        var ID = ""
+        for i in 0...5 {
+            let index = Int.random(in: 0...35)
+            print(chars[index])
+            ID.append(chars[index])
+        }
+        return ID
         
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let nav = segue.destination as? UINavigationController, let controller = nav.topViewController as? ActiveQuestionsPageViewController {
-            controller.roomID = User.roomID
             controller.questions = rooms[selectedRoomIndex].questions!
             
         }
@@ -140,7 +144,6 @@ class MasterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        User.user = "teacher"
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -186,7 +189,22 @@ class MasterViewController: UIViewController {
             cell.question2Label.text = rooms[index].questions![1].question
             cell.moreQuestionsLabel.text = "+ " + String(rooms[index].questionCount-2) + " more"
         }
-        
+        let edit = UIAction(title: "Edit room", image: UIImage(systemName: "pencil")) { [weak self] (action) in
+            print("Edit mode")
+            DataManager.ID = cell.roomID
+            self?.performSegue(withIdentifier: "masterToRoomPage", sender: self)
+            
+        }
+        let delete = UIAction(title: "Delete room", image: UIImage(systemName: "trash")) { [weak self] (action) in
+            self?.rooms.remove(at: index)
+            self?.dm.deleteRoom(roomID: cell.roomID)
+            self?.tableView.reloadData()
+            print("Delete room")
+           
+        }
+        let menu = UIMenu(title: "Menu", options: .displayInline, children: [edit, delete])
+        cell.editButton.menu = menu
+        cell.editButton.showsMenuAsPrimaryAction = true
         
     }
     
@@ -212,45 +230,57 @@ extension MasterViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("Adding cell to table view")
+      
         let cell = tableView.dequeueReusableCell(withIdentifier: "RoomCell", for: indexPath) as! RoomCell
         cell.editButton.tag = indexPath.row
         cell.startButton.tag = indexPath.row
-        cell.editButton.addTarget(self, action: #selector(editButtonAction(sender:)), for: .touchUpInside)
         cell.startButton.addTarget(self, action: #selector(startButtonAction(sender:)), for: .touchUpInside)
-        
         configureCell(cell: cell, at: indexPath)
+        cell.delegate = self
         return cell
     }
     
     @objc func startButtonAction(sender: UIButton) {
         
         selectedRoomIndex = sender.tag
-        let ID = rooms[sender.tag].ID
-        User.roomID = ID
+        
+        if rooms[sender.tag].questionCount == 0 {
+            
+            let alert = UIAlertController(title: "No Questions", message: "Add questions to start room", preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "OK", style: .destructive) { (action) in
+                return
+            }
+            
+            alert.addAction(action)
     
-        self.performSegue(withIdentifier: "masterToActiveQuestions", sender: self)
-
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            let ID = rooms[sender.tag].ID
+            
+            DataManager.ID = ID
+            
+            self.performSegue(withIdentifier: "masterToActiveQuestions", sender: self)
+        }
     }
     
-    @objc func editButtonAction(sender: UIButton) {
-        
-//        let edit = UIAction(title: "Edit room", image: UIImage(systemName: "pencil")) { (action) in
+//    @objc func editButtonAction(sender: UIButton) {
+//        let index = sender.tag
+//        let edit = UIAction(title: "Edit room", image: UIImage(systemName: "pencil")) { [weak self] (action) in
 //            print("Edit mode")
+//            let id = self?.rooms[index].ID
+//            User.roomID = id!
+//            self?.performSegue(withIdentifier: "masterToActiveQuestions", sender: self)
+//
 //        }
-//        let delete = UIAction(title: "Delete room", image: UIImage(systemName: "trash")) { (action) in
+//        let delete = UIAction(title: "Delete room", image: UIImage(systemName: "trash")) { [weak self] (action) in
 //            print("Delete room")
+//
 //        }
 //        let menu = UIMenu(title: "Menu", options: .displayInline, children: [edit, delete])
 //        sender.menu = menu
 //        sender.showsMenuAsPrimaryAction = true
-        
-        let ID = rooms[sender.tag].ID
-        User.roomID = ID
-
-        self.performSegue(withIdentifier: "masterToRoomPage", sender: self)
-    
-    }
-    
+//    }
 }
 
 extension MasterViewController: UITableViewDelegate {
@@ -262,11 +292,13 @@ extension MasterViewController: RoomCellDelegate {
         let index = cell.editButton.tag
         let edit = UIAction(title: "Edit room", image: UIImage(systemName: "pencil")) { [weak self] (action) in
             print("Edit mode")
-            
+            let id = self?.rooms[index].ID
+            self?.performSegue(withIdentifier: "masterToActiveQuestions", sender: self)
             
         }
         let delete = UIAction(title: "Delete room", image: UIImage(systemName: "trash")) { [weak self] (action) in
             print("Delete room")
+           
         }
         let menu = UIMenu(title: "Menu", options: .displayInline, children: [edit, delete])
         cell.editButton.menu = menu
@@ -298,8 +330,7 @@ class RoomCell: UITableViewCell {
     
     override func awakeFromNib() {
         roomBackground.layer.cornerRadius = 10.0
-        startButtonBackground.layer.cornerRadius
-        startButtonBackground.bounds.height / 2.0
+        startButtonBackground.layer.cornerRadius = startButtonBackground.bounds.height / 2.0
 
     }
     

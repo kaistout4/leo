@@ -11,20 +11,18 @@ import Firebase
 class QuestionViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
-    
-    let dm = DataManager()
-    
-    let db = Firestore.firestore()
-    
-    let roomID = User.roomID
-    
-
     @IBOutlet weak var questionTextView: UITextView!
     @IBOutlet weak var teacherCommandView: UIStackView!
     @IBOutlet weak var numResponsesLabel: UILabel!
     
     
-    let user = User.user
+    let dm = DataManager()
+    
+    let db = Firestore.firestore()
+    
+    var ID = DataManager.ID!
+    
+    var user = DataManager.user
     
     var question: MCQ? {
         didSet  {
@@ -55,7 +53,6 @@ class QuestionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //Updates question and answer labels
         updateQuestion()
         
@@ -83,7 +80,7 @@ class QuestionViewController: UIViewController {
     func monitorForResults() {
         
         print(questionIndex)
-        db.collection("rooms").document(roomID).collection("questions").document(String(questionIndex!)).addSnapshotListener { documentSnapshot, error in
+        db.collection("rooms").document(ID).collection("questions").document(String(questionIndex!)).addSnapshotListener { documentSnapshot, error in
             
             if let e = error {
                 print(e)
@@ -116,7 +113,7 @@ class QuestionViewController: UIViewController {
 //            }
 //        }
         
-        dm.userCount(roomID: roomID) { count in
+        dm.userCount(roomID: ID) { count in
             self.numResponsesLabel.text = String(numResults) + "/" + String(count) + " responses"
         }
     }
