@@ -394,16 +394,29 @@
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ebD-Tb-MVh">
                                                                     <rect key="frame" x="0.0" y="0.0" width="272" height="60"/>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                    <state key="normal" title="Button">
+                                                                    <state key="normal">
                                                                         <color key="titleColor" systemColor="labelColor"/>
                                                                     </state>
                                                                 </button>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIZ-3O-aNE" userLabel="Answer Label">
+                                                                    <rect key="frame" x="4" y="4" width="264" height="52"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="52" id="eWa-uR-fgv"/>
+                                                                    </constraints>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
                                                             </subviews>
                                                             <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                             <constraints>
                                                                 <constraint firstItem="ebD-Tb-MVh" firstAttribute="top" secondItem="mNn-oR-9MW" secondAttribute="top" id="08d-dX-az1"/>
                                                                 <constraint firstItem="ebD-Tb-MVh" firstAttribute="leading" secondItem="mNn-oR-9MW" secondAttribute="leading" id="15J-T6-aQP"/>
+                                                                <constraint firstItem="RIZ-3O-aNE" firstAttribute="top" secondItem="mNn-oR-9MW" secondAttribute="top" constant="4" id="3mR-KJ-fLW"/>
+                                                                <constraint firstItem="RIZ-3O-aNE" firstAttribute="leading" secondItem="mNn-oR-9MW" secondAttribute="leading" constant="4" id="CUq-yt-LYV"/>
+                                                                <constraint firstAttribute="bottom" secondItem="RIZ-3O-aNE" secondAttribute="bottom" constant="4" id="FWn-8w-ytE"/>
                                                                 <constraint firstAttribute="trailing" secondItem="ebD-Tb-MVh" secondAttribute="trailing" id="c4B-uZ-QiW"/>
+                                                                <constraint firstAttribute="trailing" secondItem="RIZ-3O-aNE" secondAttribute="trailing" constant="4" id="nW3-ii-hio"/>
                                                                 <constraint firstAttribute="bottom" secondItem="ebD-Tb-MVh" secondAttribute="bottom" id="u5m-AW-rZM"/>
                                                             </constraints>
                                                         </view>
@@ -442,6 +455,8 @@
                                             <outlet property="answerBackground" destination="mNn-oR-9MW" id="8Rt-2X-ygN"/>
                                             <outlet property="answerButton" destination="ebD-Tb-MVh" id="KIT-zg-K1O"/>
                                             <outlet property="answerIconImage" destination="G9n-y0-Rv2" id="XCH-uA-JqP"/>
+                                            <outlet property="answerLabel" destination="RIZ-3O-aNE" id="SsV-92-BDH"/>
+                                            <outlet property="answerLabelHeightConstraint" destination="eWa-uR-fgv" id="KYV-1C-mF7"/>
                                             <outlet property="answerPercentage" destination="skO-5P-Xs1" id="fnH-AH-E7d"/>
                                             <outlet property="answerPrefix" destination="kGy-A2-Cej" id="2li-J9-K6m"/>
                                         </connections>

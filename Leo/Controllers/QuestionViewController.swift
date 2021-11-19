@@ -130,8 +130,7 @@ class QuestionViewController: UIViewController {
         
         if let question = question {
             
-            cell.answerButton.setTitle(question.answerChoices[index], for: .normal)
-            
+            cell.answerLabel.text = question.answerChoices[index]
             cell.answerPercentage.isHidden = hideResults
             cell.answerIconImage.isHidden = hideResults
             
@@ -139,7 +138,7 @@ class QuestionViewController: UIViewController {
                 cell.answerBackground.backgroundColor = isSelected ?
                 UIColor(named: "AccentColor") :
                 UIColor(red: 2/255, green: 0/255, blue: 128/255, alpha: 0.04)
-                cell.answerButton.setTitleColor(isSelected ? .white : .black, for: .normal)
+                cell.answerLabel.textColor = isSelected ? .white : .black
             } else {
                 
                 cell.answerButton.isUserInteractionEnabled = false
@@ -242,6 +241,8 @@ extension QuestionViewController: UITableViewDataSource {
         if selected != -1 {
             cell.answerButton.isUserInteractionEnabled = false
         }
+        let size = cell.answerLabel.sizeThatFits(CGSize(width: cell.answerLabel.bounds.width, height: 999.0))
+        cell.answerLabelHeightConstraint.constant = size.height
         configureCell(cell: cell, at: indexPath)
         return cell
     }
@@ -257,11 +258,15 @@ extension QuestionViewController: UITableViewDataSource {
 class AnswerCell: UITableViewCell {
     @IBOutlet weak var answerPrefix: UILabel!
     @IBOutlet weak var answerBackground: UIView!
+    @IBOutlet weak var answerLabel: UILabel!
     @IBOutlet weak var answerButton: UIButton!
     @IBOutlet weak var answerPercentage: UILabel!
     @IBOutlet weak var answerIconImage: UIImageView!
+    @IBOutlet weak var answerLabelHeightConstraint: NSLayoutConstraint!
+    
     
     override func awakeFromNib() {
         answerBackground.layer.cornerRadius = 10.0
+        
     }
 }
