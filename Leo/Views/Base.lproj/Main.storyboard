@@ -785,6 +785,7 @@
                         <barButtonItem key="leftBarButtonItem" title="Logout" id="hXU-lH-UXC">
                             <connections>
                                 <action selector="logoutUser:" destination="acU-2Y-940" id="0Tj-UJ-3aj"/>
+                                <segue destination="fln-o4-d7Z" kind="unwind" unwindAction="unwindToWelcomeViewControllerWithSegue:" id="8RN-XD-eo5"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="plus" catalog="system" id="kmP-9i-O8Z">
@@ -800,6 +801,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qsP-Zq-l51" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="fln-o4-d7Z" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2821.739130434783" y="-309.375"/>
         </scene>
@@ -872,8 +874,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="vr6-vV-G4K"/>
-        <segue reference="jND-d4-gmS"/>
+        <segue reference="bzg-kf-7km"/>
+        <segue reference="aLe-Xl-31f"/>
         <segue reference="9NB-8A-Acp"/>
         <segue reference="gYd-Hb-XUz"/>
     </inferredMetricsTieBreakers>

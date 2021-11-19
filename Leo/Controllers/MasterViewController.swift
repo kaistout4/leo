@@ -80,17 +80,9 @@ class MasterViewController: UIViewController {
                 if let email = Auth.auth().currentUser?.email {
                     
                     self.db.collection(K.FStore.collectionName).document(roomID).setData(["title" : newRoom!.title, "state" : "pending", "user" : email, "questionCount" : 0, "currentQuestion" : 0, "userCount" : 0])
-                    
-                    print("Room created")
                 }
-               
-                
                 self.performSegue(withIdentifier: "masterToRoomPage", sender: self)
-                
             }
-            
-            
-            
         }
         alert.addAction(action)
    
@@ -101,7 +93,12 @@ class MasterViewController: UIViewController {
     
     @IBAction func logoutUser(_ sender: Any) {
         
-         
+        let firebaseAuth = Auth.auth()
+       do {
+         try firebaseAuth.signOut()
+       } catch let signOutError as NSError {
+         print("Error signing out: %@", signOutError)
+       }
         
         
     }
