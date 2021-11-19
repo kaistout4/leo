@@ -43,7 +43,7 @@ class QuestionViewController: UIViewController {
         didSet {
             
             if isViewLoaded {
-                reconfigureCells()
+                //reconfigureCells()
             }
             
         }
@@ -58,12 +58,10 @@ class QuestionViewController: UIViewController {
         
                 
         if (user == "student") {
-            print("Student")
             hideResults = true
             teacherCommandView.isHidden = true
             
         } else {
-            print("Teacher")
             hideResults = false
             monitorForResults()
             
@@ -79,7 +77,6 @@ class QuestionViewController: UIViewController {
     
     func monitorForResults() {
         
-        print(questionIndex)
         db.collection("rooms").document(ID).collection("questions").document(String(questionIndex!)).addSnapshotListener { documentSnapshot, error in
             
             if let e = error {
@@ -200,7 +197,7 @@ class QuestionViewController: UIViewController {
         if animated {
             // TODO: re-enable animation
 //            UIView.animate(withDuration: 0.1, delay: 0, options: [.curveEaseInOut, .beginFromCurrentState, .allowUserInteraction], animations: {
-                self.selected = selected
+            self.selected = selected
 //            }, completion: nil)
         } else {
             self.selected = selected
@@ -242,19 +239,17 @@ extension QuestionViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AnswerCell", for: indexPath) as! AnswerCell
         cell.answerButton.tag = indexPath.row
         cell.answerButton.addTarget(self, action: #selector(answerButtonAction(sender:)), for: .touchUpInside)
+        if selected != -1 {
+            cell.answerButton.isUserInteractionEnabled = false
+        }
         configureCell(cell: cell, at: indexPath)
         return cell
     }
     
     @objc func answerButtonAction(sender: UIButton) {
         
-        if selected == sender.tag {
-            setSelectedAnswer(selected: -1, animated: true)
-        } else {
-            setSelectedAnswer(selected: sender.tag, animated: true)
-        }
-         
-        //call a method that updates all the cells-
+        setSelectedAnswer(selected: sender.tag, animated: true)
+        tableView.reloadData()
     }
     
 }

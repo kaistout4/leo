@@ -311,7 +311,7 @@
                     <toolbarItems>
                         <barButtonItem image="chevron.left" catalog="system" id="YFt-xd-Oyv">
                             <connections>
-                                <action selector="prevQuestiom:" destination="7C0-td-AaZ" id="Lsq-jO-yXo"/>
+                                <action selector="prevQuestion:" destination="7C0-td-AaZ" id="8rG-Aq-ZA5"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Fm0-0K-j1e"/>
@@ -857,8 +857,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="bzg-kf-7km"/>
-        <segue reference="aLe-Xl-31f"/>
+        <segue reference="vr6-vV-G4K"/>
+        <segue reference="jND-d4-gmS"/>
         <segue reference="9NB-8A-Acp"/>
         <segue reference="gYd-Hb-XUz"/>
     </inferredMetricsTieBreakers>

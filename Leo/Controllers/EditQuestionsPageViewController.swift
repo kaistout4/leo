@@ -17,6 +17,7 @@ class EditQuestionsPageViewController: UIPageViewController {
     
     @IBAction func saveQuestions() {
         print("Saving questions")
+        var missingFields = false
         var newQuestions: [MCQ] = []
         for vc in leoViewControllers {
         
@@ -31,6 +32,7 @@ class EditQuestionsPageViewController: UIPageViewController {
                 switch error {
                 
                 case "missingFields":
+                    missingFields = true
                     let alert = UIAlertController(title: "Error: Missing Fields", message: "", preferredStyle: .alert)
                     let action = UIAlertAction(title: "Ok", style: .default) { (action) in
                     }
@@ -42,6 +44,13 @@ class EditQuestionsPageViewController: UIPageViewController {
                     break
                 }
             }
+        }
+        if !missingFields {
+            let alert = UIAlertController(title: "Questions Saved", message: "", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .default) { (action) in
+            }
+            alert.addAction(action)
+            self.present(alert, animated: true, completion: nil)
         }
         questions = newQuestions
         dm.updateQuestionCount(roomID: ID, to: questions.count) {
@@ -218,8 +227,9 @@ class EditQuestionsPageViewController: UIPageViewController {
                 }
                
             }
+            //Room has one or multiple new empty questions
             if updatedQuestions.count != 0 {
-                
+                //Romm has one new non-empty question
                 if questions.count == 0 {
                     changeDetected = true
                 } else {
