@@ -398,11 +398,8 @@
                                                                         <color key="titleColor" systemColor="labelColor"/>
                                                                     </state>
                                                                 </button>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIZ-3O-aNE" userLabel="Answer Label">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIZ-3O-aNE" userLabel="Answer Label">
                                                                     <rect key="frame" x="4" y="4" width="264" height="52"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="height" constant="52" id="eWa-uR-fgv"/>
-                                                                    </constraints>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -456,7 +453,6 @@
                                             <outlet property="answerButton" destination="ebD-Tb-MVh" id="KIT-zg-K1O"/>
                                             <outlet property="answerIconImage" destination="G9n-y0-Rv2" id="XCH-uA-JqP"/>
                                             <outlet property="answerLabel" destination="RIZ-3O-aNE" id="SsV-92-BDH"/>
-                                            <outlet property="answerLabelHeightConstraint" destination="eWa-uR-fgv" id="KYV-1C-mF7"/>
                                             <outlet property="answerPercentage" destination="skO-5P-Xs1" id="fnH-AH-E7d"/>
                                             <outlet property="answerPrefix" destination="kGy-A2-Cej" id="2li-J9-K6m"/>
                                         </connections>

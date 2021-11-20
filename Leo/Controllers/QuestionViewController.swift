@@ -241,8 +241,8 @@ extension QuestionViewController: UITableViewDataSource {
         if selected != -1 {
             cell.answerButton.isUserInteractionEnabled = false
         }
-        let size = cell.answerLabel.sizeThatFits(CGSize(width: cell.answerLabel.bounds.width, height: 999.0))
-        cell.answerLabelHeightConstraint.constant = size.height
+//        let size = cell.answerLabel.sizeThatFits(CGSize(width: cell.answerLabel.bounds.width, height: 999.0))
+//        cell.answerLabelHeightConstraint.constant = size.height
         configureCell(cell: cell, at: indexPath)
         return cell
     }

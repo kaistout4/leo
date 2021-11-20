@@ -24,11 +24,13 @@ class WelcomeViewController: UIViewController {
         super.viewDidLoad()
         print("App opened")
         // Do any additional setup loading the view.
+        
+    }
+    override func viewWillAppear(_ animated: Bool) {
         if let id = DataManager.ID {
             print("Segue to room")
         }
     }
-
     
     @IBAction func joinPressed(_ sender: Any) {
         
