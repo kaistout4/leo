@@ -48,7 +48,7 @@ class MasterViewController: UIViewController {
         var newRoom: Room?
         DataManager.ID = roomID
         
-        let alert = UIAlertController(title: "Create room title", message: "", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Enter room title", message: "", preferredStyle: .alert)
         
         
         alert.addTextField { (textField) in
@@ -57,22 +57,17 @@ class MasterViewController: UIViewController {
         
         let cancel = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
         
-        let create = UIAlertAction(title: "Ok", style: .default) { (action) in
+        let create = UIAlertAction(title: "Create", style: .default) { (action) in
             
             if let field = alert.textFields?[0] {
                 
                 print("Text field exists")
                 if field.text == "" {
-                    
                     print("Romm has no name")
                     title = "Unnamed"
-                    
-                    
                 } else {
-                    
                     title = field.text!
                     print("Room has name: " + title)
-                 
                 }
                 
                 newRoom = Room(id: roomID, title: title, questionCount: 0)

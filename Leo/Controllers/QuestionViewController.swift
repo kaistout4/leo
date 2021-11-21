@@ -14,6 +14,7 @@ class QuestionViewController: UIViewController {
     @IBOutlet weak var questionTextView: UITextView!
     @IBOutlet weak var teacherCommandView: UIStackView!
     @IBOutlet weak var numResponsesLabel: UILabel!
+    @IBOutlet weak var numAnswersLabel: UILabel!
     
     
     let dm = DataManager()
@@ -38,7 +39,7 @@ class QuestionViewController: UIViewController {
     
     let letters = ["A", "B", "C", "D", "E", "F"]
     
-    var selected: Int = -1 {
+    var selected: [Int] = [] {
         
         didSet {
             
@@ -55,7 +56,7 @@ class QuestionViewController: UIViewController {
         super.viewDidLoad()
         //Updates question and answer labels
         updateQuestion()
-        
+        setNumAnswersLabel()
                 
         if (user == "student") {
             hideResults = true
@@ -73,6 +74,25 @@ class QuestionViewController: UIViewController {
         //codeLabel.text = "Code: " + roomID
         // Do any additional setup after loading the view.
         //loadNextQuestion()
+    }
+    
+    func setNumAnswersLabel() {
+        
+        switch question?.correctAnswers.count {
+        
+        case 2:
+            numAnswersLabel.text = "Select two answers"
+        case 3:
+            numAnswersLabel.text = "Select three answers"
+        case 4:
+            numAnswersLabel.text = "Select four answers"
+        case 5:
+            numAnswersLabel.text = "Select five answers"
+        case 6:
+            numAnswersLabel.text = "Select six answers"
+        default:
+            break
+        }
     }
     
     func monitorForResults() {
@@ -124,7 +144,7 @@ class QuestionViewController: UIViewController {
         
         let index = indexPath.row
         
-        let isSelected = index == selected
+        let isSelected = selected.contains(index)
         cell.answerButton.tag = index
         cell.answerPrefix.text = letters[index]
         
@@ -149,6 +169,7 @@ class QuestionViewController: UIViewController {
                 
                 let progress = numResults != 0 ? Float(results[index]) / Float(numResults) : 0.0
                 let rounded = Int(round(progress*100))
+                cell.answerLabel.textColor = .black
                 cell.answerPercentage.text = String(rounded) + "%"
                 
                 if isSelected {
@@ -193,13 +214,19 @@ class QuestionViewController: UIViewController {
     }
     
     func setSelectedAnswer(selected: Int, animated: Bool) {
+        
+        if self.selected.contains(selected) {
+            self.selected.remove(at: self.selected.firstIndex(of: selected)!)
+            return
+        }
+        
         if animated {
             // TODO: re-enable animation
 //            UIView.animate(withDuration: 0.1, delay: 0, options: [.curveEaseInOut, .beginFromCurrentState, .allowUserInteraction], animations: {
-            self.selected = selected
+            self.selected.append(selected)
 //            }, completion: nil)
         } else {
-            self.selected = selected
+            self.selected.append(selected)
         }
     }
     
@@ -238,8 +265,8 @@ extension QuestionViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AnswerCell", for: indexPath) as! AnswerCell
         cell.answerButton.tag = indexPath.row
         cell.answerButton.addTarget(self, action: #selector(answerButtonAction(sender:)), for: .touchUpInside)
-        if selected != -1 {
-          //  cell.answerButton.isUserInteractionEnabled = false
+        if selected.count == question?.correctAnswers.count {
+            cell.answerButton.isUserInteractionEnabled = false
         }
 //        let size = cell.answerLabel.sizeThatFits(CGSize(width: cell.answerLabel.bounds.width, height: 999.0))
 //        cell.answerLabelHeightConstraint.constant = size.height
@@ -251,7 +278,7 @@ extension QuestionViewController: UITableViewDataSource {
         
         setSelectedAnswer(selected: sender.tag, animated: true)
         tableView.reloadData()
-        dm.updateVote(roomID: DataManager.ID!, questionIndex: questionIndex!, answerIndex: sender.tag - 1) {
+        dm.updateVote(roomID: DataManager.ID!, questionIndex: questionIndex!, answerIndex: sender.tag) {
             
         }
     }

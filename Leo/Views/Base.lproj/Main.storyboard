@@ -571,7 +571,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Mbp-t3-gu3">
-                                <rect key="frame" x="0.0" y="149" width="414" height="650"/>
+                                <rect key="frame" x="0.0" y="177" width="414" height="622"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AnswerCell" id="3xG-Oy-WHS" customClass="AnswerCell" customModule="Leo" customModuleProvider="target">
@@ -604,7 +604,7 @@
                                                                     </state>
                                                                 </button>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RIZ-3O-aNE" userLabel="Answer Label">
-                                                                    <rect key="frame" x="4" y="4" width="264" height="52"/>
+                                                                    <rect key="frame" x="8" y="8" width="256" height="44"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -614,11 +614,11 @@
                                                             <constraints>
                                                                 <constraint firstItem="ebD-Tb-MVh" firstAttribute="top" secondItem="mNn-oR-9MW" secondAttribute="top" id="08d-dX-az1"/>
                                                                 <constraint firstItem="ebD-Tb-MVh" firstAttribute="leading" secondItem="mNn-oR-9MW" secondAttribute="leading" id="15J-T6-aQP"/>
-                                                                <constraint firstItem="RIZ-3O-aNE" firstAttribute="top" secondItem="mNn-oR-9MW" secondAttribute="top" constant="4" id="3mR-KJ-fLW"/>
-                                                                <constraint firstItem="RIZ-3O-aNE" firstAttribute="leading" secondItem="mNn-oR-9MW" secondAttribute="leading" constant="4" id="CUq-yt-LYV"/>
-                                                                <constraint firstAttribute="bottom" secondItem="RIZ-3O-aNE" secondAttribute="bottom" constant="4" id="FWn-8w-ytE"/>
+                                                                <constraint firstItem="RIZ-3O-aNE" firstAttribute="top" secondItem="mNn-oR-9MW" secondAttribute="top" constant="8" id="3mR-KJ-fLW"/>
+                                                                <constraint firstItem="RIZ-3O-aNE" firstAttribute="leading" secondItem="mNn-oR-9MW" secondAttribute="leading" constant="8" id="CUq-yt-LYV"/>
+                                                                <constraint firstAttribute="bottom" secondItem="RIZ-3O-aNE" secondAttribute="bottom" constant="8" id="FWn-8w-ytE"/>
                                                                 <constraint firstAttribute="trailing" secondItem="ebD-Tb-MVh" secondAttribute="trailing" id="c4B-uZ-QiW"/>
-                                                                <constraint firstAttribute="trailing" secondItem="RIZ-3O-aNE" secondAttribute="trailing" constant="4" id="nW3-ii-hio"/>
+                                                                <constraint firstAttribute="trailing" secondItem="RIZ-3O-aNE" secondAttribute="trailing" constant="8" id="nW3-ii-hio"/>
                                                                 <constraint firstAttribute="bottom" secondItem="ebD-Tb-MVh" secondAttribute="bottom" id="u5m-AW-rZM"/>
                                                             </constraints>
                                                         </view>
@@ -681,6 +681,12 @@
                                     <constraint firstAttribute="width" constant="300" id="MpD-p4-7zt"/>
                                 </constraints>
                             </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select one answer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XyC-Ph-rZw">
+                                <rect key="frame" x="25" y="130" width="118.5" height="17"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <color key="textColor" systemColor="secondaryLabelColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="WUw-gx-w2L"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -688,11 +694,13 @@
                             <constraint firstItem="WUw-gx-w2L" firstAttribute="trailing" secondItem="Mbp-t3-gu3" secondAttribute="trailing" id="3tt-wA-sbM"/>
                             <constraint firstItem="XKb-zr-8oe" firstAttribute="leading" secondItem="LKg-eL-ujN" secondAttribute="leadingMargin" id="GE6-Aq-obv"/>
                             <constraint firstItem="Mbp-t3-gu3" firstAttribute="leading" secondItem="WUw-gx-w2L" secondAttribute="leading" id="R7L-Rh-HLX"/>
+                            <constraint firstItem="XyC-Ph-rZw" firstAttribute="leading" secondItem="LKg-eL-ujN" secondAttribute="leadingMargin" constant="5" id="RnX-at-XPi"/>
                             <constraint firstItem="XKb-zr-8oe" firstAttribute="top" secondItem="LKg-eL-ujN" secondAttribute="topMargin" constant="40" id="d5g-H5-KNe"/>
                             <constraint firstAttribute="trailingMargin" secondItem="XKb-zr-8oe" secondAttribute="trailing" id="fuy-gF-V5S"/>
                             <constraint firstItem="pRO-Vc-cD2" firstAttribute="centerX" secondItem="LKg-eL-ujN" secondAttribute="centerX" id="gWK-tx-Gea"/>
                             <constraint firstItem="pRO-Vc-cD2" firstAttribute="top" secondItem="Mbp-t3-gu3" secondAttribute="bottom" id="hhI-CD-08x"/>
-                            <constraint firstItem="Mbp-t3-gu3" firstAttribute="top" secondItem="XKb-zr-8oe" secondAttribute="bottom" constant="27" id="oHa-9E-dc2"/>
+                            <constraint firstItem="XyC-Ph-rZw" firstAttribute="top" secondItem="XKb-zr-8oe" secondAttribute="bottom" constant="8" id="hqN-D0-4fL"/>
+                            <constraint firstItem="Mbp-t3-gu3" firstAttribute="top" secondItem="XyC-Ph-rZw" secondAttribute="bottom" constant="30" id="pbI-qB-oue"/>
                             <constraint firstItem="WUw-gx-w2L" firstAttribute="bottom" secondItem="pRO-Vc-cD2" secondAttribute="bottom" constant="40" id="ttk-dy-fEl"/>
                         </constraints>
                     </view>
@@ -700,7 +708,8 @@
                         <barButtonItem key="rightBarButtonItem" title="Leave" id="cyy-Pq-p5M"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="numResponsesLabel" destination="aWM-3f-hdq" id="6qH-WQ-ori"/>
+                        <outlet property="numAnswersLabel" destination="XyC-Ph-rZw" id="dOo-yy-bg1"/>
+                        <outlet property="numResponsesLabel" destination="XyC-Ph-rZw" id="ILN-gM-dLG"/>
                         <outlet property="questionTextView" destination="XKb-zr-8oe" id="GST-Lx-JA6"/>
                         <outlet property="tableView" destination="Mbp-t3-gu3" id="UIQ-jK-tCm"/>
                         <outlet property="teacherCommandView" destination="pRO-Vc-cD2" id="Bff-jy-h1S"/>
@@ -997,8 +1006,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="vr6-vV-G4K"/>
-        <segue reference="jND-d4-gmS"/>
+        <segue reference="bzg-kf-7km"/>
+        <segue reference="aLe-Xl-31f"/>
         <segue reference="fm4-2g-1JZ"/>
     </inferredMetricsTieBreakers>
     <resources>
