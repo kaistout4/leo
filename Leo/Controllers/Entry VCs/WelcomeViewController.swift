@@ -90,14 +90,14 @@ class WelcomeViewController: UIViewController {
             Auth.auth().signIn(withEmail: email, password: password) {  authResult, error in
                 
                 if let e = error {
-                    let alert = UIAlertController(title: "Error", message: error.debugDescription, preferredStyle: .alert)
+                    let alert = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
                     let action = UIAlertAction(title: "Ok", style: .destructive) { (action) in
-                        
+                        print(e.localizedDescription)
                     }
                     alert.addAction(action)
                     self.present(alert, animated: true, completion: nil)
                    
-                    print(e)
+                    
                 } else {
                     DataManager.user = "teacher"
                     
@@ -111,16 +111,4 @@ class WelcomeViewController: UIViewController {
 
 }
 
-func getErrorDescription(error: String) -> String {
-    
-    var firstQuoteDetected = false
-    
-    for char in error {
-        if char == "\"" && firstQuoteDetected == false {
-            
-        }
-    }
-    
-    return ""
-}
 
