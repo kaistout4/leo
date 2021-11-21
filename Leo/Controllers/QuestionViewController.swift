@@ -221,10 +221,7 @@ class QuestionViewController: UIViewController {
         }
         
         if animated {
-            // TODO: re-enable animation
-//            UIView.animate(withDuration: 0.1, delay: 0, options: [.curveEaseInOut, .beginFromCurrentState, .allowUserInteraction], animations: {
             self.selected.append(selected)
-//            }, completion: nil)
         } else {
             self.selected.append(selected)
         }

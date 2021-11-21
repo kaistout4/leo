@@ -12,7 +12,7 @@ class DataManager {
     
     var questions: [MCQ]? = []
     
-    static var ID: String? = ""
+    static var ID: String?
     static var user: String = "student"
     
     let db = Firestore.firestore()
@@ -136,7 +136,21 @@ class DataManager {
         
     }
     
-    
+    func clearResults(roomID: String, questionCount: Int) -> Void {
+        
+        db.collection(K.FStore.collectionName).document(roomID).updateData(["userCount" : 0])
+        
+        if questionCount == 1 {
+            db.collection(K.FStore.collectionName).document(roomID).collection("questions").document("0").updateData(["resultsA" : 0, "resultsB" : 0, "resultsC" : 0, "resultsD" : 0, "resultsE" : 0, "resultsF" : 0])
+            return
+        }
+        
+        for i in 0...questionCount-1 {
+            db.collection(K.FStore.collectionName).document(roomID).collection("questions").document(String(i)).updateData(["resultsA" : 0, "resultsB" : 0, "resultsC" : 0, "resultsD" : 0, "resultsE" : 0, "resultsF" : 0])
+        }
+        
+        
+    }
     
     func updateVote(roomID: String, questionIndex: Int, answerIndex: Int, completion: @escaping () -> Void) {
     
@@ -166,7 +180,10 @@ class DataManager {
         db.collection(K.FStore.collectionName).document(roomID).updateData(["questionCount" : to])
     }
     
-    func deleteRoom(roomID: String) {
+    func deleteRoom(roomID: String, questionCount: Int) {
+        for i in 0...questionCount-1 {
+            db.collection(K.FStore.collectionName).document(roomID).collection("questions").document(String(i)).delete()
+        }
         db.collection(K.FStore.collectionName).document(roomID).delete()
     }
     

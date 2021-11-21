@@ -33,6 +33,9 @@
                                 <buttonConfiguration key="configuration" style="plain" title="Learn more">
                                     <color key="baseForegroundColor" systemColor="systemGray6Color"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <segue destination="tb1-Xv-JVz" kind="show" id="JkG-CI-Dj9"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Join a room" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HJI-r8-kEH">
                                 <rect key="frame" x="40" y="200" width="89" height="20.5"/>
@@ -512,6 +515,46 @@
             </objects>
             <point key="canvasLocation" x="4650.7246376811599" y="-309.375"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="u2S-ZD-AUQ">
+            <objects>
+                <viewController id="tb1-Xv-JVz" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Dnk-fx-tna">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Uptake" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FF9-Hy-p2H">
+                                <rect key="frame" x="20" y="108" width="148.5" height="30"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="7tv-Kl-yjB">
+                                <rect key="frame" x="20" y="158" width="374" height="704"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <string key="text">Uptake was developed by Kai Stout, a high-schooler from Los Altos, California, who sought to create an easy way to check for student understanding. Assuming the role of a student and a teacher, his perspective from both sides of the classroom helped create him create this easy-to-use learning tool. </string>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="zEM-CE-oG7"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="zEM-CE-oG7" firstAttribute="bottom" secondItem="7tv-Kl-yjB" secondAttribute="bottom" id="2BF-Jz-1gC"/>
+                            <constraint firstItem="FF9-Hy-p2H" firstAttribute="top" secondItem="zEM-CE-oG7" secondAttribute="top" constant="20" id="Gq2-lK-2Q3"/>
+                            <constraint firstItem="FF9-Hy-p2H" firstAttribute="leading" secondItem="Dnk-fx-tna" secondAttribute="leadingMargin" id="fBk-A3-eVk"/>
+                            <constraint firstItem="7tv-Kl-yjB" firstAttribute="top" secondItem="FF9-Hy-p2H" secondAttribute="bottom" constant="20" id="hna-D3-pgq"/>
+                            <constraint firstItem="7tv-Kl-yjB" firstAttribute="leading" secondItem="Dnk-fx-tna" secondAttribute="leadingMargin" id="mhP-XI-a7J"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="7tv-Kl-yjB" secondAttribute="trailing" id="pPm-7B-ptD"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Bhk-sn-0db"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wUG-Gj-qWx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5589.8550724637689" y="-326.11607142857139"/>
+        </scene>
         <!--Active Questions Page View Controller-->
         <scene sceneID="fY9-Hk-IBM">
             <objects>
@@ -541,11 +584,17 @@
                                 <action selector="leaveRoom:" destination="7C0-td-AaZ" id="RaD-tK-scO"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="doc.on.doc" catalog="system" id="zTW-6t-Vvf">
+                            <connections>
+                                <action selector="shareRoom:" destination="7C0-td-AaZ" id="WsY-Cn-EGr"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="exitButton" destination="DQv-bi-Fl6" id="5RM-m8-JFe"/>
                         <outlet property="questionButton" destination="ZTM-iP-uv3" id="4ec-1d-gJ0"/>
+                        <outlet property="shareButton" destination="zTW-6t-Vvf" id="6YV-t2-JoP"/>
                         <segue destination="IXw-ZK-FdH" kind="unwind" identifier="unwindToWelcome" unwindAction="unwindToWelcomeViewControllerWithSegue:" id="yBt-iv-Q0P"/>
                         <segue destination="IXw-ZK-FdH" kind="unwind" identifier="unwindToMaster" unwindAction="unwindToMasterViewControllerWithSegue:" id="X3d-f7-d2D"/>
                     </connections>
@@ -674,6 +723,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0/0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aWM-3f-hdq" userLabel="Responses Label">
                                         <rect key="frame" x="0.0" y="0.0" width="300" height="23"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                        <color key="textColor" systemColor="secondaryLabelColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -709,7 +759,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="numAnswersLabel" destination="XyC-Ph-rZw" id="dOo-yy-bg1"/>
-                        <outlet property="numResponsesLabel" destination="XyC-Ph-rZw" id="ILN-gM-dLG"/>
+                        <outlet property="numResponsesLabel" destination="aWM-3f-hdq" id="GaT-xc-KxC"/>
                         <outlet property="questionTextView" destination="XKb-zr-8oe" id="GST-Lx-JA6"/>
                         <outlet property="tableView" destination="Mbp-t3-gu3" id="UIQ-jK-tCm"/>
                         <outlet property="teacherCommandView" destination="pRO-Vc-cD2" id="Bff-jy-h1S"/>
@@ -1015,6 +1065,7 @@
         <image name="checkmark.circle" catalog="system" width="128" height="121"/>
         <image name="chevron.left" catalog="system" width="96" height="128"/>
         <image name="chevron.right" catalog="system" width="96" height="128"/>
+        <image name="doc.on.doc" catalog="system" width="116" height="128"/>
         <image name="ellipsis" catalog="system" width="128" height="37"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <namedColor name="AccentColor">

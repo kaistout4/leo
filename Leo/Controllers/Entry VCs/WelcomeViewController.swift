@@ -58,6 +58,7 @@ class WelcomeViewController: UIViewController {
                     DataManager.ID = code
                     DataManager.user = "student"
                     self.performSegue(withIdentifier: "welcomeToActiveRoom", sender: self)
+                    //update user count
                       
                 } else {
                     

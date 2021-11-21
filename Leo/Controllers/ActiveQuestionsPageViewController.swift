@@ -12,6 +12,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
       
     @IBOutlet weak var exitButton: UIBarButtonItem!
     @IBOutlet weak var questionButton: UIBarButtonItem!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
     
     let dm = DataManager()
     
@@ -37,7 +38,9 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         super.viewDidLoad()
         dataSource = self
         delegate = self
-      
+        
+        self.title = "ID: " + ID
+       
         if (user == "student") {
             exitButton.title = "Leave"
             navigationController?.isToolbarHidden = true
@@ -110,6 +113,21 @@ class ActiveQuestionsPageViewController: UIPageViewController {
             
         }
         
+        
+    }
+    
+    
+    
+    @IBAction func shareRoom(_ sender: Any) {
+        let url = "uptake://join/\(ID)"
+        UIPasteboard.general.string = url
+        let alert = UIAlertController(title: "Link copied to clipboard", message: "", preferredStyle: .alert)
+        self.present(alert, animated: true) {
+            
+        }
+        alert.dismiss(animated: true) {
+            
+        }
         
     }
     
@@ -260,12 +278,19 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         
         //if teacher, close room
         if user == "teacher" {
-        
-            dm.updateState(roomID: ID, state: "closed") {
-                self.performSegue(withIdentifier: "unwindToMaster", sender: self)
-                
             
+            let alert = UIAlertController(title: "End Room", message: "Are you sure you want to end the session? Results will not save.", preferredStyle: .alert)
+            let leave = UIAlertAction(title: "Leave", style: .destructive) { (action) in
+                self.dm.updateState(roomID: self.ID, state: "closed") {
+                    self.performSegue(withIdentifier: "unwindToMaster", sender: self)
+                }
             }
+            let stay = UIAlertAction(title: "Stay", style: .cancel) { (action) in
+            }
+            alert.addAction(leave)
+            alert.addAction(stay)
+            self.present(alert, animated: true)
+            
         } else {
             performSegue(withIdentifier: "unwindToWelcome", sender: self)
         }

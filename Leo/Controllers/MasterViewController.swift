@@ -14,7 +14,13 @@ class MasterViewController: UIViewController {
     var rooms: [Room] = []
     
     @IBAction func unwindToMasterViewController(segue: UIStoryboardSegue) {
+        if let vc = segue.source as? ActiveQuestionsPageViewController {
+            if let ID = DataManager.ID {
+                dm.clearResults(roomID: ID, questionCount: rooms[selectedRoomIndex].questionCount)
+            }
+        }
         loadRooms()
+        
     }
     
     @IBOutlet weak var tableView: UITableView!
@@ -190,8 +196,8 @@ class MasterViewController: UIViewController {
             
         }
         let delete = UIAction(title: "Delete room", image: UIImage(systemName: "trash")) { [weak self] (action) in
+            self?.dm.deleteRoom(roomID: cell.roomID, questionCount: (self?.rooms[index].questionCount)!)
             self?.rooms.remove(at: index)
-            self?.dm.deleteRoom(roomID: cell.roomID)
             self?.tableView.reloadData()
             print("Delete room")
            
