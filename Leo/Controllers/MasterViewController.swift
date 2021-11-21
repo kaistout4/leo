@@ -55,7 +55,9 @@ class MasterViewController: UIViewController {
             textField.placeholder = "Title"
         }
         
-        let action = UIAlertAction(title: "Ok", style: .default) { (action) in
+        let cancel = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
+        
+        let create = UIAlertAction(title: "Ok", style: .default) { (action) in
             
             if let field = alert.textFields?[0] {
                 
@@ -84,7 +86,8 @@ class MasterViewController: UIViewController {
                 self.performSegue(withIdentifier: "masterToRoomPage", sender: self)
             }
         }
-        alert.addAction(action)
+        alert.addAction(cancel)
+        alert.addAction(create)
    
         self.present(alert, animated: true, completion: nil)
         
@@ -146,7 +149,6 @@ class MasterViewController: UIViewController {
         
         //Loading screen needed
         loadRooms()
-        
         // Do any additional setup after loading the view.
     }
     

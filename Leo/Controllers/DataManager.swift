@@ -143,21 +143,22 @@ class DataManager {
         var vote = "resultsA"
         switch answerIndex {
             
-            case 1:
-                vote = "resultsB"
-            case 2:
-                vote = "resultsD"
-            case 3:
-                vote = "resultsD"
-            default:
-                break
+        case 1:
+            vote = "resultsB"
+        case 2:
+            vote = "resultsC"
+        case 3:
+            vote = "resultsD"
+        case 4:
+            vote = "resultsE"
+        case 5:
+            vote = "resultsF"
+        default:
+            break
             
         }
         
         db.collection(K.FStore.collectionName).document(roomID).collection("questions").document(String(questionIndex)).updateData([vote : FieldValue.increment(Int64(1))])
-        
-        
-        
     }
     
     func updateQuestionCount(roomID: String, to: Int, completion: @escaping () -> Void) {

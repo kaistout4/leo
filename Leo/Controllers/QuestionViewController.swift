@@ -239,7 +239,7 @@ extension QuestionViewController: UITableViewDataSource {
         cell.answerButton.tag = indexPath.row
         cell.answerButton.addTarget(self, action: #selector(answerButtonAction(sender:)), for: .touchUpInside)
         if selected != -1 {
-            cell.answerButton.isUserInteractionEnabled = false
+          //  cell.answerButton.isUserInteractionEnabled = false
         }
 //        let size = cell.answerLabel.sizeThatFits(CGSize(width: cell.answerLabel.bounds.width, height: 999.0))
 //        cell.answerLabelHeightConstraint.constant = size.height
@@ -251,6 +251,9 @@ extension QuestionViewController: UITableViewDataSource {
         
         setSelectedAnswer(selected: sender.tag, animated: true)
         tableView.reloadData()
+        dm.updateVote(roomID: DataManager.ID!, questionIndex: questionIndex!, answerIndex: sender.tag - 1) {
+            
+        }
     }
     
 }

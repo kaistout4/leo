@@ -56,15 +56,9 @@ class WelcomeViewController: UIViewController {
                 if let room = doc, room.exists {
                     
                     DataManager.ID = code
-                    
-                    //selects proper vc based on state of room when joined
-                    if let data = doc?.data(), let state = data["state"] as? String{
-           
-                        self.performSegue(withIdentifier: "welcomeToActiveRoom", sender: self)
+                    DataManager.user = "student"
+                    self.performSegue(withIdentifier: "welcomeToActiveRoom", sender: self)
                       
-                        
-                    }
-                    
                 } else {
                     
                     let alert = UIAlertController(title: "Join code invalid", message: "", preferredStyle: .alert)

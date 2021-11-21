@@ -110,18 +110,20 @@ class AddQuestionViewController: UIViewController {
     
    
     func getAnswers() -> [String] {
-        var cells = tableView.visibleCells
-        var correct: [String] = []
-        cells.remove(at: cells.count-2)
+       var cells = tableView.visibleCells
+       var answers: [String] = []
+       if answerChoices.count != 6 {
+          cells.remove(at: cells.count-2)
+       }
        cells.remove(at: cells.count-1)
         
-        for i in 0...cells.count-1 {
-            var c = cells[i] as! EditAnswerCell
-            //if c.answerTextField.text! != "" {
-            correct.append(c.answerTextView.text!)
-            //}
-        }
-        return correct
+       for i in 0...cells.count-1 {
+          var c = cells[i] as! EditAnswerCell
+          //if c.answerTextField.text! != "" {
+          answers.append(c.answerTextView.text ?? "")
+          //}
+       }
+       return answers
     }
    
    func saveData() {
@@ -189,14 +191,20 @@ class AddQuestionViewController: UIViewController {
 extension AddQuestionViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return answerChoices.count + 2
+       if answerChoices.count == 6 {
+          print(answerChoices)
+          return answerChoices.count + 1
+       }
+       return answerChoices.count + 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let index = indexPath.row
         
-        if indexPath.row == tableView.numberOfRows(inSection: 0) - 2 {
+       if indexPath.row == tableView.numberOfRows(inSection: 0) - 2 && answerChoices.count != 6 {
+          print("Add answer cell")
+          print(indexPath.row)
             let cell = tableView.dequeueReusableCell(withIdentifier: "AddAnswerCell", for: indexPath) as! AddAnswerCell
             cell.addAnswerButton.addTarget(self, action: #selector(addAnswerButtonAction(sender:)), for: .touchUpInside)
             

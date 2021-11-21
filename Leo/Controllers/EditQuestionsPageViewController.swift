@@ -47,10 +47,8 @@ class EditQuestionsPageViewController: UIPageViewController {
         }
         if !missingFields {
             let alert = UIAlertController(title: "Questions Saved", message: "", preferredStyle: .alert)
-            let action = UIAlertAction(title: "Ok", style: .default) { (action) in
-            }
-            alert.addAction(action)
             self.present(alert, animated: true, completion: nil)
+            self.performSegue(withIdentifier: "unwindToMaster", sender: self)
         }
         questions = newQuestions
         dm.updateQuestionCount(roomID: ID, to: questions.count) {
