@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Welcome View Controller-->
+        <!--Uptake-->
         <scene sceneID="bEU-sn-xbk">
             <objects>
                 <viewController id="yLQ-fV-l1S" customClass="WelcomeViewController" customModule="Leo" customModuleProvider="target" sceneMemberID="viewController">
@@ -18,40 +18,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to Uptake." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x4v-nq-HPd">
-                                <rect key="frame" x="20" y="88" width="374" height="37"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u74-0h-GDc">
-                                <rect key="frame" x="0.0" y="149" width="150" height="31"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="YrH-w1-VPe"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Learn more">
-                                    <color key="baseForegroundColor" systemColor="systemGray6Color"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <segue destination="tb1-Xv-JVz" kind="show" id="JkG-CI-Dj9"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Join a room" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HJI-r8-kEH">
-                                <rect key="frame" x="40" y="200" width="89" height="20.5"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                <color key="textColor" systemColor="secondaryLabelColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="KLM-rH-xmm" userLabel="Join Stack View">
-                                <rect key="frame" x="20" y="228.5" width="374" height="150"/>
+                                <rect key="frame" x="20" y="225" width="374" height="150"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bec-cd-3hd">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="50"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter room code:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MFJ-bd-X9z">
                                                 <rect key="frame" x="20" y="0.0" width="334" height="50"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                 <color key="textColor" systemColor="systemBackgroundColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -98,21 +73,15 @@
                                     <constraint firstAttribute="height" constant="150" id="Bcd-7t-cTu"/>
                                 </constraints>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create and manage rooms" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pq4-Ao-I3y">
-                                <rect key="frame" x="40" y="418.5" width="201" height="20.5"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                <color key="textColor" systemColor="secondaryLabelColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="w6z-TN-7nI" userLabel="Login Stack View">
-                                <rect key="frame" x="20" y="447" width="374" height="200"/>
+                                <rect key="frame" x="20" y="440" width="374" height="200"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kSO-38-pb9">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="50"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login to get started:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eUu-y2-Xw3">
                                                 <rect key="frame" x="20" y="0.0" width="334" height="50"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
@@ -164,7 +133,7 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Login">
                                             <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle2"/>
-                                            <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="baseForegroundColor" name="AccentColor"/>
                                         </buttonConfiguration>
                                         <connections>
                                             <action selector="loginPressed:" destination="yLQ-fV-l1S" eventType="touchUpInside" id="yw4-Wa-Cc3"/>
@@ -176,18 +145,40 @@
                                     <constraint firstAttribute="height" constant="200" id="twh-Io-bSb"/>
                                 </constraints>
                             </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The easy way to check for understanding." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lMT-Jf-qFk">
+                                <rect key="frame" x="20" y="140" width="374" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="p9c-t0-JKU"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <color key="textColor" systemColor="secondaryLabelColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Join a room" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HJI-r8-kEH">
+                                <rect key="frame" x="30" y="200" width="75.5" height="17"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <color key="textColor" systemColor="secondaryLabelColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create and manage rooms" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pq4-Ao-I3y">
+                                <rect key="frame" x="30" y="415" width="170.5" height="17"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <color key="textColor" systemColor="secondaryLabelColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't have an account?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XSU-1p-px2">
-                                <rect key="frame" x="20" y="667" width="198.5" height="23"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                <rect key="frame" x="20" y="660" width="152" height="17"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iA1-bR-BtC" userLabel="Register">
-                                <rect key="frame" x="20" y="690" width="87" height="34.5"/>
+                                <rect key="frame" x="172" y="660" width="90" height="17"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Register">
-                                    <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle3"/>
-                                    <color key="baseForegroundColor" systemColor="labelColor"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Register Now">
+                                    <fontDescription key="titleFontDescription" style="UICTFontTextStyleBody"/>
+                                    <directionalEdgeInsets key="contentInsets" top="0.0" leading="4" bottom="0.0" trailing="0.0"/>
+                                    <color key="baseForegroundColor" name="AccentColor"/>
                                 </buttonConfiguration>
                                 <connections>
                                     <segue destination="i6U-GK-Uyf" kind="popoverPresentation" popoverAnchorView="iA1-bR-BtC" id="qaP-6k-sc1">
@@ -195,15 +186,6 @@
                                     </segue>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The easy way to check for understanding." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lMT-Jf-qFk">
-                                <rect key="frame" x="20" y="129" width="374" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="p9c-t0-JKU"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="9v9-Ta-mOI"/>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -212,27 +194,28 @@
                             <constraint firstItem="XSU-1p-px2" firstAttribute="top" secondItem="w6z-TN-7nI" secondAttribute="bottom" constant="20" id="7E6-RJ-5mv"/>
                             <constraint firstAttribute="trailingMargin" secondItem="lMT-Jf-qFk" secondAttribute="trailing" id="7gh-FN-KEX"/>
                             <constraint firstItem="XSU-1p-px2" firstAttribute="leading" secondItem="TR2-I8-Ge1" secondAttribute="leadingMargin" id="Bbx-Ji-sLz"/>
+                            <constraint firstItem="HJI-r8-kEH" firstAttribute="top" secondItem="lMT-Jf-qFk" secondAttribute="bottom" constant="40" id="CTT-nM-MK6"/>
+                            <constraint firstItem="iA1-bR-BtC" firstAttribute="centerY" secondItem="XSU-1p-px2" secondAttribute="centerY" id="Dss-mj-YQC"/>
                             <constraint firstItem="w6z-TN-7nI" firstAttribute="top" secondItem="pq4-Ao-I3y" secondAttribute="bottom" constant="8" id="Dzv-Nq-jmN"/>
-                            <constraint firstItem="u74-0h-GDc" firstAttribute="top" secondItem="lMT-Jf-qFk" secondAttribute="bottom" id="Ekg-nT-yee"/>
-                            <constraint firstItem="x4v-nq-HPd" firstAttribute="leading" secondItem="TR2-I8-Ge1" secondAttribute="leadingMargin" id="FgZ-gL-xlN"/>
-                            <constraint firstItem="HJI-r8-kEH" firstAttribute="leading" secondItem="TR2-I8-Ge1" secondAttribute="leadingMargin" constant="20" id="IF2-2p-4z0"/>
-                            <constraint firstItem="x4v-nq-HPd" firstAttribute="top" secondItem="9v9-Ta-mOI" secondAttribute="top" id="NHe-lK-UYy"/>
+                            <constraint firstItem="HJI-r8-kEH" firstAttribute="leading" secondItem="TR2-I8-Ge1" secondAttribute="leadingMargin" constant="10" id="IF2-2p-4z0"/>
                             <constraint firstItem="KLM-rH-xmm" firstAttribute="top" secondItem="HJI-r8-kEH" secondAttribute="bottom" constant="8" id="Oce-LN-dha"/>
                             <constraint firstItem="w6z-TN-7nI" firstAttribute="leading" secondItem="TR2-I8-Ge1" secondAttribute="leadingMargin" id="Pgl-bB-VbP"/>
-                            <constraint firstItem="u74-0h-GDc" firstAttribute="leading" secondItem="TR2-I8-Ge1" secondAttribute="leadingMargin" constant="-20" id="S7B-eL-wbi"/>
-                            <constraint firstItem="iA1-bR-BtC" firstAttribute="leading" secondItem="TR2-I8-Ge1" secondAttribute="leadingMargin" id="YBB-ca-qnd"/>
-                            <constraint firstItem="iA1-bR-BtC" firstAttribute="top" secondItem="XSU-1p-px2" secondAttribute="bottom" id="asU-2V-9nm"/>
+                            <constraint firstItem="iA1-bR-BtC" firstAttribute="leading" secondItem="XSU-1p-px2" secondAttribute="trailing" id="TFV-tr-zxK"/>
                             <constraint firstItem="KLM-rH-xmm" firstAttribute="leading" secondItem="TR2-I8-Ge1" secondAttribute="leadingMargin" id="dHR-k5-us7"/>
-                            <constraint firstItem="HJI-r8-kEH" firstAttribute="top" secondItem="u74-0h-GDc" secondAttribute="bottom" constant="20" id="e2A-Zo-YdU"/>
                             <constraint firstAttribute="trailingMargin" secondItem="w6z-TN-7nI" secondAttribute="trailing" id="e2M-QU-YTe"/>
-                            <constraint firstItem="pq4-Ao-I3y" firstAttribute="leading" secondItem="TR2-I8-Ge1" secondAttribute="leadingMargin" constant="20" id="e3P-Bm-ai4"/>
+                            <constraint firstItem="pq4-Ao-I3y" firstAttribute="leading" secondItem="TR2-I8-Ge1" secondAttribute="leadingMargin" constant="10" id="e3P-Bm-ai4"/>
                             <constraint firstItem="lMT-Jf-qFk" firstAttribute="leading" secondItem="TR2-I8-Ge1" secondAttribute="leadingMargin" id="gBt-CZ-FhZ"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="x4v-nq-HPd" secondAttribute="trailing" id="ig0-Sd-Hhv"/>
                             <constraint firstAttribute="trailingMargin" secondItem="KLM-rH-xmm" secondAttribute="trailing" id="l20-mB-xXB"/>
-                            <constraint firstItem="lMT-Jf-qFk" firstAttribute="top" secondItem="x4v-nq-HPd" secondAttribute="bottom" constant="4" id="leM-5w-WlK"/>
+                            <constraint firstItem="lMT-Jf-qFk" firstAttribute="top" secondItem="9v9-Ta-mOI" secondAttribute="top" id="tmO-Sx-SOW"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="B7e-QQ-fsD"/>
+                    <navigationItem key="navigationItem" title="Uptake" id="B7e-QQ-fsD">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="info.circle" catalog="system" id="qzz-KK-MPr">
+                            <connections>
+                                <segue destination="tb1-Xv-JVz" kind="show" id="lkF-BB-yXF"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="codeTextField" destination="khY-4p-U66" id="SE9-JY-Nrj"/>
                         <outlet property="emailTextField" destination="6rQ-SU-rB2" id="lxo-mR-SVl"/>
@@ -515,7 +498,7 @@
             </objects>
             <point key="canvasLocation" x="4650.7246376811599" y="-309.375"/>
         </scene>
-        <!--View Controller-->
+        <!--About Uptake-->
         <scene sceneID="u2S-ZD-AUQ">
             <objects>
                 <viewController id="tb1-Xv-JVz" sceneMemberID="viewController">
@@ -523,14 +506,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Uptake" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FF9-Hy-p2H">
-                                <rect key="frame" x="20" y="108" width="148.5" height="30"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="7tv-Kl-yjB">
-                                <rect key="frame" x="20" y="158" width="374" height="704"/>
+                                <rect key="frame" x="20" y="140" width="374" height="722"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <string key="text">Uptake was developed by Kai Stout, a high-schooler from Los Altos, California, who sought to create an easy way to check for student understanding. Assuming the role of a student and a teacher, his perspective from both sides of the classroom helped create him create this easy-to-use learning tool. </string>
                                 <color key="textColor" systemColor="labelColor"/>
@@ -542,18 +519,16 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="zEM-CE-oG7" firstAttribute="bottom" secondItem="7tv-Kl-yjB" secondAttribute="bottom" id="2BF-Jz-1gC"/>
-                            <constraint firstItem="FF9-Hy-p2H" firstAttribute="top" secondItem="zEM-CE-oG7" secondAttribute="top" constant="20" id="Gq2-lK-2Q3"/>
-                            <constraint firstItem="FF9-Hy-p2H" firstAttribute="leading" secondItem="Dnk-fx-tna" secondAttribute="leadingMargin" id="fBk-A3-eVk"/>
-                            <constraint firstItem="7tv-Kl-yjB" firstAttribute="top" secondItem="FF9-Hy-p2H" secondAttribute="bottom" constant="20" id="hna-D3-pgq"/>
+                            <constraint firstItem="7tv-Kl-yjB" firstAttribute="top" secondItem="zEM-CE-oG7" secondAttribute="top" id="hna-D3-pgq"/>
                             <constraint firstItem="7tv-Kl-yjB" firstAttribute="leading" secondItem="Dnk-fx-tna" secondAttribute="leadingMargin" id="mhP-XI-a7J"/>
                             <constraint firstAttribute="trailingMargin" secondItem="7tv-Kl-yjB" secondAttribute="trailing" id="pPm-7B-ptD"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Bhk-sn-0db"/>
+                    <navigationItem key="navigationItem" title="About Uptake" id="Bhk-sn-0db"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wUG-Gj-qWx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5589.8550724637689" y="-326.11607142857139"/>
+            <point key="canvasLocation" x="1932" y="-611"/>
         </scene>
         <!--Active Questions Page View Controller-->
         <scene sceneID="fY9-Hk-IBM">
@@ -778,7 +753,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Mvw-ka-6oy">
-                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
+                                <rect key="frame" x="0.0" y="140" width="414" height="756"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RoomCell" rowHeight="240" id="GLe-SW-62n" customClass="RoomCell" customModule="Leo" customModuleProvider="target">
@@ -992,8 +967,8 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="YGT-y6-090" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="jxy-Ug-dAq">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="jxy-Ug-dAq">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1067,6 +1042,7 @@
         <image name="chevron.right" catalog="system" width="96" height="128"/>
         <image name="doc.on.doc" catalog="system" width="116" height="128"/>
         <image name="ellipsis" catalog="system" width="128" height="37"/>
+        <image name="info.circle" catalog="system" width="128" height="121"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <namedColor name="AccentColor">
             <color red="1" green="0.79199999570846558" blue="0.15700000524520874" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

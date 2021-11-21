@@ -28,7 +28,13 @@ class WelcomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         joinView.layer.cornerRadius = 10.0
+        joinView.layer.shadowColor = UIColor.black.cgColor
+        joinView.layer.shadowRadius = 9.0
+        joinView.layer.shadowOpacity = 0.15
         loginView.layer.cornerRadius = 10.0
+        loginView.layer.shadowColor = UIColor.black.cgColor
+        loginView.layer.shadowRadius = 9.0
+        loginView.layer.shadowOpacity = 0.15
         print("App opened")
         // Do any additional setup loading the view.
         

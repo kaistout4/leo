@@ -329,7 +329,12 @@ class RoomCell: UITableViewCell {
     var roomID = ""
     
     override func awakeFromNib() {
+        clipsToBounds = false
+        contentView.clipsToBounds = false
         roomBackground.layer.cornerRadius = 10.0
+        roomBackground.layer.shadowColor = UIColor.black.cgColor
+        roomBackground.layer.shadowRadius = 9.0
+        roomBackground.layer.shadowOpacity = 0.15
         startButtonBackground.layer.cornerRadius = startButtonBackground.bounds.height / 2.0
 
     }
