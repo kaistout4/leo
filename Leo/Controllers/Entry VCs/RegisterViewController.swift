@@ -23,24 +23,41 @@ class RegisterViewController: UIViewController {
         if let email = emailTextField.text, let password = passwordTextField.text, let confirmPassword = confirmPasswordTextField.text {
             
             if password == confirmPassword {
-                Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-                    
-                    if let e = error {
-                        print(e)
-                    } else {
-                        DataManager.user = "teacher"
-                        self.performSegue(withIdentifier: "registerToMaster", sender: self)
+                print(password.count)
+                if password.count < 6 {
+                    let alert = UIAlertController(title: "Error", message: "The password must be 6 characters or longer.", preferredStyle: .alert)
+                    let action = UIAlertAction(title: "Ok", style: .destructive) { (action) in
+                        
                     }
+                    alert.addAction(action)
+                    self.present(alert, animated: true, completion: nil)
+                   
+                } else {
+                    Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                        
+                        if let e = error {
+                            let alert = UIAlertController(title: "Error", message: "The email address is already in use by another count.", preferredStyle: .alert)
+                            let action = UIAlertAction(title: "Ok", style: .destructive) { (action) in
+                                
+                            }
+                            alert.addAction(action)
+                            self.present(alert, animated: true, completion: nil)
+                            print(e)
+                        } else {
+                            DataManager.user = "teacher"
+                            self.performSegue(withIdentifier: "registerToMaster", sender: self)
+                        }
+                        
+                    }
+                }
+            } else {
+                let alert = UIAlertController(title: "Passwords do not match", message: "", preferredStyle: .alert)
+                let action = UIAlertAction(title: "Ok", style: .default) { (action) in
                     
                 }
+                alert.addAction(action)
+                self.present(alert, animated: true, completion: nil)
             }
-            let alert = UIAlertController(title: "Passwords do not match", message: "", preferredStyle: .alert)
-            let action = UIAlertAction(title: "Ok", style: .default) { (action) in
-                
-            }
-            alert.addAction(action)
-            self.present(alert, animated: true, completion: nil)
-            
         }
       
         
