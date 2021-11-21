@@ -15,20 +15,31 @@ class RegisterViewController: UIViewController {
     
     @IBOutlet weak var passwordTextField: UITextField!
     
+    @IBOutlet weak var confirmPasswordTextField: UITextField!
+    
+    
     @IBAction func registerPressed(_ sender: UIButton) {
         
-        if let email = emailTextField.text, let password = passwordTextField.text {
+        if let email = emailTextField.text, let password = passwordTextField.text, let confirmPassword = confirmPasswordTextField.text {
             
-            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-             
-                if let e = error {
-                    print(e)
-                } else {
-                    DataManager.user = "teacher"
-                    self.performSegue(withIdentifier: "RegisterToMaster", sender: self)
+            if password == confirmPassword {
+                Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                    
+                    if let e = error {
+                        print(e)
+                    } else {
+                        DataManager.user = "teacher"
+                        self.performSegue(withIdentifier: "registerToMaster", sender: self)
+                    }
+                    
                 }
+            }
+            let alert = UIAlertController(title: "Passwords do not match", message: "", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .default) { (action) in
                 
             }
+            alert.addAction(action)
+            self.present(alert, animated: true, completion: nil)
             
         }
       

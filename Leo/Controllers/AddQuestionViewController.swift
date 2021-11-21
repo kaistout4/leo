@@ -20,6 +20,8 @@ class AddQuestionViewController: UIViewController {
    
    @IBOutlet weak var tableView: UITableView!
     
+   weak var delegate: AddQuestionViewControllerDelegate?
+   
     let ID = DataManager.ID!
     
     var questionIndex: Int? = nil
@@ -48,9 +50,11 @@ class AddQuestionViewController: UIViewController {
        tableView.dataSource = self
        questionTextView.delegate = self
        tableView.register(UINib(nibName: "AddAnswerCell", bundle: nil), forCellReuseIdentifier: "AddAnswerCell")
+       tableView.register(UINib(nibName: "DeleteQuestionCell", bundle: nil), forCellReuseIdentifier: "DeleteQuestionCell")
         
        questionTextView.text = text
        questionTextView.isScrollEnabled = false
+       
        tableView.reloadData()
         // Do any additional setup after loading the view.
     }
@@ -108,7 +112,8 @@ class AddQuestionViewController: UIViewController {
     func getAnswers() -> [String] {
         var cells = tableView.visibleCells
         var correct: [String] = []
-        cells.remove(at: cells.count-1)
+        cells.remove(at: cells.count-2)
+       cells.remove(at: cells.count-1)
         
         for i in 0...cells.count-1 {
             var c = cells[i] as! EditAnswerCell
@@ -170,51 +175,62 @@ class AddQuestionViewController: UIViewController {
       tableView.reloadData()
         
     }
-        
+   
+   @objc func deleteButtonAction(sender: UIButton) {
+      //Deletes self
+      delegate?.deleteAddQuestionViewController(self)
+   }
         
 }
+
 
 
     
 extension AddQuestionViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return answerChoices.count + 1
+        return answerChoices.count + 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let index = indexPath.row
         
-        if indexPath.row == tableView.numberOfRows(inSection: 0) - 1 {
+        if indexPath.row == tableView.numberOfRows(inSection: 0) - 2 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "AddAnswerCell", for: indexPath) as! AddAnswerCell
             cell.addAnswerButton.addTarget(self, action: #selector(addAnswerButtonAction(sender:)), for: .touchUpInside)
             
             return cell
             
+        } else if (indexPath.row == tableView.numberOfRows(inSection: 0) - 1) {
+           let cell = tableView.dequeueReusableCell(withIdentifier: "DeleteQuestionCell", for: indexPath) as! DeleteQuestionCell
+           cell.deleteButton.addTarget(self, action: #selector(deleteButtonAction(sender:)), for: .touchUpInside)
+           
+           return cell
+       
         } else {
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: "EditAnswerCell", for: indexPath) as! EditAnswerCell
-            
-            cell.answerTextView.text = answerChoices[index]
-            cell.answerPrefix.text = letters[index]
-            cell.answerTypeButton.tag = index
-            cell.answerTypeButton.addTarget(self, action: #selector(switchAnswerTypeAction(sender:)), for: .touchUpInside)
-            cell.answerTypeButton.setImage(UIImage(systemName: "circle"), for: .normal)
-            
-            if correctAnswers.contains(index) {
-                cell.answerTypeButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
-               cell.answerBackground.backgroundColor = UIColor(named: "CorrectColor")
-            } else {
-               cell.answerBackground.backgroundColor = UIColor(named: "SystemGray6Color")
+         
+         let cell = tableView.dequeueReusableCell(withIdentifier: "EditAnswerCell", for: indexPath) as! EditAnswerCell
+         
+         cell.answerTextView.text = answerChoices[index]
+         cell.answerPrefix.text = letters[index]
+         cell.answerTypeButton.tag = index
+         cell.answerTypeButton.addTarget(self, action: #selector(switchAnswerTypeAction(sender:)), for: .touchUpInside)
+         cell.answerTypeButton.setImage(UIImage(systemName: "circle"), for: .normal)
+         
+         if correctAnswers.contains(index) {
+             cell.answerTypeButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+            cell.answerBackground.backgroundColor = UIColor(named: "CorrectColor")
+         } else {
+            cell.answerBackground.backgroundColor = UIColor(named: "SystemGray6Color")
 
-            }
-           cell.answerTypeButton.setNeedsDisplay()
-           cell.textViewDidChange(cell.answerTextView)
-           cell.delegate = self
-            
-            return cell
-        }
+         }
+        cell.answerTypeButton.setNeedsDisplay()
+        cell.textViewDidChange(cell.answerTextView)
+        cell.delegate = self
+         
+         return cell
+     }
         
     }
     
@@ -274,10 +290,12 @@ extension EditAnswerCell: UITextViewDelegate {
 class AddAnswerCell: UITableViewCell {
 
     @IBOutlet weak var addAnswerButton: UIButton!
-    
+   @IBOutlet weak var buttonBackground: UIView!
+   
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+       buttonBackground.layer.cornerRadius = 10.0
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -287,6 +305,30 @@ class AddAnswerCell: UITableViewCell {
     }
     
 }
+
+protocol AddQuestionViewControllerDelegate: AnyObject {
+   func deleteAddQuestionViewController(_ viewController: AddQuestionViewController)
+}
+
+class DeleteQuestionCell: UITableViewCell {
+   
+   @IBOutlet weak var deleteButton: UIButton!
+   @IBOutlet weak var buttonBackground: UIView!
+   
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+       buttonBackground.layer.cornerRadius = 10.0
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+    
+}
+
     
     
     /*

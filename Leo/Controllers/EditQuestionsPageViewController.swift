@@ -64,7 +64,6 @@ class EditQuestionsPageViewController: UIPageViewController {
         
         let vc = self.generateAddQuestionViewController()
         vc.questionIndex = 0
-        
         leoViewControllers.append(vc)
         currentViewController = vc
         
@@ -78,7 +77,6 @@ class EditQuestionsPageViewController: UIPageViewController {
         
         let newVC = generateAddQuestionViewController()
         newVC.questionIndex = leoViewControllers.count
-        
         leoViewControllers.append(newVC)
         currentViewController = newVC
         
@@ -136,10 +134,30 @@ class EditQuestionsPageViewController: UIPageViewController {
         // Do any additional setup after loading the view.
     }
     
+    @IBAction func prevQuestion(_ sender: Any) {
+        if let viewControllerIndex = leoViewControllers.firstIndex(of: currentViewController as! AddQuestionViewController) {
+            if viewControllerIndex != 0 {
+                currentViewController = leoViewControllers[viewControllerIndex - 1] as! AddQuestionViewController
+                setViewControllers([leoViewControllers[viewControllerIndex - 1]], direction: .reverse, animated: true)
+            }
+        }
+    }
+    
+    
+    @IBAction func nextQuestion(_ sender: Any) {
+        if let viewControllerIndex = leoViewControllers.firstIndex(of: currentViewController as! AddQuestionViewController) {
+            if viewControllerIndex != leoViewControllers.count - 1 {
+                currentViewController = leoViewControllers[viewControllerIndex + 1] as! AddQuestionViewController
+                setViewControllers([leoViewControllers[viewControllerIndex + 1]], direction: .forward, animated: true)
+          
+            }
+        }
+    }
+    
     
     //NEED TO ADD: If index is first, then delete the first and show next
-    @IBAction func deleteQuestion(_ sender: Any) {
-        
+    
+    func deleteQuestion() {
         if leoViewControllers.count == 0 {
             return
         }
@@ -156,7 +174,6 @@ class EditQuestionsPageViewController: UIPageViewController {
             updateQuestionIndexes()
             dm.deleteQuestion(from: ID, with: index)
         }
-        
     }
     
     func updateQuestionIndexes() {
@@ -183,7 +200,7 @@ class EditQuestionsPageViewController: UIPageViewController {
     func generateAddQuestionViewController() -> AddQuestionViewController {
         
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddQuestionViewController") as! AddQuestionViewController
-        
+        vc.delegate = self
         return vc
     }
     
@@ -340,6 +357,13 @@ extension EditQuestionsPageViewController: UIPageViewControllerDelegate {
         
         currentViewController.saveData()
         
+    }
+    
+}
+
+extension EditQuestionsPageViewController: AddQuestionViewControllerDelegate {
+    func deleteAddQuestionViewController(_ viewController: AddQuestionViewController) {
+        deleteQuestion()
     }
     
 }

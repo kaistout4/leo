@@ -14,7 +14,12 @@ class WelcomeViewController: UIViewController {
     
     let dm = DataManager()
     @IBOutlet weak var codeTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
     
+    
+    @IBOutlet weak var joinView: UIStackView!
+    @IBOutlet weak var loginView: UIStackView!
     
     @IBAction func unwindToWelcomeViewController(segue: UIStoryboardSegue) {
         
@@ -22,11 +27,14 @@ class WelcomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        joinView.layer.cornerRadius = 10.0
+        loginView.layer.cornerRadius = 10.0
         print("App opened")
         // Do any additional setup loading the view.
         
     }
     override func viewWillAppear(_ animated: Bool) {
+        
         if let id = DataManager.ID {
             print("Segue to room")
         }
@@ -70,20 +78,29 @@ class WelcomeViewController: UIViewController {
                     self.present(alert, animated: true, completion: nil)
                 
                 }
-                    
-                
-                
-                
             }
-        
-            
-            
         }
-       
+    }
+    
+    @IBAction func loginPressed(_ sender: Any) {
         
+        if let email = emailTextField.text, let password = passwordTextField.text {
+            
+            Auth.auth().signIn(withEmail: email, password: password) {  authResult, error in
+                
+                if let e = error {
+                    print(e)
+                } else {
+                    DataManager.user = "teacher"
+                    
+                    self.performSegue(withIdentifier: "welcomeToMaster", sender: self)
+                }
+            }
+        }
     }
     
    
 
 }
+
 
