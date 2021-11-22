@@ -22,7 +22,7 @@
                         <rect key="frame" x="20" y="8" width="280" height="28"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6dF-Uh-nmu">
-                                <rect key="frame" x="75" y="8" width="130" height="12"/>
+                                <rect key="frame" x="0.0" y="0.0" width="280" height="28"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Delete Question">
                                     <color key="baseForegroundColor" systemColor="systemRedColor"/>
@@ -31,10 +31,10 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="6dF-Uh-nmu" secondAttribute="trailing" constant="75" id="ALh-RP-M7r"/>
-                            <constraint firstItem="6dF-Uh-nmu" firstAttribute="top" secondItem="sD4-bc-Oy0" secondAttribute="top" constant="8" id="Jdn-qV-j9P"/>
-                            <constraint firstItem="6dF-Uh-nmu" firstAttribute="leading" secondItem="sD4-bc-Oy0" secondAttribute="leading" constant="75" id="chR-ZL-V7A"/>
-                            <constraint firstAttribute="bottom" secondItem="6dF-Uh-nmu" secondAttribute="bottom" constant="8" id="uFH-B0-Dxv"/>
+                            <constraint firstAttribute="trailing" secondItem="6dF-Uh-nmu" secondAttribute="trailing" id="ALh-RP-M7r"/>
+                            <constraint firstItem="6dF-Uh-nmu" firstAttribute="top" secondItem="sD4-bc-Oy0" secondAttribute="top" id="Jdn-qV-j9P"/>
+                            <constraint firstItem="6dF-Uh-nmu" firstAttribute="leading" secondItem="sD4-bc-Oy0" secondAttribute="leading" id="chR-ZL-V7A"/>
+                            <constraint firstAttribute="bottom" secondItem="6dF-Uh-nmu" secondAttribute="bottom" id="uFH-B0-Dxv"/>
                         </constraints>
                     </view>
                 </subviews>

@@ -20,6 +20,7 @@ class WelcomeViewController: UIViewController {
     
     @IBOutlet weak var joinView: UIStackView!
     @IBOutlet weak var loginView: UIStackView!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     @IBAction func unwindToWelcomeViewController(segue: UIStoryboardSegue) {
         
@@ -27,6 +28,11 @@ class WelcomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        
         joinView.layer.cornerRadius = 10.0
         joinView.layer.shadowColor = UIColor.black.cgColor
         joinView.layer.shadowRadius = 9.0
@@ -46,9 +52,25 @@ class WelcomeViewController: UIViewController {
         }
     }
     
+    @objc func adjustForKeyboard(notification: Notification) {
+        guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+
+        let keyboardScreenEndFrame = keyboardValue.cgRectValue
+        let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+
+        if notification.name == UIResponder.keyboardWillHideNotification {
+            scrollView.contentInset = .zero
+        } else {
+            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+        }
+
+        scrollView.scrollIndicatorInsets = scrollView.contentInset
+        
+    }
+    
     @IBAction func joinPressed(_ sender: Any) {
         
-        if let code = codeTextField.text {
+        if let code = codeTextField.text, codeTextField.text != "" {
             print(code)
             let docRef = db.collection(K.FStore.collectionName).document(code)
            
@@ -106,6 +128,11 @@ class WelcomeViewController: UIViewController {
             }
         }
     }
+    
+    @IBAction func register(_ sender: Any) {
+        self.performSegue(withIdentifier: "welcomeToRegister", sender: self)
+    }
+    
     
    
 

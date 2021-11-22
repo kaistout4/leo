@@ -84,7 +84,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
                             }
                             
                             if (state == "results") {
-                                let vc = self.leoViewControllers[currentQuestion] as! QuestionViewController
+                                let vc = self.leoViewControllers.last as! QuestionViewController
 //                                self.dm.updateVote(roomID: self.ID, questionIndex: self.currentQuestion, answerIndex: vc.selected) {
 //
 //                                }
@@ -96,6 +96,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
                             }
                             
                             if self.currentQuestion != currentQuestion {
+                                print("Question changed")
                                 self.currentQuestion = currentQuestion
                                 self.addNextQuestionViewController()
                                 
@@ -136,7 +137,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         
         if questionState == "closed" {
             pagingDisabled = true
-            setViewControllers([currentViewController], direction: .forward, animated: false)
+            setViewControllers([currentViewController], direction: .forward, animated: true)
             print(viewControllers?.count)
             print(pagingDisabled)
             questionState = "active"
@@ -150,7 +151,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
             pagingDisabled = false
             questionState = "closed"
             if let viewControllerIndex = leoViewControllers.firstIndex(of: currentViewController) {
-                setViewControllers([leoViewControllers[viewControllerIndex]], direction: .forward, animated: false)
+                setViewControllers([leoViewControllers[viewControllerIndex]], direction: .forward, animated: true)
             }
             print(pagingDisabled)
             questionButton.tintColor = UIColor(named: "SecondaryLabelColor")
@@ -260,8 +261,9 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         vc.question = questions[currentQuestion]
         vc.questionIndex = currentQuestion
         self.leoViewControllers.append(vc)
-        
-        
+        if let viewControllerIndex = leoViewControllers.firstIndex(of: vc) {
+            setViewControllers([leoViewControllers[viewControllerIndex]], direction: .forward, animated: true)
+        }
     }
     
     

@@ -38,7 +38,7 @@ class EditQuestionsPageViewController: UIPageViewController {
                     }
                     alert.addAction(action)
                     self.present(alert, animated: true, completion: nil)
-                    newQuestions.append(vc.question!)
+                    break
                 default:
                     newQuestions.append(vc.question!)
                     break

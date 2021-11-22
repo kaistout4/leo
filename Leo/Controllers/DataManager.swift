@@ -181,9 +181,12 @@ class DataManager {
     }
     
     func deleteRoom(roomID: String, questionCount: Int) {
-        for i in 0...questionCount-1 {
-            db.collection(K.FStore.collectionName).document(roomID).collection("questions").document(String(i)).delete()
+        if questionCount != 0 {
+            for i in 0...questionCount-1 {
+                db.collection(K.FStore.collectionName).document(roomID).collection("questions").document(String(i)).delete()
+            }
         }
+        
         db.collection(K.FStore.collectionName).document(roomID).delete()
     }
     

@@ -21,7 +21,7 @@
                         <rect key="frame" x="20" y="8" width="374" height="28"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fVd-3R-6gG">
-                                <rect key="frame" x="80" y="8" width="214" height="12"/>
+                                <rect key="frame" x="0.0" y="0.0" width="374" height="28"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Add Answer">
                                     <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle3"/>
@@ -30,10 +30,10 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                         <constraints>
-                            <constraint firstItem="fVd-3R-6gG" firstAttribute="top" secondItem="m5e-Ox-US5" secondAttribute="top" constant="8" id="OFt-3V-FFL"/>
-                            <constraint firstAttribute="bottom" secondItem="fVd-3R-6gG" secondAttribute="bottom" constant="8" id="RcQ-lv-iUa"/>
-                            <constraint firstItem="fVd-3R-6gG" firstAttribute="leading" secondItem="m5e-Ox-US5" secondAttribute="leading" constant="80" id="ZZk-y9-0BN"/>
-                            <constraint firstAttribute="trailing" secondItem="fVd-3R-6gG" secondAttribute="trailing" constant="80" id="eEZ-Ke-x7c"/>
+                            <constraint firstItem="fVd-3R-6gG" firstAttribute="top" secondItem="m5e-Ox-US5" secondAttribute="top" id="OFt-3V-FFL"/>
+                            <constraint firstAttribute="bottom" secondItem="fVd-3R-6gG" secondAttribute="bottom" id="RcQ-lv-iUa"/>
+                            <constraint firstItem="fVd-3R-6gG" firstAttribute="leading" secondItem="m5e-Ox-US5" secondAttribute="leading" id="ZZk-y9-0BN"/>
+                            <constraint firstAttribute="trailing" secondItem="fVd-3R-6gG" secondAttribute="trailing" id="eEZ-Ke-x7c"/>
                         </constraints>
                     </view>
                 </subviews>

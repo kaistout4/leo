@@ -47,17 +47,43 @@ class AddQuestionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
        
+       let notificationCenter = NotificationCenter.default
+       notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+       notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+       
        tableView.dataSource = self
        questionTextView.delegate = self
+       
        tableView.register(UINib(nibName: "AddAnswerCell", bundle: nil), forCellReuseIdentifier: "AddAnswerCell")
        tableView.register(UINib(nibName: "DeleteQuestionCell", bundle: nil), forCellReuseIdentifier: "DeleteQuestionCell")
-        
-       questionTextView.text = text
+      
+       if text == "" {
+          questionTextView.text = "Question"
+          questionTextView.textColor = UIColor.secondaryLabel
+       } else {
+          questionTextView.text = text
+       }
        questionTextView.isScrollEnabled = false
        
        tableView.reloadData()
         // Do any additional setup after loading the view.
     }
+   
+   @objc func adjustForKeyboard(notification: Notification) {
+       guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+
+       let keyboardScreenEndFrame = keyboardValue.cgRectValue
+       let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+
+       if notification.name == UIResponder.keyboardWillHideNotification {
+           tableView.contentInset = .zero
+       } else {
+           tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+       }
+
+       tableView.scrollIndicatorInsets = tableView.contentInset
+       
+   }
    
    override func viewDidLayoutSubviews() {
       // Force layout of question text view to set initial height
@@ -245,6 +271,13 @@ extension AddQuestionViewController: UITableViewDataSource {
 }
 
 extension AddQuestionViewController: UITextViewDelegate {
+   func textViewDidBeginEditing(_ textView: UITextView) {
+       if textView.textColor == UIColor.secondaryLabel {
+           textView.text = nil
+           textView.textColor = UIColor.black
+       }
+   }
+   
    
    // Calculate the new height based on the question text
    func textViewDidChange(_ textView: UITextView) {
@@ -284,6 +317,13 @@ class EditAnswerCell: UITableViewCell {
 }
 
 extension EditAnswerCell: UITextViewDelegate {
+   
+   func textViewDidBeginEditing(_ textView: UITextView) {
+      if textView.textColor == UIColor.secondaryLabel {
+           textView.text = nil
+           textView.textColor = .black
+       }
+   }
    
    // Calculate the new height based on the answer text
    func textViewDidChange(_ textView: UITextView) {

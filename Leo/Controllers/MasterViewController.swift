@@ -151,6 +151,8 @@ class MasterViewController: UIViewController {
         //Loading screen needed
         loadRooms()
         // Do any additional setup after loading the view.
+        self.title = "Your rooms"
+        
     }
     
     func configureCell(cell: RoomCell, at indexPath: IndexPath) {
