@@ -97,7 +97,8 @@ class QuestionViewController: UIViewController {
     
     func monitorForResults() {
         
-        db.collection("rooms").document(ID).collection("questions").document(String(questionIndex!)).addSnapshotListener { documentSnapshot, error in
+        db.collection("rooms").document(ID).collection("questions").document(String(questionIndex!)).addSnapshotListener { [weak self] documentSnapshot, error in
+            guard let self = self else { return }
             
             if let e = error {
                 print(e)
@@ -108,9 +109,9 @@ class QuestionViewController: UIViewController {
                     
                     if let data = doc.data() {
                         
-                        if let question = data["question"] as? String, let answerChoices = data["answerChoices"] as? [String], let correctAnswers = data["correctAnswers"] as? [Int], let resultsA = data["resultsA"] as? Int, let resultsB = data["resultsB"] as? Int, let resultsC = data["resultsC"] as? Int, let resultsD = data["resultsD"] as? Int, let resultsE = data["resultsE"] as? Int, let resultsF = data["resultsF"] as? Int {
+                        if let question = data["question"] as? String, let answerChoices = data["answerChoices"] as? [String], let correctAnswers = data["correctAnswers"] as? [Int], let resultsA = data["resultsA"] as? Int, let resultsB = data["resultsB"] as? Int, let resultsC = data["resultsC"] as? Int, let resultsD = data["resultsD"] as? Int, let resultsE = data["resultsE"] as? Int, let resultsF = data["resultsF"] as? Int, let index = data["index"] as? Int { 
                             
-                            self.question = MCQ(question: question, answerChoices: answerChoices, correctAnswers: correctAnswers, results: [resultsA, resultsB, resultsC, resultsD, resultsE, resultsF])
+                            self.question = MCQ(id: doc.documentID, index: index, question: question, answerChoices: answerChoices, correctAnswers: correctAnswers, results: [resultsA, resultsB, resultsC, resultsD, resultsE, resultsF])
                             let numResults = resultsA + resultsB + resultsC + resultsD + resultsE + resultsF
                             self.refreshResults(numResults)
                         }
@@ -130,7 +131,8 @@ class QuestionViewController: UIViewController {
 //            }
 //        }
         
-        dm.userCount(roomID: ID) { count in
+        dm.userCount(roomID: ID) { [weak self] count in
+           guard let self = self else { return }
             self.numResponsesLabel.text = String(numResults) + "/" + String(count) + " responses"
         }
     }
@@ -217,6 +219,23 @@ class QuestionViewController: UIViewController {
         
         if self.selected.contains(selected) {
             self.selected.remove(at: self.selected.firstIndex(of: selected)!)
+            dm.updateVote(roomID: DataManager.ID!, questionIndex: questionIndex!, answerIndex: selected, by: -1) {
+                
+            }
+            return
+        }
+        //Already selected maximum boxes
+        print("Selected \(self.selected)")
+        if self.selected.count == question?.correctAnswers.count {
+            let lastSelected = self.selected.last
+            self.selected.remove(at: self.selected.firstIndex(of: lastSelected!)!)
+            self.selected.append(selected)
+            dm.updateVote(roomID: DataManager.ID!, questionIndex: questionIndex!, answerIndex: lastSelected!, by: -1) {
+                
+            }
+            dm.updateVote(roomID: DataManager.ID!, questionIndex: questionIndex!, answerIndex: selected, by: 1) {
+                
+            }
             return
         }
         
@@ -224,6 +243,9 @@ class QuestionViewController: UIViewController {
             self.selected.append(selected)
         } else {
             self.selected.append(selected)
+        }
+        dm.updateVote(roomID: DataManager.ID!, questionIndex: questionIndex!, answerIndex: selected, by: 1) {
+            
         }
     }
     
@@ -262,9 +284,9 @@ extension QuestionViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AnswerCell", for: indexPath) as! AnswerCell
         cell.answerButton.tag = indexPath.row
         cell.answerButton.addTarget(self, action: #selector(answerButtonAction(sender:)), for: .touchUpInside)
-        if selected.count == question?.correctAnswers.count {
-            cell.answerButton.isUserInteractionEnabled = false
-        }
+//        if selected.count == question?.correctAnswers.count {
+//            cell.answerButton.isUserInteractionEnabled = false
+//        }
 //        let size = cell.answerLabel.sizeThatFits(CGSize(width: cell.answerLabel.bounds.width, height: 999.0))
 //        cell.answerLabelHeightConstraint.constant = size.height
         configureCell(cell: cell, at: indexPath)
@@ -275,9 +297,7 @@ extension QuestionViewController: UITableViewDataSource {
         
         setSelectedAnswer(selected: sender.tag, animated: true)
         tableView.reloadData()
-        dm.updateVote(roomID: DataManager.ID!, questionIndex: questionIndex!, answerIndex: sender.tag) {
-            
-        }
+        
     }
     
 }

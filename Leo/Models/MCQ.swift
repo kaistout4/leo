@@ -9,6 +9,10 @@ import Foundation
 
 struct MCQ: Equatable {
     
+    let id: String
+    
+    let index: Int
+    
     let question: String
     
     let answerChoices: [String]

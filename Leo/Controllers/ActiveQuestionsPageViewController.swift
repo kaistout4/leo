@@ -13,6 +13,8 @@ class ActiveQuestionsPageViewController: UIPageViewController {
     @IBOutlet weak var exitButton: UIBarButtonItem!
     @IBOutlet weak var questionButton: UIBarButtonItem!
     @IBOutlet weak var shareButton: UIBarButtonItem!
+    @IBOutlet weak var nextButton: UIBarButtonItem!
+    @IBOutlet weak var prevButton: UIBarButtonItem!
     
     let dm = DataManager()
     
@@ -26,11 +28,22 @@ class ActiveQuestionsPageViewController: UIPageViewController {
     
     var currentQuestion = 0
     
-    var questionState = "closed"
+    var questionState = "active"
     
     var closedQuestions: [Int] = []
     
-    var pagingDisabled = false
+    var pagingDisabled = false {
+        
+        didSet {
+            if pagingDisabled {
+                nextButton.isEnabled = false
+                prevButton.isEnabled = false
+            } else {
+                nextButton.isEnabled = true
+                prevButton.isEnabled = true
+            }
+        }
+    }
     
     var currentViewController: QuestionViewController = QuestionViewController()
     
@@ -39,19 +52,23 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         dataSource = self
         delegate = self
         
+        view.backgroundColor = .systemGray6
+        
         self.title = "ID: " + ID
        
         if (user == "student") {
             exitButton.title = "Leave"
             navigationController?.isToolbarHidden = true
-            
-            //Loading screen needed
             loadFirstViewController()
         } else if (user == "teacher") {
+            questionButton.tintColor = UIColor(named: "IncorrectColor")
+            questionButton.title = "End Question"
             navigationController?.isToolbarHidden = false
             exitButton.title = "End Room"
-            dm.updateState(roomID: ID, state: "active") {
+            dm.updateState(roomID: ID, state: "active") { [weak self] in
+                guard let self = self else { return }
                 self.loadViewControllers()
+                
             }
            
         }
@@ -66,8 +83,8 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         
         let room = db.collection(K.FStore.collectionName).document(ID)
         
-        room.addSnapshotListener { (doc, error) in
-            
+        room.addSnapshotListener { [weak self] (doc, error) in
+            guard let self = self else { return }
             if let e = error {
                 print(e)
             } else {
@@ -85,11 +102,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
                             
                             if (state == "results") {
                                 let vc = self.leoViewControllers.last as! QuestionViewController
-//                                self.dm.updateVote(roomID: self.ID, questionIndex: self.currentQuestion, answerIndex: vc.selected) {
-//
-//                                }
                                 self.dm.reloadQuestion(from: self.ID, with: currentQuestion) { question in
-                                    
                                     vc.hideResults = false
                                     vc.question = question
                                 }
@@ -137,9 +150,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         
         if questionState == "closed" {
             pagingDisabled = true
-            setViewControllers([currentViewController], direction: .forward, animated: true)
-            print(viewControllers?.count)
-            print(pagingDisabled)
+            dataSource = nil
             questionState = "active"
             questionButton.tintColor = UIColor(named: "IncorrectColor")
             questionButton.title = "End Question"
@@ -150,10 +161,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         } else if questionState == "active" {
             pagingDisabled = false
             questionState = "closed"
-            if let viewControllerIndex = leoViewControllers.firstIndex(of: currentViewController) {
-                setViewControllers([leoViewControllers[viewControllerIndex]], direction: .forward, animated: true)
-            }
-            print(pagingDisabled)
+            dataSource = self
             questionButton.tintColor = UIColor(named: "SecondaryLabelColor")
             questionButton.title = "Closed"
             questionButton.isEnabled = false
@@ -176,6 +184,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
                 if viewControllerIndex != 0 {
                     currentViewController = leoViewControllers[viewControllerIndex - 1] as! QuestionViewController
                     setViewControllers([leoViewControllers[viewControllerIndex - 1]], direction: .reverse, animated: true)
+                    adjustToolbar()
                 }
             }
         }
@@ -187,7 +196,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
                 if viewControllerIndex != leoViewControllers.count - 1 {
                     currentViewController = leoViewControllers[viewControllerIndex + 1] as! QuestionViewController
                     setViewControllers([leoViewControllers[viewControllerIndex + 1]], direction: .forward, animated: true)
-              
+                    adjustToolbar()
                 }
             }
         }
@@ -221,7 +230,8 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         if let firstQuestionViewController = leoViewControllers.first as? QuestionViewController {
             currentViewController = firstQuestionViewController as! QuestionViewController
             setViewControllers([firstQuestionViewController], direction: .forward, animated: true, completion: nil)
-            
+            dataSource = nil
+            pagingDisabled = true
         }
     }
     
@@ -250,7 +260,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
             }
                 
         }
-        
+        dm.incrementUserCount(roomID: ID)
         
     }
     
@@ -294,6 +304,8 @@ class ActiveQuestionsPageViewController: UIPageViewController {
             self.present(alert, animated: true)
             
         } else {
+            DataManager.ID = nil
+            dm.decrementUserCount(roomID: ID)
             performSegue(withIdentifier: "unwindToWelcome", sender: self)
         }
         
@@ -304,13 +316,30 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         let alert = UIAlertController(title: "Session ended", message: "", preferredStyle: .alert)
             
         let action = UIAlertAction(title: "Ok", style: .default) { (action) in
-            
+            DataManager.ID = nil
             self.performSegue(withIdentifier: "unwindToWelcome", sender: self)
         }
         
         alert.addAction(action)
         
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func adjustToolbar() {
+        if let currVc = self.viewControllers?.first as? QuestionViewController {
+            currentViewController = currVc
+            currentQuestion = currentViewController.questionIndex!
+            print("Current question is \(currentQuestion)")
+            print("Closed questions are \(closedQuestions)")
+            if closedQuestions.contains(currentQuestion) {
+                questionButton.tintColor = UIColor(named: "SecondaryLabelColor")
+                questionButton.title = "Closed"
+                questionButton.isEnabled = false
+            } else if questionState != "active" {
+                    questionButton.title = "Start Question"
+                    questionButton.isEnabled = true
+            }
+        }
     }
     
 
@@ -330,10 +359,8 @@ class ActiveQuestionsPageViewController: UIPageViewController {
 extension ActiveQuestionsPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-//        print(viewControllers?.count)
-//        print("Paging disabled: " + String(pagingDisabled))
+
         if pagingDisabled {
-            //print("Not swipable")
             return nil
         }
         
@@ -352,16 +379,11 @@ extension ActiveQuestionsPageViewController: UIPageViewControllerDataSource {
             }
         
         return nil
-        
-        
-        
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-//        print(viewControllers?.count)
-//        print("Paging disabled: " + String(pagingDisabled))
+
         if pagingDisabled {
-            //print("Not swipable")
             return nil
         }
         
@@ -391,6 +413,8 @@ extension ActiveQuestionsPageViewController: UIPageViewControllerDelegate {
             if let currVc = self.viewControllers?.first as? QuestionViewController {
                 currentViewController = currVc
                 currentQuestion = currentViewController.questionIndex!
+                print("Current question is \(currentQuestion)")
+                print("Closed questions are \(closedQuestions)")
                 if closedQuestions.contains(currentQuestion) {
                     questionButton.tintColor = UIColor(named: "SecondaryLabelColor")
                     questionButton.title = "Closed"
@@ -403,7 +427,6 @@ extension ActiveQuestionsPageViewController: UIPageViewControllerDelegate {
         }
     }
     func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
-        print("willTransitionTo")
         
     }
     

@@ -29,6 +29,7 @@ class AddQuestionViewController: UIViewController {
     var question: MCQ? = nil {
         
         didSet {
+           questionId = question!.id
             answerChoices = question!.answerChoices
             correctAnswers = question!.correctAnswers
             text = question!.question
@@ -38,6 +39,8 @@ class AddQuestionViewController: UIViewController {
     
     let letters = ["A", "B", "C", "D", "E", "F"]
     
+   var questionId: String = UUID().uuidString
+   
    var answerChoices: [String] = [""]
     
     var correctAnswers: [Int] = []
@@ -58,7 +61,7 @@ class AddQuestionViewController: UIViewController {
        tableView.register(UINib(nibName: "DeleteQuestionCell", bundle: nil), forCellReuseIdentifier: "DeleteQuestionCell")
       
        if text == "" {
-          questionTextView.text = "Question"
+          questionTextView.text = "Type question here"
           questionTextView.textColor = UIColor.secondaryLabel
        } else {
           questionTextView.text = text
@@ -90,20 +93,19 @@ class AddQuestionViewController: UIViewController {
       textViewDidChange(questionTextView)
    }
     
-    func addQuestion(completion: @escaping (_ error: String?, _ question: Int?) -> Void) {
+    func addQuestion(completion: @escaping (_ error: String?) -> Void) {
         
  
        if noQuestion() || noAnswerSelected() || noAnswerChoice() {
-           completion("missingFields", questionIndex)
+           completion("missingFields")
            return
        }
 
-        let index = questionIndex!
-    
-        dm.addQuestionToRoom(roomID: ID, question: text, answerChoices: answerChoices, correctAnswers: correctAnswers, index: index, time: Date().timeIntervalSince1970) {
+       dm.addQuestionToRoom(id: questionId, index: questionIndex!, roomID: ID, question: text, answerChoices: answerChoices, correctAnswers: correctAnswers, time: Date().timeIntervalSince1970) { [weak self] in
+          guard let self = self else { return }
             print("Question successfully added")
-           self.question = MCQ(question: self.text, answerChoices: self.answerChoices, correctAnswers: self.correctAnswers, results: [])
-            completion("", self.questionIndex)
+          self.question = MCQ(id: self.questionId, index: self.questionIndex!, question: self.text, answerChoices: self.answerChoices, correctAnswers: self.correctAnswers, results: [])
+            completion("")
 
         }
                
@@ -133,9 +135,8 @@ class AddQuestionViewController: UIViewController {
     func getAnswerKey() -> [Int] {
         return correctAnswers
     }
-    
    
-    func getAnswers() -> [String] {
+   func getAnswers(hideBlanks: Bool) -> [String] {
        var cells = tableView.visibleCells
        var answers: [String] = []
        if answerChoices.count != 6 {
@@ -145,16 +146,20 @@ class AddQuestionViewController: UIViewController {
         
        for i in 0...cells.count-1 {
           var c = cells[i] as! EditAnswerCell
-          //if c.answerTextField.text! != "" {
-          answers.append(c.answerTextView.text ?? "")
-          //}
+          if hideBlanks {
+             if c.answerTextView.text != "Type answer here" && !c.answerTextView.text.isEmpty {
+                answers.append(c.answerTextView.text ?? "")
+             }
+          } else {
+             answers.append(c.answerTextView.text)
+          }
        }
        return answers
     }
    
    func saveData() {
       text = questionTextView.text ?? ""
-      answerChoices = getAnswers()
+      answerChoices = getAnswers(hideBlanks: true)
    }
    
    func printQuestion() {
@@ -167,7 +172,7 @@ class AddQuestionViewController: UIViewController {
       let question = text
       let key = correctAnswers
       let answers = answerChoices
-      return MCQ(question: question ?? "", answerChoices: answers, correctAnswers: key, results: [])
+      return MCQ(id: questionId, index: questionIndex!, question: question ?? "", answerChoices: answers, correctAnswers: key, results: [])
    }
    
    func isEmpty() -> Bool {
@@ -176,7 +181,7 @@ class AddQuestionViewController: UIViewController {
     
     @objc func switchAnswerTypeAction(sender: UIButton) {
         
-       answerChoices = getAnswers()
+       answerChoices = getAnswers(hideBlanks: false)
        
         let answer = sender.tag
         if correctAnswers.contains(answer) {
@@ -195,7 +200,8 @@ class AddQuestionViewController: UIViewController {
         
     }
     @objc func addAnswerButtonAction(sender: UIButton) {
-      answerChoices = getAnswers()
+      answerChoices = getAnswers(hideBlanks: false)
+       print(answerChoices)
        if answerChoices.count == 6 {
           return
        }
@@ -229,8 +235,6 @@ extension AddQuestionViewController: UITableViewDataSource {
         let index = indexPath.row
         
        if indexPath.row == tableView.numberOfRows(inSection: 0) - 2 && answerChoices.count != 6 {
-          print("Add answer cell")
-          print(indexPath.row)
             let cell = tableView.dequeueReusableCell(withIdentifier: "AddAnswerCell", for: indexPath) as! AddAnswerCell
             cell.addAnswerButton.addTarget(self, action: #selector(addAnswerButtonAction(sender:)), for: .touchUpInside)
             
@@ -245,8 +249,14 @@ extension AddQuestionViewController: UITableViewDataSource {
         } else {
          
          let cell = tableView.dequeueReusableCell(withIdentifier: "EditAnswerCell", for: indexPath) as! EditAnswerCell
-         
-         cell.answerTextView.text = answerChoices[index]
+           print("Data source \(answerChoices)")
+           if answerChoices[index].isEmpty || answerChoices[index] == "Type answer here" {
+              cell.answerTextView.text = "Type answer here"
+              cell.answerTextView.textColor = UIColor.secondaryLabel
+           } else {
+              cell.answerTextView.text = answerChoices[index]
+              cell.answerTextView.textColor = UIColor.black
+           }
          cell.answerPrefix.text = letters[index]
          cell.answerTypeButton.tag = index
          cell.answerTypeButton.addTarget(self, action: #selector(switchAnswerTypeAction(sender:)), for: .touchUpInside)
@@ -278,6 +288,13 @@ extension AddQuestionViewController: UITextViewDelegate {
        }
    }
    
+   func textViewDidEndEditing(_ textView: UITextView) {
+      if textView.text.isEmpty {
+         textView.text = "Enter question here"
+         textView.textColor = UIColor.secondaryLabel
+      }
+      
+   }
    
    // Calculate the new height based on the question text
    func textViewDidChange(_ textView: UITextView) {
@@ -319,10 +336,18 @@ class EditAnswerCell: UITableViewCell {
 extension EditAnswerCell: UITextViewDelegate {
    
    func textViewDidBeginEditing(_ textView: UITextView) {
+      print("textViewDidBeginEditing")
       if textView.textColor == UIColor.secondaryLabel {
            textView.text = nil
            textView.textColor = .black
        }
+   }
+   
+   func textViewDidEndEditing(_ textView: UITextView) {
+      if textView.text.isEmpty {
+         textView.text = "Type answer here"
+         textView.textColor = UIColor.secondaryLabel
+      }
    }
    
    // Calculate the new height based on the answer text

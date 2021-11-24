@@ -22,6 +22,7 @@ class WelcomeViewController: UIViewController {
     @IBOutlet weak var loginView: UIStackView!
     @IBOutlet weak var scrollView: UIScrollView!
     
+    @IBOutlet weak var joinButton: UIButton!
     @IBAction func unwindToWelcomeViewController(segue: UIStoryboardSegue) {
         
     }
@@ -32,7 +33,6 @@ class WelcomeViewController: UIViewController {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-        
         joinView.layer.cornerRadius = 10.0
         joinView.layer.shadowColor = UIColor.black.cgColor
         joinView.layer.shadowRadius = 9.0
@@ -41,14 +41,15 @@ class WelcomeViewController: UIViewController {
         loginView.layer.shadowColor = UIColor.black.cgColor
         loginView.layer.shadowRadius = 9.0
         loginView.layer.shadowOpacity = 0.15
+        joinButton.isHidden = true
+        codeTextField.delegate = self
         print("App opened")
         // Do any additional setup loading the view.
         
     }
     override func viewWillAppear(_ animated: Bool) {
-        
         if let id = DataManager.ID {
-            print("Segue to room")
+            self.performSegue(withIdentifier: "welcomeToActiveRoom", sender: self)
         }
     }
     
@@ -61,7 +62,7 @@ class WelcomeViewController: UIViewController {
         if notification.name == UIResponder.keyboardWillHideNotification {
             scrollView.contentInset = .zero
         } else {
-            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom + 50, right: 0)
         }
 
         scrollView.scrollIndicatorInsets = scrollView.contentInset
@@ -86,13 +87,12 @@ class WelcomeViewController: UIViewController {
                     DataManager.ID = code
                     DataManager.user = "student"
                     self.performSegue(withIdentifier: "welcomeToActiveRoom", sender: self)
-                    //update user count
                       
                 } else {
                     
                     let alert = UIAlertController(title: "Join code invalid", message: "", preferredStyle: .alert)
                         
-                    let action = UIAlertAction(title: "Ok", style: .default) { (action) in
+                    let action = UIAlertAction(title: "Try Again", style: .default) { (action) in
                         //user retries join code
                     }
                     
@@ -138,4 +138,31 @@ class WelcomeViewController: UIViewController {
 
 }
 
+extension WelcomeViewController: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        joinButton.isHidden = false
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let text = textField.text {
+            joinButton.isHidden = true
+        }
+    }
+}
 
+extension UIImage {
+    
+    class func image(with color: UIColor) -> UIImage {
+        let rect = CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0)
+        UIGraphicsBeginImageContext(rect.size)
+        if let context = UIGraphicsGetCurrentContext() {
+            context.setFillColor(color.cgColor)
+            context.fill(rect)
+            let image = UIImage(cgImage: context.makeImage()!)
+            return image
+        }
+        UIGraphicsEndImageContext()
+        return UIImage()
+    }
+}

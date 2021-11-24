@@ -16,6 +16,7 @@ class EditQuestionsPageViewController: UIPageViewController {
      
     
     @IBAction func saveQuestions() {
+       
         print("Saving questions")
         var missingFields = false
         var newQuestions: [MCQ] = []
@@ -27,7 +28,7 @@ class EditQuestionsPageViewController: UIPageViewController {
                 vc.saveData()
             }
             
-            vc.addQuestion { error, index in
+            vc.addQuestion { error in
                 
                 switch error {
                 
@@ -52,8 +53,6 @@ class EditQuestionsPageViewController: UIPageViewController {
         }
         questions = newQuestions
         dm.updateQuestionCount(roomID: ID, to: questions.count) {
-            
-            
         }
         
     }
@@ -104,10 +103,12 @@ class EditQuestionsPageViewController: UIPageViewController {
         dataSource = self
         delegate = self
         
+        view.backgroundColor = .systemGray6
+        
         self.title = "ID: " + ID
         
-        dm.reloadQuestions(from: ID) { questions in
-            
+        dm.reloadQuestions(from: ID) { [weak self] questions in
+            guard let self = self else { return }
             if let questions = questions {
                 
                 if questions.count == 0 {
@@ -156,7 +157,7 @@ class EditQuestionsPageViewController: UIPageViewController {
     //NEED TO ADD: If index is first, then delete the first and show next
     
     func deleteQuestion() {
-        if leoViewControllers.count == 0 {
+        if leoViewControllers.count <= 1 {
             return
         }
         
@@ -164,13 +165,20 @@ class EditQuestionsPageViewController: UIPageViewController {
             print("Deleting vc at index " + String(index))
             if index == 0 {
                 setViewControllers([leoViewControllers[index+1]], direction: .forward, animated: true, completion: nil)
+                currentViewController = leoViewControllers[index+1] as! AddQuestionViewController
             } else {
-                setViewControllers([leoViewControllers[index-1]], direction: .forward, animated: true, completion: nil)
+                setViewControllers([leoViewControllers[index-1]], direction: .reverse, animated: true, completion: nil)
+                currentViewController = leoViewControllers[index-1] as! AddQuestionViewController
             }
         
             leoViewControllers.remove(at: index)
             updateQuestionIndexes()
-            dm.deleteQuestion(from: ID, with: index)
+            if index <= questions.count - 1 {
+                questions.remove(at: index)
+                dm.deleteQuestion(from: ID, with: index)
+                dm.updateQuestionCount(roomID: ID, to: questions.count) {
+                }
+            }
         }
     }
     
@@ -183,9 +191,8 @@ class EditQuestionsPageViewController: UIPageViewController {
     
     func reloadQuestions() {
         
-        dm.reloadQuestions(from: ID) { questions in
-            //NEED TO ADD: error handling if there are no questions
-       
+        dm.reloadQuestions(from: ID) { [weak self] questions in
+            guard let self = self else { return }
             if questions != nil {
                 self.questions = questions!
                 
@@ -226,7 +233,7 @@ class EditQuestionsPageViewController: UIPageViewController {
         
         var changeDetected = false
         
-        if questions.count > leoViewControllers.count {
+        if questions.count < leoViewControllers.count {
             changeDetected = true
         }
         
@@ -249,6 +256,8 @@ class EditQuestionsPageViewController: UIPageViewController {
                     changeDetected = true
                 } else {
                     for i in 0...questions.count-1 {
+                        print("Original question \(questions[i])")
+                        print("Updated question \(updatedQuestions[i])")
                         if updatedQuestions[i] != questions[i] {
                             changeDetected = true
                         }

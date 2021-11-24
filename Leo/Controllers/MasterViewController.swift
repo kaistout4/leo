@@ -14,9 +14,10 @@ class MasterViewController: UIViewController {
     var rooms: [Room] = []
     
     @IBAction func unwindToMasterViewController(segue: UIStoryboardSegue) {
+        print("Recieving unwind segue")
         if let vc = segue.source as? ActiveQuestionsPageViewController {
             if let ID = DataManager.ID {
-                dm.clearResults(roomID: ID, questionCount: rooms[selectedRoomIndex].questionCount)
+                dm.clearResults(roomID: ID, questionCount: rooms[vc.currentQuestion].questionCount)
             }
         }
         loadRooms()
@@ -35,6 +36,7 @@ class MasterViewController: UIViewController {
     
     @IBAction func logoutPressed(_ sender: UIBarButtonItem) {
         
+        DataManager.ID = nil
         do {
             try Auth.auth().signOut()
         } catch let signOutError as NSError {
@@ -63,8 +65,8 @@ class MasterViewController: UIViewController {
         
         let cancel = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
         
-        let create = UIAlertAction(title: "Create", style: .default) { (action) in
-            
+        let create = UIAlertAction(title: "Create", style: .default) { [weak self] action in
+            guard let self = self else { return }
             if let field = alert.textFields?[0] {
                 
                 print("Text field exists")
@@ -96,14 +98,14 @@ class MasterViewController: UIViewController {
     }
     
     @IBAction func logoutUser(_ sender: Any) {
-        
+        DataManager.ID = nil
         let firebaseAuth = Auth.auth()
-       do {
-         try firebaseAuth.signOut()
-       } catch let signOutError as NSError {
-         print("Error signing out: %@", signOutError)
-       }
-        
+        do {
+            try firebaseAuth.signOut()
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
+        }
+        self.performSegue(withIdentifier: "unwindToWelcome", sender: self)
         
     }
     
@@ -113,7 +115,8 @@ class MasterViewController: UIViewController {
     
         if let email = Auth.auth().currentUser?.email {
             
-            dm.loadRooms(user: email) { rooms in
+            dm.loadRooms(user: email) { [weak self] rooms in
+                guard let self = self else { return }
                 if let userRooms = rooms {
                     self.rooms = userRooms
                     self.tableView.reloadData()
@@ -204,7 +207,31 @@ class MasterViewController: UIViewController {
             print("Delete room")
            
         }
-        let menu = UIMenu(title: "Menu", options: .displayInline, children: [edit, delete])
+        let rename = UIAction(title: "Rename", image: UIImage(systemName: "square.and.pencil")) { [weak self] (action) in
+            
+            let alert = UIAlertController(title: "Rename room", message: "Enter new title", preferredStyle: .alert)
+            
+            
+            alert.addTextField { (textField) in
+                textField.placeholder = "New title"
+            }
+            
+            let cancel = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
+            
+            let rename = UIAlertAction(title: "Rename", style: .default) { (action) in
+                
+                if let field = alert.textFields?[0] {
+                    self?.rooms[index].title = field.text ?? ""
+                    self?.tableView.reloadData()
+                    self?.dm.rename(roomID: cell.roomID, newName: field.text ?? "")
+                }
+            }
+            
+            alert.addAction(cancel)
+            alert.addAction(rename)
+            self?.present(alert, animated: true, completion: nil)
+        }
+        let menu = UIMenu(title: "Menu", options: .displayInline, children: [edit, rename, delete])
         cell.editButton.menu = menu
         cell.editButton.showsMenuAsPrimaryAction = true
         
@@ -250,7 +277,7 @@ extension MasterViewController: UITableViewDataSource {
             
             let alert = UIAlertController(title: "No Questions", message: "Add questions to start room", preferredStyle: .alert)
             
-            let action = UIAlertAction(title: "OK", style: .destructive) { (action) in
+            let action = UIAlertAction(title: "Ok", style: .destructive) { (action) in
                 return
             }
             
@@ -265,24 +292,6 @@ extension MasterViewController: UITableViewDataSource {
             self.performSegue(withIdentifier: "masterToActiveQuestions", sender: self)
         }
     }
-    
-//    @objc func editButtonAction(sender: UIButton) {
-//        let index = sender.tag
-//        let edit = UIAction(title: "Edit room", image: UIImage(systemName: "pencil")) { [weak self] (action) in
-//            print("Edit mode")
-//            let id = self?.rooms[index].ID
-//            User.roomID = id!
-//            self?.performSegue(withIdentifier: "masterToActiveQuestions", sender: self)
-//
-//        }
-//        let delete = UIAction(title: "Delete room", image: UIImage(systemName: "trash")) { [weak self] (action) in
-//            print("Delete room")
-//
-//        }
-//        let menu = UIMenu(title: "Menu", options: .displayInline, children: [edit, delete])
-//        sender.menu = menu
-//        sender.showsMenuAsPrimaryAction = true
-//    }
 }
 
 extension MasterViewController: UITableViewDelegate {
