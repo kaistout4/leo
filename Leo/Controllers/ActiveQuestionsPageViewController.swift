@@ -292,10 +292,8 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         if user == "teacher" {
             
             let alert = UIAlertController(title: "End Room", message: "Are you sure you want to end the session? Results will not save.", preferredStyle: .alert)
-            let leave = UIAlertAction(title: "Leave", style: .destructive) { (action) in
-                self.dm.updateState(roomID: self.ID, state: "closed") {
-                    self.performSegue(withIdentifier: "unwindToMaster", sender: self)
-                }
+            let leave = UIAlertAction(title: "End", style: .destructive) { (action) in
+                self.performSegue(withIdentifier: "unwindToMaster", sender: self)
             }
             let stay = UIAlertAction(title: "Stay", style: .cancel) { (action) in
             }

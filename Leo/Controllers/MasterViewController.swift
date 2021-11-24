@@ -17,6 +17,8 @@ class MasterViewController: UIViewController {
         print("Recieving unwind segue")
         if let vc = segue.source as? ActiveQuestionsPageViewController {
             if let ID = DataManager.ID {
+                dm.updateState(roomID: ID, state: "closed") {
+                }
                 dm.clearResults(roomID: ID, questionCount: rooms[vc.currentQuestion].questionCount)
             }
         }
@@ -84,7 +86,7 @@ class MasterViewController: UIViewController {
                 
                 if let email = Auth.auth().currentUser?.email {
                     
-                    self.db.collection(K.FStore.collectionName).document(roomID).setData(["title" : newRoom!.title, "state" : "pending", "user" : email, "questionCount" : 0, "currentQuestion" : 0, "userCount" : 0])
+                    self.db.collection(K.FStore.collectionName).document(roomID).setData(["title" : newRoom!.title, "state" : "closed", "user" : email, "questionCount" : 0, "currentQuestion" : 0, "userCount" : 0])
                 }
                 self.performSegue(withIdentifier: "masterToRoomPage", sender: self)
             }
