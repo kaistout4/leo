@@ -279,8 +279,6 @@ extension AddQuestionViewController: UITableViewDataSource {
             cell.answerBackground.backgroundColor = UIColor(named: "SystemGray6Color")
 
          }
-        cell.answerTypeButton.setNeedsDisplay()
-        cell.textViewDidChange(cell.answerTextView)
         cell.delegate = self
          
          return cell
@@ -331,7 +329,6 @@ class EditAnswerCell: UITableViewCell {
    @IBOutlet weak var answerTextView: UITextView!
    @IBOutlet weak var answerTypeButton: UIButton!
    @IBOutlet weak var answerBackground: UIView!
-   @IBOutlet weak var answerTextViewHeightConstraint: NSLayoutConstraint!
    
    weak var delegate: EditAnswerCellDelegate?
    
@@ -340,7 +337,6 @@ class EditAnswerCell: UITableViewCell {
       answerTextView.isScrollEnabled = false
       answerBackground.layer.cornerRadius = 10.0
    }
-   
 }
 
 extension EditAnswerCell: UITextViewDelegate {
@@ -363,8 +359,7 @@ extension EditAnswerCell: UITextViewDelegate {
    // Calculate the new height based on the answer text
    func textViewDidChange(_ textView: UITextView) {
       let size = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: 999.0))
-      if answerTextViewHeightConstraint.constant != size.height {
-         answerTextViewHeightConstraint.constant = size.height
+      if textView.bounds.height != size.height {
          delegate?.editAnswerCellHeightChanged(self)
       }
    }

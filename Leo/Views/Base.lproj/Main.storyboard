@@ -394,36 +394,33 @@
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Rn2-Kp-f7h">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="60" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Rn2-Kp-f7h">
                                 <rect key="frame" x="0.0" y="174" width="414" height="639"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="separatorColor" systemColor="systemGray6Color"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditAnswerCell" rowHeight="91" id="aSl-Uw-1bU" userLabel="EditAnswerCell" customClass="EditAnswerCell" customModule="Leo" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="414" height="91"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditAnswerCell" rowHeight="60" id="aSl-Uw-1bU" userLabel="EditAnswerCell" customClass="EditAnswerCell" customModule="Leo" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aSl-Uw-1bU" id="AQo-DS-pQE">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="91"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="1tL-FU-fqQ">
-                                                    <rect key="frame" x="20" y="0.0" width="374" height="71"/>
+                                                    <rect key="frame" x="20" y="0.0" width="374" height="40"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="A" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2jR-mI-1eH" userLabel="Answer Prefix">
-                                                            <rect key="frame" x="0.0" y="0.0" width="11.5" height="71"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="11.5" height="40"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                             <color key="textColor" systemColor="secondaryLabelColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5SC-Jp-8YX" userLabel="Answer Background">
-                                                            <rect key="frame" x="20.5" y="0.0" width="309.5" height="71"/>
+                                                            <rect key="frame" x="20.5" y="0.0" width="309.5" height="40"/>
                                                             <subviews>
-                                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Enter answer" translatesAutoresizingMaskIntoConstraints="NO" id="GOq-Pi-J3F">
-                                                                    <rect key="frame" x="4" y="4" width="301.5" height="63"/>
+                                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Enter answer" translatesAutoresizingMaskIntoConstraints="NO" id="GOq-Pi-J3F">
+                                                                    <rect key="frame" x="4" y="4" width="301.5" height="32"/>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="height" constant="20" id="6Of-Hw-IVh"/>
-                                                                    </constraints>
                                                                     <color key="textColor" systemColor="labelColor"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -438,7 +435,7 @@
                                                             </constraints>
                                                         </view>
                                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RHa-GC-Bln">
-                                                            <rect key="frame" x="339" y="0.0" width="35" height="71"/>
+                                                            <rect key="frame" x="339" y="0.0" width="35" height="40"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                                             <state key="normal">
                                                                 <imageReference key="image" image="checkmark.circle" catalog="system" symbolScale="large"/>
@@ -459,7 +456,6 @@
                                             <outlet property="answerBackground" destination="5SC-Jp-8YX" id="ErJ-sF-ruZ"/>
                                             <outlet property="answerPrefix" destination="2jR-mI-1eH" id="1Rh-6Q-QzF"/>
                                             <outlet property="answerTextView" destination="GOq-Pi-J3F" id="f2r-03-dVQ"/>
-                                            <outlet property="answerTextViewHeightConstraint" destination="6Of-Hw-IVh" id="mHl-Lb-KiT"/>
                                             <outlet property="answerTypeButton" destination="RHa-GC-Bln" id="0fa-bl-29W"/>
                                         </connections>
                                     </tableViewCell>
@@ -1090,7 +1086,7 @@
         <image name="link" catalog="system" width="128" height="122"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <namedColor name="AccentColor">
-            <color red="1" green="0.79199999570846558" blue="0.15700000524520874" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.63899999856948853" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
