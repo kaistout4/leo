@@ -20,6 +20,14 @@ class EditQuestionsPageViewController: UIPageViewController {
         print("Saving questions")
         var missingFields = false
         var newQuestions: [MCQ] = []
+        for index in deletedQuestions {
+            if index <= questions.count - 1 {
+                dm.deleteQuestion(from: ID, id: questions[index].id)
+                questions.remove(at: index)
+            }
+        }
+        deletedQuestions = []
+        
         for vc in leoViewControllers {
         
             let vc = vc as! AddQuestionViewController
@@ -32,14 +40,28 @@ class EditQuestionsPageViewController: UIPageViewController {
                 
                 switch error {
                 
-                case "missingFields":
+                case "noQuestion":
                     missingFields = true
-                    let alert = UIAlertController(title: "Error: Missing Fields", message: "", preferredStyle: .alert)
+                    let alert = UIAlertController(title: "Error Saving", message: "Please type a question", preferredStyle: .alert)
                     let action = UIAlertAction(title: "Ok", style: .default) { (action) in
                     }
                     alert.addAction(action)
                     self.present(alert, animated: true, completion: nil)
                     break
+                case "noAnswerChoice":
+                    missingFields = true
+                    let alert = UIAlertController(title: "Error Saving", message: "Please type an answer choice", preferredStyle: .alert)
+                    let action = UIAlertAction(title: "Ok", style: .default) { (action) in
+                    }
+                    alert.addAction(action)
+                    self.present(alert, animated: true, completion: nil)
+                case "noAnswerSelected":
+                    missingFields = true
+                    let alert = UIAlertController(title: "Error Saving", message: "Please select an answer choice", preferredStyle: .alert)
+                    let action = UIAlertAction(title: "Ok", style: .default) { (action) in
+                    }
+                    alert.addAction(action)
+                    self.present(alert, animated: true, completion: nil)
                 default:
                     newQuestions.append(vc.question!)
                     break
@@ -54,6 +76,7 @@ class EditQuestionsPageViewController: UIPageViewController {
         questions = newQuestions
         dm.updateQuestionCount(roomID: ID, to: questions.count) {
         }
+        
         
     }
     
@@ -94,6 +117,8 @@ class EditQuestionsPageViewController: UIPageViewController {
     
     var questions: [MCQ] = []
     
+    var deletedQuestions: [Int] = []
+    
     var currentQuestion = 0
     
     var currentViewController: AddQuestionViewController = AddQuestionViewController()
@@ -105,7 +130,7 @@ class EditQuestionsPageViewController: UIPageViewController {
         
         view.backgroundColor = .systemGray6
         
-        self.title = "ID: " + ID
+        self.title = "Room code: " + ID
         
         dm.reloadQuestions(from: ID) { [weak self] questions in
             guard let self = self else { return }
@@ -172,13 +197,9 @@ class EditQuestionsPageViewController: UIPageViewController {
             }
         
             leoViewControllers.remove(at: index)
+            deletedQuestions.append(index)
             updateQuestionIndexes()
-            if index <= questions.count - 1 {
-                questions.remove(at: index)
-                dm.deleteQuestion(from: ID, with: index)
-                dm.updateQuestionCount(roomID: ID, to: questions.count) {
-                }
-            }
+            
         }
     }
     
@@ -233,7 +254,7 @@ class EditQuestionsPageViewController: UIPageViewController {
         
         var changeDetected = false
         
-        if questions.count < leoViewControllers.count {
+        if questions.count != leoViewControllers.count {
             changeDetected = true
         }
         
@@ -269,8 +290,8 @@ class EditQuestionsPageViewController: UIPageViewController {
         }
         if changeDetected {
             let alert = UIAlertController(title: "Unsaved Changes", message: "You have unsaved changes. Are you sure you want to discard them?", preferredStyle: .alert)
-            let ignore = UIAlertAction(title: "Ok", style: .default) { (action) in
-                
+            let ignore = UIAlertAction(title: "Ok", style: .default) { [weak self] (action) in
+                guard let self = self else { return }
                 self.performSegue(withIdentifier: "unwindToMaster", sender: self)
             }
             let save = UIAlertAction(title: "Cancel", style: .cancel) { (action) in

@@ -140,7 +140,7 @@ class DataManager {
         
     }
     
-    func clearResults(roomID: String, questionCount: Int) -> Void {
+    func clearResults(roomID: String) -> Void {
         
         db.collection(K.FStore.collectionName).document(roomID).updateData(["userCount" : 0])
         
@@ -229,14 +229,8 @@ class DataManager {
         db.collection(K.FStore.collectionName).document(roomID).delete()
     }
     
-    func deleteQuestion(from roomID: String, with index: Int) {
-        db.collection(K.FStore.collectionName).document(roomID).collection("questions").order(by: "index").getDocuments { (querySnapshot, error) in
-            if let query = querySnapshot {
-                let docs = query.documents
-                let doc = docs[index]
-                doc.reference.delete()
-            }
-        }
+    func deleteQuestion(from roomID: String, id: String) {
+        db.collection(K.FStore.collectionName).document(roomID).collection("questions").document(id).delete()
     }
     
     func addQuestionToRoom(id: String, index: Int, roomID: String, question: String, answerChoices: [String], correctAnswers: [Int], time: Double, completion: @escaping () -> Void) {

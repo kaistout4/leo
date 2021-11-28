@@ -135,7 +135,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
     @IBAction func shareRoom(_ sender: Any) {
         let url = "uptake://join/\(ID)"
         UIPasteboard.general.string = url
-        let alert = UIAlertController(title: "Link copied to clipboard", message: "", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Share link copied to clipboard", message: "", preferredStyle: .alert)
         self.present(alert, animated: true) {
             
         }

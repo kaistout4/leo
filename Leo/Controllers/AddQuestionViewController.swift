@@ -96,9 +96,19 @@ class AddQuestionViewController: UIViewController {
     func addQuestion(completion: @escaping (_ error: String?) -> Void) {
         
  
-       if noQuestion() || noAnswerSelected() || noAnswerChoice() {
-           completion("missingFields")
+       if noQuestion() {
+           completion("noQuestion")
            return
+       }
+       
+       if noAnswerChoice() {
+          completion("noAnswerChoice")
+          return
+       }
+       
+       if noAnswerSelected() {
+          completion("noAnswerSelected")
+          return
        }
 
        dm.addQuestionToRoom(id: questionId, index: questionIndex!, roomID: ID, question: text, answerChoices: answerChoices, correctAnswers: correctAnswers, time: Date().timeIntervalSince1970) { [weak self] in

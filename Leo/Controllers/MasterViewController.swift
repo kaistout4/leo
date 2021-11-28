@@ -19,7 +19,7 @@ class MasterViewController: UIViewController {
             if let ID = DataManager.ID {
                 dm.updateState(roomID: ID, state: "closed") {
                 }
-                dm.clearResults(roomID: ID, questionCount: rooms[vc.currentQuestion].questionCount)
+                dm.clearResults(roomID: ID)
             }
         }
         loadRooms()

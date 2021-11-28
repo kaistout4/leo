@@ -97,7 +97,7 @@ class QuestionViewController: UIViewController {
     
     func monitorForResults() {
         
-        db.collection("rooms").document(ID).collection("questions").document(String(questionIndex!)).addSnapshotListener { [weak self] documentSnapshot, error in
+        db.collection("rooms").document(ID).collection("questions").document(question!.id).addSnapshotListener { [weak self] documentSnapshot, error in
             guard let self = self else { return }
             
             if let e = error {
