@@ -86,7 +86,7 @@ class MasterViewController: UIViewController {
                 
                 if let email = Auth.auth().currentUser?.email {
                     
-                    self.db.collection(K.FStore.collectionName).document(roomID).setData(["title" : newRoom!.title, "state" : "closed", "user" : email, "questionCount" : 0, "currentQuestion" : 0, "userCount" : 0])
+                    self.db.collection(K.FStore.collectionName).document(roomID).setData(["title" : newRoom!.title, "state" : "closed", "user" : email, "questionCount" : 0, "currentQuestion" : 0, "userCount" : 0, "time" : Date().timeIntervalSince1970])
                 }
                 self.performSegue(withIdentifier: "masterToRoomPage", sender: self)
             }

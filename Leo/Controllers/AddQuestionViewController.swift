@@ -125,8 +125,7 @@ class AddQuestionViewController: UIViewController {
        
        var noChoice = false
        for i in answerChoices {
-          noChoice = i == ""
-          
+          noChoice = i == "" || i == "Type answer here"
        }
        return noChoice
 
@@ -134,7 +133,7 @@ class AddQuestionViewController: UIViewController {
 
     func noQuestion () -> Bool {
 
-        return text == ""
+        return text == "" || text == "Type question here"
 
     }
 
@@ -169,7 +168,10 @@ class AddQuestionViewController: UIViewController {
    
    func saveData() {
       text = questionTextView.text ?? ""
-      answerChoices = getAnswers(hideBlanks: true)
+      if getAnswers(hideBlanks: true).count != 0 {
+         answerChoices = getAnswers(hideBlanks: true)
+      }
+      
    }
    
    func printQuestion() {
@@ -186,7 +188,7 @@ class AddQuestionViewController: UIViewController {
    }
    
    func isEmpty() -> Bool {
-      return text == "" && correctAnswers.isEmpty && answerChoices.count == 1 && answerChoices[0] == ""
+      return (text == "" || text == "Type question here") && correctAnswers.isEmpty && answerChoices.count == 1 && answerChoices[0] == ""
    }
     
     @objc func switchAnswerTypeAction(sender: UIButton) {

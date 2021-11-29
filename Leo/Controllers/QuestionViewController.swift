@@ -48,8 +48,6 @@ class QuestionViewController: UIViewController {
             }
             
         }
-        
-        
     }
     
     override func viewDidLoad() {
@@ -68,12 +66,8 @@ class QuestionViewController: UIViewController {
             
         }
         
-        
         tableView.allowsSelection = false
-        
-        //codeLabel.text = "Code: " + roomID
-        // Do any additional setup after loading the view.
-        //loadNextQuestion()
+    
     }
     
     func setNumAnswersLabel() {
@@ -152,10 +146,12 @@ class QuestionViewController: UIViewController {
         
         if let question = question {
             
-            cell.answerLabel.text = question.answerChoices[index]
+            
             cell.answerPercentage.isHidden = hideResults
             cell.answerIconImage.isHidden = hideResults
+            cell.answerLabel.text = question.answerChoices[index]
             
+           
             if hideResults {
                 cell.answerBackground.backgroundColor = isSelected ?
                 UIColor(named: "AccentColor") :
@@ -204,15 +200,15 @@ class QuestionViewController: UIViewController {
     }
     
     func reconfigureCells() {
-        
-        for cell in tableView.visibleCells {
-            
-            if let cell = cell as? AnswerCell {
-                
-                configureCell(cell: cell, at: tableView.indexPath(for: cell)!)
-            }
-            
-        }
+        tableView.reloadData()
+//        for cell in tableView.visibleCells {
+//
+//            if let cell = cell as? AnswerCell {
+//
+//                configureCell(cell: cell, at: tableView.indexPath(for: cell)!)
+//            }
+//
+//        }
     }
     
     func setSelectedAnswer(selected: Int, animated: Bool) {
@@ -284,12 +280,12 @@ extension QuestionViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AnswerCell", for: indexPath) as! AnswerCell
         cell.answerButton.tag = indexPath.row
         cell.answerButton.addTarget(self, action: #selector(answerButtonAction(sender:)), for: .touchUpInside)
-//        if selected.count == question?.correctAnswers.count {
-//            cell.answerButton.isUserInteractionEnabled = false
-//        }
-//        let size = cell.answerLabel.sizeThatFits(CGSize(width: cell.answerLabel.bounds.width, height: 999.0))
-//        cell.answerLabelHeightConstraint.constant = size.height
+        
         configureCell(cell: cell, at: indexPath)
+        
+//        cell.updateConstraints()
+//        cell.layoutSubviews()
+        
         return cell
     }
     

@@ -54,7 +54,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
         
         view.backgroundColor = .systemGray6
         
-        self.title = "ID: " + ID
+        self.title = "Room code: " + ID
        
         if (user == "student") {
             exitButton.title = "Leave"

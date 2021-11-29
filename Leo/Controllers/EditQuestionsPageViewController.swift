@@ -254,7 +254,7 @@ class EditQuestionsPageViewController: UIPageViewController {
         
         var changeDetected = false
         
-        if questions.count != leoViewControllers.count {
+        if questions.count != 0 && questions.count != leoViewControllers.count {
             changeDetected = true
         }
         
@@ -264,6 +264,7 @@ class EditQuestionsPageViewController: UIPageViewController {
                 if vc.isViewLoaded {
                     vc.saveData()
                 }
+                
                 if !vc.isEmpty() {
                     updatedQuestions.append(vc.getQuestion())
                     vc.printQuestion()

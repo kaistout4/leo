@@ -90,7 +90,7 @@ class WelcomeViewController: UIViewController {
                       
                 } else {
                     
-                    let alert = UIAlertController(title: "Room Not Found", message: "Please retype a room code that exists", preferredStyle: .alert)
+                    let alert = UIAlertController(title: "Not Found", message: "Please type a room code that exists", preferredStyle: .alert)
                         
                     let action = UIAlertAction(title: "Try Again", style: .default) { (action) in
                         //user retries join code

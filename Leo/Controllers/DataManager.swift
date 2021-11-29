@@ -24,7 +24,7 @@ class DataManager {
     
     func loadRooms(user: String, completion: @escaping (_ rooms: [Room]?) -> Void) {
                 
-        db.collection(K.FStore.collectionName).whereField("user", isEqualTo: user).getDocuments { [weak self] querySnapshot, error in
+        db.collection(K.FStore.collectionName).whereField("user", isEqualTo: user).order(by: "time").getDocuments { [weak self] querySnapshot, error in
             guard let self = self else { return }
             if let error = error {
                 
