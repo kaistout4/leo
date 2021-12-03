@@ -195,7 +195,6 @@ class DataManager {
         db.collection(K.FStore.collectionName).document(roomID).updateData(["userCount" : FieldValue.increment(Int64(-1))])
     }
     
-    //func decrementUserCount9
     
     func deleteQuestionsFromRoom(roomID: String, questionCount: Int) {
         if questionCount != 0 {

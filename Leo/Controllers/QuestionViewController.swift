@@ -28,7 +28,7 @@ class QuestionViewController: UIViewController {
     var question: MCQ? {
         didSet  {
             if isViewLoaded {
-                reconfigureCells()
+              //  reconfigureCells()
             }
         }
     }
@@ -107,6 +107,7 @@ class QuestionViewController: UIViewController {
                             
                             self.question = MCQ(id: doc.documentID, index: index, question: question, answerChoices: answerChoices, correctAnswers: correctAnswers, results: [resultsA, resultsB, resultsC, resultsD, resultsE, resultsF])
                             let numResults = resultsA + resultsB + resultsC + resultsD + resultsE + resultsF
+                            self.reconfigureCells()
                             self.refreshResults(numResults)
                         }
                     }
@@ -221,17 +222,21 @@ class QuestionViewController: UIViewController {
             return
         }
         //Already selected maximum boxes
-        print("Selected \(self.selected)")
+        print("Previously selected \(self.selected)")
         if self.selected.count == question?.correctAnswers.count {
+            
             let lastSelected = self.selected.last
             self.selected.remove(at: self.selected.firstIndex(of: lastSelected!)!)
             self.selected.append(selected)
+            print("Last selected answer \(lastSelected) is losing a vote")
             dm.updateVote(roomID: DataManager.ID!, questionIndex: questionIndex!, answerIndex: lastSelected!, by: -1) {
                 
             }
+            print("New selected answer \(selected) is gaining a vote")
             dm.updateVote(roomID: DataManager.ID!, questionIndex: questionIndex!, answerIndex: selected, by: 1) {
                 
             }
+            print("Newly selected \(self.selected)")
             return
         }
         

@@ -105,6 +105,7 @@ class ActiveQuestionsPageViewController: UIPageViewController {
                                 self.dm.reloadQuestion(from: self.ID, with: currentQuestion) { question in
                                     vc.hideResults = false
                                     vc.question = question
+                                    vc.reconfigureCells()
                                 }
                             }
                             

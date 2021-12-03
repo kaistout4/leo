@@ -42,7 +42,7 @@
 		933131B626E561D400DFD645 /* EditQuestionsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditQuestionsPageViewController.swift; sourceTree = "<group>"; };
 		933131B826E5663F00DFD645 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		935BDB1D2749B87700792102 /* DeleteQuestionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeleteQuestionCell.xib; sourceTree = "<group>"; };
-		9374BB8126995B7100A7E8ED /* Leo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Leo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9374BB8126995B7100A7E8ED /* Uptake App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Uptake App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9374BB8426995B7100A7E8ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9374BB8626995B7100A7E8ED /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		9374BB8826995B7100A7E8ED /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
@@ -105,7 +105,7 @@
 		9374BB8226995B7100A7E8ED /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9374BB8126995B7100A7E8ED /* Leo.app */,
+				9374BB8126995B7100A7E8ED /* Uptake App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -154,9 +154,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9374BB8026995B7100A7E8ED /* Leo */ = {
+		9374BB8026995B7100A7E8ED /* Uptake App */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9374BB9526995B7200A7E8ED /* Build configuration list for PBXNativeTarget "Leo" */;
+			buildConfigurationList = 9374BB9526995B7200A7E8ED /* Build configuration list for PBXNativeTarget "Uptake App" */;
 			buildPhases = (
 				9374BB7D26995B7100A7E8ED /* Sources */,
 				9374BB7E26995B7100A7E8ED /* Frameworks */,
@@ -166,7 +166,7 @@
 			);
 			dependencies = (
 			);
-			name = Leo;
+			name = "Uptake App";
 			packageProductDependencies = (
 				933F612427002DDE00C20808 /* FirebaseAnalytics */,
 				933F612627002DDE00C20808 /* FirebaseAnalyticsSwift-Beta */,
@@ -175,7 +175,7 @@
 				933F612C27002DDE00C20808 /* FirebaseFirestoreSwift-Beta */,
 			);
 			productName = Leo;
-			productReference = 9374BB8126995B7100A7E8ED /* Leo.app */;
+			productReference = 9374BB8126995B7100A7E8ED /* Uptake App.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -192,7 +192,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 9374BB7C26995B7100A7E8ED /* Build configuration list for PBXProject "Leo" */;
+			buildConfigurationList = 9374BB7C26995B7100A7E8ED /* Build configuration list for PBXProject "Uptake App" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -208,7 +208,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9374BB8026995B7100A7E8ED /* Leo */,
+				9374BB8026995B7100A7E8ED /* Uptake App */,
 			);
 		};
 /* End PBXProject section */
@@ -430,7 +430,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9374BB7C26995B7100A7E8ED /* Build configuration list for PBXProject "Leo" */ = {
+		9374BB7C26995B7100A7E8ED /* Build configuration list for PBXProject "Uptake App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9374BB9326995B7200A7E8ED /* Debug */,
@@ -439,7 +439,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9374BB9526995B7200A7E8ED /* Build configuration list for PBXNativeTarget "Leo" */ = {
+		9374BB9526995B7200A7E8ED /* Build configuration list for PBXNativeTarget "Uptake App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9374BB9626995B7200A7E8ED /* Debug */,
